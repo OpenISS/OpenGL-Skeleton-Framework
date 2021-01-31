@@ -18,7 +18,7 @@ include(BuildGLEW)
 include(BuildGLFW)
 include(BuildGLM)
 
-set(EXEC main)
+set(EXEC SunRay)
 file(GLOB SRC src/*.cpp)
 add_executable(${EXEC} ${SRC})
 target_link_libraries(${EXEC} OpenGL::GL glew_s glfw glm)
