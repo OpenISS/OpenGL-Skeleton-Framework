@@ -1,4 +1,6 @@
 #include "world.h"
+
+#include <GL/glew.h>
 #include "module_rendering_mode.h"
 
 World::World()
