@@ -1,14 +1,15 @@
 #pragma once
+class World;
 
 class Module
 {
 public:
 
-    virtual void Startup() {};
-    virtual void Shutdown() {};
+    virtual void Startup(World& world) {};
+    virtual void Shutdown(World& world) {};
 
-    virtual void Update(float deltaSeconds) {};
-    virtual void Render() {};
+    virtual void Update(World& world, float deltaSeconds) {};
+    virtual void Render(World& world) {};
 
-    virtual void OnKey(int key, int action, int mods) {};
+    virtual void OnKey(World& world, int key, int action, int mods) {};
 };

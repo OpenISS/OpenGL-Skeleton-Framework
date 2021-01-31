@@ -14,9 +14,9 @@ class ModuleRenderingMode : public Module
 {
 public:
 
-    virtual void OnKey(int key, int action, int mods)
+    virtual void OnKey(World& world, int key, int action, int mods)
     {
-        Module::OnKey(key, action, mods);
+        Module::OnKey(world, key, action, mods);
 
         if (action == GLFW_PRESS)
         {

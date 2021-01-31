@@ -3,9 +3,16 @@
 #include <iostream>
 #include <string>
 
+// Inspired by code from Lab
+
 class Shader
 {
 public:
+
+    void activate()
+    {
+        glUseProgram(programID);
+    }
 
     bool create(const std::string vertexSrc, const std::string fragmentSrc)
     {

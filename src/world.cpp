@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include "module_rendering_mode.h"
+#include "test_unit_cube.h"
 
 World::World()
 {
@@ -16,6 +17,7 @@ World::World()
 void World::AddModules()
 {
     modules.push_back(renderingMode);
+    modules.push_back(new TestUnitCube());
 }
 
 void World::Startup()
@@ -23,7 +25,7 @@ void World::Startup()
     AddModules();
     for (Module* m : modules)
     {
-        m->Startup();
+        m->Startup(*this);
     }
 
     // Black background
@@ -48,13 +50,28 @@ void World::Startup()
         "   FragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);"
         "}";
     basicShader.create(vertexSrc, fragmentSrc);
+
+    // Unit cube
+    unitCube.vertices = {
+        {glm::vec3(-1, -1, -1)}, {glm::vec3(1, -1, -1)}, {glm::vec3(1, 1, -1)}, {glm::vec3(-1, 1, -1)},
+        {glm::vec3(-1, -1, 1)}, {glm::vec3(1, -1, 1)}, {glm::vec3(1, 1, 1)}, {glm::vec3(-1, 1, 1)}
+    };
+    unitCube.indices = {
+        0, 1, 3, 3, 1, 2,
+        1, 5, 2, 2, 5, 6,
+        5, 4, 6, 6, 4, 7,
+        4, 0, 7, 7, 0, 3,
+        3, 2, 7, 7, 2, 6,
+        4, 5, 0, 0, 5, 1
+    };
+    unitCube.createGPUBuffers();
 }
 
 void World::Shutdown()
 {
     for (int i = modules.size() - 1; i >= 0; --i)
     {
-        modules.at(i)->Shutdown();
+        modules.at(i)->Shutdown(*this);
     }
     for (int i = modules.size() - 1; i >= 0; --i)
     {
@@ -66,7 +83,7 @@ void World::Update(float deltaSeconds)
 {
     for (Module* m : modules)
     {
-        m->Update(deltaSeconds);
+        m->Update(*this, deltaSeconds);
     }
 }
 
@@ -79,7 +96,7 @@ void World::Render()
 
     for (Module* m : modules)
     {
-        m->Render();
+        m->Render(*this);
     }
 }
 
@@ -87,6 +104,6 @@ void World::OnKey(int key, int action, int mods)
 {
     for (Module* m : modules)
     {
-        m->OnKey(key, action, mods);
+        m->OnKey(*this, key, action, mods);
     }
 }
