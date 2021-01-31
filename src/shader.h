@@ -1,5 +1,6 @@
 #pragma once
 #include <GL/glew.h>
+#include <iostream>
 #include <string>
 
 class Shader
@@ -13,7 +14,7 @@ public:
 
     bool create(const char* vertexSrc, const char* fragmentSrc)
     {
-        bool success = true;
+        bool overallSuccess = true;
 
         // vertex shader
         int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -29,7 +30,7 @@ public:
         {
             glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
             std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-            success = false;
+            overallSuccess = false;
         }
 
         // fragment shader
@@ -44,7 +45,7 @@ public:
         {
             glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
             std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-            success = false;
+            overallSuccess = false;
         }
 
         // link shaders
@@ -58,7 +59,7 @@ public:
         if (!success) {
             glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
             std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-            success = false;
+            overallSuccess = false;
         }
 
         glDeleteShader(vertexShader);
@@ -66,7 +67,7 @@ public:
 
         programID = shaderProgram;
 
-        return success;
+        return overallSuccess;
     }
 
     int getProgramID()
@@ -76,5 +77,5 @@ public:
 
 protected:
 
-    int programID;
-}
+    int programID = -1;
+};

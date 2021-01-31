@@ -6,6 +6,10 @@
 World::World()
 {
     renderingMode = new ModuleRenderingMode();
+
+    windowWidth = 1024;
+    windowHeight = 768;
+    windowTitle = "SunRay";
 }
 
 // Add your modules here
@@ -16,14 +20,34 @@ void World::AddModules()
 
 void World::Startup()
 {
-    // Black background
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
     AddModules();
     for (Module* m : modules)
     {
         m->Startup();
     }
+
+    // Black background
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+    // Basic shader
+    const char* vertexSrc =
+        "#version 330 core\n"
+        "layout (location = 0) in vec3 aPos;"
+        "uniform mat4 worldMatrix = mat4(1.0);"
+        "uniform mat4 viewMatrix = mat4(1.0);"
+        "uniform mat4 projectionMatrix = mat4(1.0);"
+        "void main()"
+        "{"
+        "   gl_Position = projectionMatrix * viewMatrix * worldMatrix * vec4(aPos.x, aPos.y, aPos.z, 1.0);"
+        "}";
+    const char* fragmentSrc =
+        "#version 330 core\n"
+        "out vec4 FragColor;"
+        "void main()"
+        "{"
+        "   FragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);"
+        "}";
+    basicShader.create(vertexSrc, fragmentSrc);
 }
 
 void World::Shutdown()

@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "module_rendering_mode.h"
+#include "shader.h"
 
 class World
 {
@@ -16,6 +18,10 @@ public:
 
     void OnKey(int key, int action, int mods);
 
+    int windowWidth;
+    int windowHeight;
+    std::string windowTitle;
+
 protected:
 
     void AddModules();
@@ -23,4 +29,5 @@ protected:
     std::vector<Module*> modules = std::vector<Module*>();
 
     ModuleRenderingMode* renderingMode;
+    Shader basicShader;
 };
