@@ -7,8 +7,8 @@ void Resources::initialize()
 {
     // Unit cube
     unitCube.vertices = {
-        {glm::vec3(-1, -1, -1)}, {glm::vec3(1, -1, -1)}, {glm::vec3(1, 1, -1)}, {glm::vec3(-1, 1, -1)},
-        {glm::vec3(-1, -1, 1)}, {glm::vec3(1, -1, 1)}, {glm::vec3(1, 1, 1)}, {glm::vec3(-1, 1, 1)}
+        {glm::vec3(-0.5f, -0.5f, -0.5f)}, {glm::vec3(0.5f, -0.5f, -0.5f)}, {glm::vec3(0.5f, 0.5f, -0.5f)}, {glm::vec3(-0.5f, 0.5f, -0.5f)},
+        {glm::vec3(-0.5f, -0.5f, 0.5f)}, {glm::vec3(0.5f, -0.5f, 0.5f)}, {glm::vec3(0.5f, 0.5f, 0.5f)}, {glm::vec3(-0.5f, 0.5f, 0.5f)}
     };
     unitCube.indices = {
         0, 1, 3, 3, 1, 2,
