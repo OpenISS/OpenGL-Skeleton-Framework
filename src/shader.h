@@ -1,5 +1,6 @@
 #pragma once
 #include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <string>
 
@@ -99,6 +100,12 @@ public:
     {
         GLuint location = glGetUniformLocation(programID, "projectionMatrix");
         glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
+    }
+
+    void setColor(glm::vec3& color)
+    {
+        GLuint location = glGetUniformLocation(programID, "color");
+        glUniform3fv(location, 1, glm::value_ptr(color));
     }
 
 protected:

@@ -22,6 +22,7 @@ public:
 
         glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
         modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(1.01f, 1.01f, 1.01f));
 
         glm::mat4 viewMatrix = glm::mat4(1.0f);
 
@@ -33,6 +34,7 @@ public:
         Resources::basicShader.setModelMatrix(modelMatrix);
         Resources::basicShader.setViewMatrix(viewMatrix);
         Resources::basicShader.setProjectionMatrix(projectionMatrix);
+        Resources::basicShader.setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
         Resources::basicShader.activate();
         Resources::unitCube.draw();

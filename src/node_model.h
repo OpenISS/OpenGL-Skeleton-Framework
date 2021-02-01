@@ -23,6 +23,7 @@ public:
         if (shader != NULL && mesh != NULL)
         {
             shader->setModelMatrix(matrixStack);
+            shader->setColor(color);
             shader->activate();
             mesh->draw();
         }
@@ -30,4 +31,5 @@ public:
 
     Shader* shader = NULL;
     Mesh* mesh = NULL;
+    glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 };

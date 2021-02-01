@@ -33,10 +33,12 @@ void Resources::initialize()
         "}";
     const char* fragmentSrc =
         "#version 330 core\n"
+        "uniform vec3 color = vec3(1.0, 1.0, 1.0);"
         "out vec4 FragColor;"
         "void main()"
         "{"
-        "   FragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);"
+        "   FragColor = vec4(color.r, color.g, color.b, 1.0f);"
         "}";
     basicShader.create(vertexSrc, fragmentSrc);
+    basicShader.setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 }

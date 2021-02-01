@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "color.h"
 #include "module.h"
 #include "node_model.h"
 #include "resources.h"
@@ -18,6 +19,11 @@ public:
         cube2 = new NodeModel(Resources::basicShader, Resources::unitCube);
         cube3 = new NodeModel(Resources::basicShader, Resources::unitCube);
         cube4 = new NodeModel(Resources::basicShader, Resources::unitCube);
+
+        cube1->color = hexToFloatRGB(0xfaf489);
+        cube2->color = hexToFloatRGB(0xfaf489);
+        cube3->color = hexToFloatRGB(0xadebf7);
+        cube4->color = hexToFloatRGB(0xadebf7);
 
         world.sceneGraph->root.addChild(*cube1);
         world.sceneGraph->root.addChild(*cube2);
