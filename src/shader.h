@@ -82,6 +82,25 @@ public:
         return programID;
     }
 
+
+    void setModelMatrix(glm::mat4& mat)
+    {
+        GLuint location = glGetUniformLocation(programID, "modelMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
+    }
+
+    void setViewMatrix(glm::mat4& mat)
+    {
+        GLuint location = glGetUniformLocation(programID, "viewMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
+    }
+
+    void setProjectionMatrix(glm::mat4& mat)
+    {
+        GLuint location = glGetUniformLocation(programID, "projectionMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
+    }
+
 protected:
 
     int programID = -1;

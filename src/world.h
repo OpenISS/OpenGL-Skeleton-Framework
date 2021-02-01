@@ -3,6 +3,7 @@
 #include <string>
 #include "mesh.h"
 #include "module_rendering_mode.h"
+#include "module_scene_graph.h"
 #include "shader.h"
 
 class World
@@ -21,7 +22,11 @@ public:
 
     int windowWidth;
     int windowHeight;
+    float windowAspectRatio;
+    int windowSamples;
     std::string windowTitle;
+
+    ModuleSceneGraph* sceneGraph;
 
     Shader basicShader;
     Mesh unitCube;

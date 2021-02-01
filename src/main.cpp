@@ -36,6 +36,10 @@ int main(int argc, char*argv[])
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // Prevent window resize
+    glfwWindowHint(GLFW_SAMPLES, world.windowSamples); // MSAA
+    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE); // Double buffering
+
     // Create Window and rendering context using GLFW, resolution is 800x600
     GLFWwindow* window = glfwCreateWindow(world.windowWidth, world.windowHeight, world.windowTitle.c_str(), NULL, NULL);
     if (window == NULL)
@@ -45,6 +49,7 @@ int main(int argc, char*argv[])
         return -1;
     }
     glfwSetKeyCallback(window, glfwKeyCallback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Lock cursor to window
     glfwMakeContextCurrent(window);
 
     // Initialize GLEW
