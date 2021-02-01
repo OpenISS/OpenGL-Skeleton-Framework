@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <string>
 #include "mesh.h"
 #include "module_rendering_mode.h"
 #include "module_scene_graph.h"
@@ -20,16 +19,13 @@ public:
 
     void OnKey(int key, int action, int mods);
 
+    ModuleSceneGraph* sceneGraph;
+
     int windowWidth;
     int windowHeight;
     float windowAspectRatio;
     int windowSamples;
-    std::string windowTitle;
-
-    ModuleSceneGraph* sceneGraph;
-
-    Shader basicShader;
-    Mesh unitCube;
+    const char* windowTitle;
 
 protected:
 

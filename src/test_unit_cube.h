@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "module.h"
+#include "resources.h"
 #include "world.h"
 
 class TestUnitCube : public Module
@@ -29,12 +30,12 @@ public:
             world.windowAspectRatio,
             0.01f, 100.0f); // near and far (near > 0)
 
-        world.basicShader.setModelMatrix(modelMatrix);
-        world.basicShader.setViewMatrix(viewMatrix);
-        world.basicShader.setProjectionMatrix(projectionMatrix);
+        Resources::basicShader.setModelMatrix(modelMatrix);
+        Resources::basicShader.setViewMatrix(viewMatrix);
+        Resources::basicShader.setProjectionMatrix(projectionMatrix);
 
-        world.basicShader.activate();
-        world.unitCube.draw();
+        Resources::basicShader.activate();
+        Resources::unitCube.draw();
     }
 
 protected:

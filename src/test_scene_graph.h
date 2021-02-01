@@ -3,6 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "module.h"
 #include "node_model.h"
+#include "resources.h"
 #include "world.h"
 
 class TestSceneGraph : public Module
@@ -13,10 +14,10 @@ public:
     {
         Module::Startup(world);
 
-        cube1 = new NodeModel(world.basicShader, world.unitCube);
-        cube2 = new NodeModel(world.basicShader, world.unitCube);
-        cube3 = new NodeModel(world.basicShader, world.unitCube);
-        cube4 = new NodeModel(world.basicShader, world.unitCube);
+        cube1 = new NodeModel(Resources::basicShader, Resources::unitCube);
+        cube2 = new NodeModel(Resources::basicShader, Resources::unitCube);
+        cube3 = new NodeModel(Resources::basicShader, Resources::unitCube);
+        cube4 = new NodeModel(Resources::basicShader, Resources::unitCube);
 
         world.sceneGraph->root.addChild(*cube1);
         world.sceneGraph->root.addChild(*cube2);
@@ -62,8 +63,8 @@ public:
             world.windowAspectRatio,
             0.01f, 100.0f); // near and far (near > 0)
 
-        world.basicShader.setViewMatrix(viewMatrix);
-        world.basicShader.setProjectionMatrix(projectionMatrix);
+        Resources::basicShader.setViewMatrix(viewMatrix);
+        Resources::basicShader.setProjectionMatrix(projectionMatrix);
     }
 
 protected:

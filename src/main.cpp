@@ -40,8 +40,8 @@ int main(int argc, char*argv[])
     glfwWindowHint(GLFW_SAMPLES, world.windowSamples); // MSAA
     glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE); // Double buffering
 
-    // Create Window and rendering context using GLFW, resolution is 800x600
-    GLFWwindow* window = glfwCreateWindow(world.windowWidth, world.windowHeight, world.windowTitle.c_str(), NULL, NULL);
+    // Create Window and rendering context using GLFW
+    GLFWwindow* window = glfwCreateWindow(world.windowWidth, world.windowHeight, world.windowTitle, NULL, NULL);
     if (window == NULL)
     {
         std::cerr << "Failed to create GLFW window" << std::endl;
