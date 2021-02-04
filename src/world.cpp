@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include "module_rendering_mode.h"
+#include "module_world_orientation.h"
 #include "resources.h"
 #include "test_scene_graph.h"
 #include "test_unit_cube.h"
@@ -23,6 +24,10 @@ void World::AddModules()
 {
     // Modules
     modules.push_back(renderingMode);
+
+    // world orientation
+    //RE-ENABLE WHEN CAMERA IS DONE
+    //modules.push_back(new ModuleWorldOrientation());
 
     // Tests
     modules.push_back(new TestUnitCube());
