@@ -81,5 +81,5 @@ protected:
     NodeModel* cube4;
 
     float angle;
-    float anglesPerSecond = 4.0f;
+    float anglesPerSecond = 60.0f;
 };

@@ -65,11 +65,17 @@ int main(int argc, char*argv[])
 
     world.Startup();
 
-    float lastFrameTime = static_cast<float>(glfwGetTime());
+    float currentFrameTime = static_cast<float>(glfwGetTime());
+    float lastFrameTime = currentFrameTime;
+    float deltaTime;
     // Entering Main Loop
     while(!glfwWindowShouldClose(window))
     {
-        world.Update(lastFrameTime);
+        currentFrameTime = glfwGetTime();
+        deltaTime = currentFrameTime - lastFrameTime; // In seconds
+        lastFrameTime = currentFrameTime;
+
+        world.Update(deltaTime);
         world.Render();
 
         // End Frame

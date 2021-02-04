@@ -45,7 +45,7 @@ public:
     }
 
 protected:
-    float anglesPerSecond = 4.0f;
+    float anglesPerSecond = 60.0f;
     glm::vec2 movement; 
     
 };

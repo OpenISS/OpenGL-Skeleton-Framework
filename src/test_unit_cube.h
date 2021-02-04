@@ -42,5 +42,5 @@ public:
 protected:
 
     float angle;
-    float anglesPerSecond = 12.0f;
+    float anglesPerSecond = 180.0f;
 };
