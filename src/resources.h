@@ -10,4 +10,5 @@ public:
 
     static Mesh unitCube;
     static Shader basicShader;
+    static glm::vec3 colorWhite;
 };
