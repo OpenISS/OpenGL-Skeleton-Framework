@@ -1,6 +1,7 @@
 #include "resources.h"
 
 Mesh Resources::unitCube;
+Mesh Resources::quad;
 Shader Resources::basicShader;
 glm::vec3 Resources::colorWhite = glm::vec3(1.0f, 1.0f, 1.0f);
 
@@ -27,6 +28,20 @@ void Resources::initialize()
     };
     unitCube.setDrawingMode(DrawMode::INDEXED);
     unitCube.createGPUBuffers();
+
+    // Quad
+    quad.vertices = {
+        {glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite}, //tl
+        {glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite}, //br
+        {glm::vec3( 0.5f,  0.5f,  0.0f), Resources::colorWhite}, //tr
+
+        {glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite}, //tr
+        {glm::vec3(-0.5f, -0.5f,  0.0f), Resources::colorWhite}, //bl
+        {glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite}, //br
+    };
+
+    quad.setDrawingMode(DrawMode::VERTEX);
+    quad.createGPUBuffers();
 
     // Basic shader
     const char* vertexSrc =

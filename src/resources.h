@@ -9,6 +9,7 @@ public:
     static void initialize();
 
     static Mesh unitCube;
+    static Mesh quad;
     static Shader basicShader;
     static glm::vec3 colorWhite;
 };
