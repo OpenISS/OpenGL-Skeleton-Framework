@@ -6,6 +6,8 @@
 #include "resources.h"
 #include "test_scene_graph.h"
 #include "test_unit_cube.h"
+#include "test_vertex_drawing.h"
+
 
 World::World()
 {
@@ -31,6 +33,7 @@ void World::AddModules()
 
     // Tests
     modules.push_back(new TestUnitCube());
+    modules.push_back(new TestVertexDrawing());
     modules.push_back(new TestSceneGraph());
 
     // Should always be last
@@ -83,6 +86,7 @@ void World::Render()
 
     // Enable backface culling
     glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
 
     // Enalbe MSAA
     if (windowSamples > 0)
