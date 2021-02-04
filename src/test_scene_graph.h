@@ -51,8 +51,8 @@ public:
         world.sceneGraph->root.transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -6.0f));
         world.sceneGraph->root.transform = glm::rotate(world.sceneGraph->root.transform, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
 
-        cube3->transform = glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f));
-        cube3->transform = glm::translate(cube3->transform, glm::vec3(0.0f, 0.0f, 1.5f));
+        cube3->transform = glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f)); //rotates in place
+        cube3->transform = glm::translate(cube3->transform, glm::vec3(0.0f, 0.0f, 1.5f)); //gives radius of rotation
 
         cube4->transform = glm::rotate(glm::mat4(1.0f), glm::radians(-angle), glm::vec3(1.0f, 0.0f, 0.0f));
         cube4->transform = glm::translate(cube4->transform, glm::vec3(0.0f, 0.0f, -1.5f));

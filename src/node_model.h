@@ -1,6 +1,7 @@
 #pragma once
 #include "mesh.h"
 #include "node.h"
+#include "resources.h"
 #include "shader.h"
 
 class NodeModel : public Node
@@ -31,5 +32,5 @@ public:
 
     Shader* shader = NULL;
     Mesh* mesh = NULL;
-    glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 color = Resources::colorWhite;
 };

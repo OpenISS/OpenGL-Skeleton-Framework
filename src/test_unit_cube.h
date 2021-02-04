@@ -33,7 +33,7 @@ public:
         Resources::basicShader.setModelMatrix(modelMatrix);
         Resources::basicShader.setViewMatrix(viewMatrix);
         Resources::basicShader.setProjectionMatrix(projectionMatrix);
-        Resources::basicShader.setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+        Resources::basicShader.setColor(Resources::colorWhite);
 
         Resources::basicShader.activate();
         Resources::unitCube.draw();
