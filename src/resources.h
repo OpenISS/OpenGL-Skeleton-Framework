@@ -8,6 +8,7 @@ public:
 
     static void initialize();
 
+    static float unitSize;
     static Mesh unitCube;
     static Mesh quad;
     static Shader basicShader;
