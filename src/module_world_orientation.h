@@ -13,23 +13,27 @@ public:
     {
         Module::OnKey(world, key, action, mods);
 
-        if (action == GLFW_REPEAT)
+        if (action == GLFW_REPEAT || GLFW_PRESS)
         {
             if (key == GLFW_KEY_LEFT)
             {
-                movement.x = 1.0;
+                movement.y = 1.0;
             }
             else if (key == GLFW_KEY_RIGHT)
             {
-                movement.x = -1.0;      
+                movement.y = -1.0;      
             }
             else if (key == GLFW_KEY_UP)
             {
-                movement.y = 1.0;
+                movement.x = 1.0;
             }
             else if (key == GLFW_KEY_DOWN)
             {
-                movement.y = -1.0;
+                movement.x = -1.0;
+            }
+            else if (key == GLFW_KEY_HOME)
+            {
+                reset = true;
             }
         }
     }
@@ -40,13 +44,19 @@ public:
 
         world.sceneGraph->root.transform = glm::rotate(world.sceneGraph->root.transform, glm::radians(anglesPerSecond * deltaSeconds * movement.x), glm::vec3(1.0f, 0.0f, 0.0f));
         world.sceneGraph->root.transform = glm::rotate(world.sceneGraph->root.transform, glm::radians(anglesPerSecond * deltaSeconds * movement.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        if (reset)
+        {
+            world.sceneGraph->root.transform = glm::mat4(1.0f);
+        }
 
         movement = glm::vec2(0.0f, 0.0f);
+        reset = false;
     }
 
 protected:
     float anglesPerSecond = 60.0f;
-    glm::vec2 movement; 
+    glm::vec2 movement;
+    bool reset = false;
     
 };
 
