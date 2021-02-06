@@ -5,6 +5,8 @@
 #include "module_rendering_mode.h"
 #include "module_world_orientation.h"
 #include "resources.h"
+#include "resources_alphabet.h"
+#include "test_alphabet.h"
 #include "test_scene_graph.h"
 #include "test_unit_cube.h"
 #include "test_vertex_drawing.h"
@@ -33,7 +35,8 @@ void World::AddModules()
     //modules.push_back(new ModuleWorldOrientation());
 
     // Tests
-    modules.push_back(new TestUnitCube());
+    modules.push_back(new TestAlphabet());
+    //modules.push_back(new TestUnitCube());
     modules.push_back(new TestVertexDrawing());
     modules.push_back(new TestSceneGraph());
 
@@ -44,6 +47,7 @@ void World::AddModules()
 void World::Startup()
 {
     Resources::initialize();
+    ResourcesAlphabet::initialize();
 
     AddModules();
     for (Module* m : modules)
