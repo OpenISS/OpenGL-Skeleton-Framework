@@ -35,8 +35,7 @@ void World::AddModules()
     //modules.push_back(new ModuleWorldOrientation());
 
     // Tests
-    modules.push_back(new TestAlphabet());
-    //modules.push_back(new TestUnitCube());
+    modules.push_back(new TestUnitCube());
     modules.push_back(new TestVertexDrawing());
     modules.push_back(new TestSceneGraph());
 
@@ -47,7 +46,6 @@ void World::AddModules()
 void World::Startup()
 {
     Resources::initialize();
-    ResourcesAlphabet::initialize();
 
     AddModules();
     for (Module* m : modules)
@@ -108,5 +106,29 @@ void World::OnKey(int key, int action, int mods)
     for (Module* m : modules)
     {
         m->OnKey(*this, key, action, mods);
+    }
+}
+
+void World::OnMouseMoved(double x, double y)
+{
+    for (Module* m : modules)
+    {
+        m->OnMouseMoved(*this, x, y);
+    }
+}
+
+void World::OnMousePressed(int button, int mods)
+{
+    for (Module* m : modules)
+    {
+        m->OnMousePressed(*this, button, mods);
+    }
+}
+
+void World::OnMouseReleased(int button, int mods)
+{
+    for (Module* m : modules)
+    {
+        m->OnMouseReleased(*this, button, mods);
     }
 }
