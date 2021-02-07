@@ -1,6 +1,7 @@
 #include "world.h"
 
 #include <GL/glew.h>
+#include "module_axis.h"
 #include "module_grid.h"
 #include "module_rendering_mode.h"
 #include "module_world_orientation.h"
@@ -30,6 +31,7 @@ void World::AddModules()
     // Modules
     modules.push_back(renderingMode);
     modules.push_back(new ModuleGrid());
+    modules.push_back(new ModuleAxis());
     // world orientation
     //RE-ENABLE WHEN CAMERA IS DONE
     //modules.push_back(new ModuleWorldOrientation());

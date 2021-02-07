@@ -1,6 +1,6 @@
 #include "resources.h"
 
-float Resources::unitSize = 1.0f;
+float Resources::unitSize = 0.25f;
 Mesh Resources::unitCube;
 Mesh Resources::quad;
 Shader Resources::basicShader;
