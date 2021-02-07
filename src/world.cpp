@@ -106,6 +106,12 @@ void World::OnKey(int key, int action, int mods)
     for (Module* m : modules)
     {
         m->OnKey(*this, key, action, mods);
+
+        if (action == GLFW_RELEASE) {
+            m->OnKeyReleased(*this, key, mods);
+        } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+            m->OnKeyPressed(*this, key, mods);
+        }
     }
 }
 

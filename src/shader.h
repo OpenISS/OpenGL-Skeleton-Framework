@@ -17,7 +17,7 @@ public:
 
     bool create(const std::string vertexSrc, const std::string fragmentSrc)
     {
-        create(vertexSrc.c_str(), fragmentSrc.c_str());
+        return create(vertexSrc.c_str(), fragmentSrc.c_str());
     }
 
     bool create(const char* vertexSrc, const char* fragmentSrc)

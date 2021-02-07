@@ -15,12 +15,9 @@ static void glfwErrorCallback(int error, const char* description)
 
 static void glfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-    {
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-    else
-    {
+    } else {
         world.OnKey(key, action, mods);
     }
 }
@@ -88,9 +85,8 @@ GLFWwindow* setupGL()  {
     glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE); // Double buffering
 
     // Create Window and rendering context using GLFW
-    GLFWwindow* window = glfwCreateWindow(world.windowWidth, world.windowHeight, world.windowTitle, NULL, NULL);
-    if (window == NULL)
-    {
+    GLFWwindow *window = glfwCreateWindow(world.windowWidth, world.windowHeight, world.windowTitle, nullptr, nullptr);
+    if (window == nullptr) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return nullptr;
@@ -105,7 +101,7 @@ GLFWwindow* setupGL()  {
     glfwSwapInterval(1);
 
     // Initialize GLEW
-    glewExperimental = true; // Needed for core profile
+    glewExperimental = GL_TRUE; // Needed for core profile
     if (glewInit() != GLEW_OK) {
         std::cerr << "Failed to create GLEW" << std::endl;
         glfwTerminate();

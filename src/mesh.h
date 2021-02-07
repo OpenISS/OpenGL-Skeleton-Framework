@@ -20,6 +20,13 @@ enum class DrawMode
 class Mesh
 {
 public:
+    Mesh() {
+        VAO = 0, VBO = 0, EBO = 0;
+    }
+
+    ~Mesh() {
+        clearBuffers();
+    }
 
     void createGPUBuffers()
     {
@@ -38,7 +45,7 @@ public:
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
         }
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)nullptr);
         glEnableVertexAttribArray(0);
         
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
@@ -53,11 +60,26 @@ public:
     {
         glBindVertexArray(VAO);
         if(this->drawingMode == DrawMode::INDEXED)
-            glDrawElements(this->polygonMode, indices.size(), GL_UNSIGNED_INT, 0);
+            glDrawElements(this->polygonMode, indices.size(), GL_UNSIGNED_INT, nullptr);
         else
             glDrawArrays(this->polygonMode, 0, vertices.size());
 
         glBindVertexArray(0);
+    }
+
+    void clearBuffers() {
+        if (EBO != 0) {
+            glDeleteBuffers(1, &EBO);
+            EBO = 0;
+        }
+        if (VBO != 0) {
+            glDeleteBuffers(1, &VBO);
+            VBO = 0;
+        }
+        if (VAO != 0) {
+            glDeleteVertexArrays(1, &VAO);
+            VAO = 0;
+        }
     }
 
     void setPolygonMode(GLenum mode) {
@@ -70,7 +92,7 @@ public:
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    unsigned int VAO, VBO, EBO;
+    GLuint VAO, VBO, EBO;
 
 protected:
     GLenum polygonMode = GL_TRIANGLES;

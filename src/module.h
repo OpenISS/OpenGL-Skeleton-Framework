@@ -11,6 +11,8 @@ public:
     virtual void Update(World& world, float deltaSeconds) {};
     virtual void Render(World& world) {};
 
+    virtual void OnKeyPressed(World& world, int key, int mods) {};
+    virtual void OnKeyReleased(World& world, int key, int mods) {};
     virtual void OnKey(World& world, int key, int action, int mods) {};
 
     virtual void OnMouseMoved(World& world, double x, double y) {};
