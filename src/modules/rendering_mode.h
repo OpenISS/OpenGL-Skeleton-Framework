@@ -1,7 +1,7 @@
 #pragma once
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "module.h"
+#include "../module.h"
 
 enum class RenderMode
 {
@@ -10,7 +10,7 @@ enum class RenderMode
     Triangle
 };
 
-class ModuleRenderingMode : public Module
+class RenderingMode : public Module
 {
 public:
 

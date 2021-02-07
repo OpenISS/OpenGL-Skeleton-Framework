@@ -11,7 +11,7 @@ glm::vec3 Camera::forward() const {
 
 // right direction of camera
 glm::vec3 Camera::right() const {
-    return glm::cross(Camera::forward(), Camera::up());
+    return glm::cross(forward(), up());
 }
 
 // up direction of camera

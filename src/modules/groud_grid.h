@@ -1,11 +1,11 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "module.h"
-#include "resources.h"
-#include "world.h"
+#include "../module.h"
+#include "../resources.h"
+#include "../world.h"
 
-class ModuleGrid : public Module
+class GroundGrid : public Module
 {
 public:
 

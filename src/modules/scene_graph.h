@@ -1,9 +1,9 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "module.h"
-#include "node.h"
+#include "../module.h"
+#include "../node.h"
 
-class ModuleSceneGraph : public Module
+class SceneGraph : public Module
 {
 public:
 

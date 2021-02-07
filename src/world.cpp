@@ -1,22 +1,22 @@
 #include "world.h"
 
 #include <GL/glew.h>
-#include "module_axis.h"
-#include "module_grid.h"
-#include "module_fps_camera.h"
-#include "module_rendering_mode.h"
-#include "module_world_orientation.h"
+#include "modules/origin_axis.h"
+#include "modules/groud_grid.h"
+#include "modules/fps_camera.h"
+#include "modules/rendering_mode.h"
+#include "modules/world_orientation.h"
 #include "resources.h"
 #include "resources_alphabet.h"
-#include "test_alphabet.h"
-#include "test_scene_graph.h"
-#include "test_unit_cube.h"
-#include "test_vertex_drawing.h"
+#include "tests/test_alphabet.h"
+#include "tests/test_scene_graph.h"
+#include "tests/test_unit_cube.h"
+#include "tests/test_vertex_drawing.h"
 
 World::World()
 {
-    sceneGraph = new ModuleSceneGraph();
-    renderingMode = new ModuleRenderingMode();
+    sceneGraph = new SceneGraph();
+    renderingMode = new RenderingMode();
 
     windowWidth = 1024;
     windowHeight = 768;
@@ -30,10 +30,10 @@ void World::AddModules()
 {
     // Modules
     modules.push_back(renderingMode);
-    modules.push_back(new ModuleFpsCamera());
-    modules.push_back(new ModuleWorldOrientation());
-    modules.push_back(new ModuleGrid());
-    modules.push_back(new ModuleAxis());
+    modules.push_back(new FpsCamera());
+    modules.push_back(new WorldOrientation());
+    modules.push_back(new GroundGrid());
+    modules.push_back(new OriginAxis());
 
     // Tests
     modules.push_back(new TestAlphabet());

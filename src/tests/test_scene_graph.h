@@ -1,11 +1,11 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "color.h"
-#include "module.h"
-#include "node_model.h"
-#include "resources.h"
-#include "world.h"
+#include "../color.h"
+#include "../module.h"
+#include "../node_model.h"
+#include "../resources.h"
+#include "../world.h"
 
 class TestSceneGraph : public Module
 {
