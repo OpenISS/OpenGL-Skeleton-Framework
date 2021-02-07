@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include "module_grid.h"
+#include "module_fps_camera.h"
 #include "module_rendering_mode.h"
 #include "module_world_orientation.h"
 #include "resources.h"
@@ -22,6 +23,8 @@ World::World()
     windowAspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
     windowSamples = 8;
     windowTitle = "SunRay";
+
+    camera = new Camera(windowAspectRatio);
 }
 
 // Add your modules here (note: order in vector is the order of execution)
@@ -29,6 +32,7 @@ void World::AddModules()
 {
     // Modules
     modules.push_back(renderingMode);
+    modules.push_back(new ModuleFpsCamera());
     modules.push_back(new ModuleGrid());
     // world orientation
     //RE-ENABLE WHEN CAMERA IS DONE
@@ -95,6 +99,11 @@ void World::Render()
     if (windowSamples > 0)
         glEnable(GL_MULTISAMPLE);
 
+    // Setup View / Projection matrices
+    glm::mat4 view = camera->view();
+    glm::mat4 projection = camera->projection();
+    Resources::basicShader.setViewProjectionMatrix(view, projection);
+
     for (Module* m : modules)
     {
         m->Render(*this);
@@ -119,7 +128,7 @@ void World::OnKey(int key, int action, int mods)
 
         if (action == GLFW_RELEASE) {
             m->OnKeyReleased(*this, key, mods);
-        } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+        } else if (action == GLFW_PRESS) {
             m->OnKeyPressed(*this, key, mods);
         }
     }

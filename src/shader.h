@@ -90,6 +90,12 @@ public:
         glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
     }
 
+    void setViewProjectionMatrix(glm::mat4& view, glm::mat4& projection)
+    {
+        setViewMatrix(view);
+        setProjectionMatrix(projection);
+    }
+
     void setViewMatrix(glm::mat4& mat)
     {
         GLuint location = glGetUniformLocation(programID, "viewMatrix");

@@ -4,6 +4,7 @@
 #include "module_rendering_mode.h"
 #include "module_scene_graph.h"
 #include "shader.h"
+#include "camera.h"
 
 class World
 {
@@ -24,6 +25,7 @@ public:
     void OnMouseReleased(int button, int mods);
 
     ModuleSceneGraph* sceneGraph;
+    Camera* camera;
 
     int windowWidth;
     int windowHeight;

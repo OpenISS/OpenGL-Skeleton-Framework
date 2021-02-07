@@ -9,48 +9,47 @@ class ModuleWorldOrientation : public Module
 {
 public:
 
-    virtual void OnKey(World& world, int key, int action, int mods)
+    void OnKeyReleased(World& world, int key, int mods) override
     {
-        Module::OnKey(world, key, action, mods);
-
-        if (action == GLFW_REPEAT || GLFW_PRESS)
-        {
-            if (key == GLFW_KEY_LEFT)
-            {
-                movement.y = 1.0;
-            }
-            else if (key == GLFW_KEY_RIGHT)
-            {
-                movement.y = -1.0;      
-            }
-            else if (key == GLFW_KEY_UP)
-            {
-                movement.x = 1.0;
-            }
-            else if (key == GLFW_KEY_DOWN)
-            {
-                movement.x = -1.0;
-            }
-            else if (key == GLFW_KEY_HOME)
-            {
-                reset = true;
-            }
+        if (key == GLFW_KEY_LEFT || key == GLFW_KEY_RIGHT || key == GLFW_KEY_A || key == GLFW_KEY_D) {
+            movement.x = 0;
+        }
+        if (key == GLFW_KEY_UP || key == GLFW_KEY_DOWN || key == GLFW_KEY_W || key == GLFW_KEY_S) {
+            movement.y = 0;
         }
     }
 
-    virtual void Update(World& world, float deltaSeconds)
+    void OnKeyPressed(World& world, int key, int mods) override
     {
-        Module::Update(world, deltaSeconds);
+        if (key == GLFW_KEY_HOME) {
+            reset = true;
+        }
+        if (key == GLFW_KEY_LEFT || key == GLFW_KEY_A) {
+            movement.x = -1;
+        }
+        if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_D) {
+            movement.x = 1;
+        }
+        if (key == GLFW_KEY_UP || key == GLFW_KEY_W) {
+            movement.y = 1;
+        }
+        if (key == GLFW_KEY_DOWN || key == GLFW_KEY_S) {
+            movement.y = -1;
+        }
+    }
 
-        world.sceneGraph->root.transform = glm::rotate(world.sceneGraph->root.transform, glm::radians(anglesPerSecond * deltaSeconds * movement.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        world.sceneGraph->root.transform = glm::rotate(world.sceneGraph->root.transform, glm::radians(anglesPerSecond * deltaSeconds * movement.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        if (reset)
-        {
+
+    void Update(World& world, float deltaSeconds) override
+    {
+        if (reset) {
             world.sceneGraph->root.transform = glm::mat4(1.0f);
+            reset = false;
         }
 
-        movement = glm::vec2(0.0f, 0.0f);
-        reset = false;
+        if (movement != glm::vec2()) {
+            world.sceneGraph->root.transform = glm::rotate(world.sceneGraph->root.transform, glm::radians(anglesPerSecond * deltaSeconds * movement.x), glm::vec3(1.0f, 0.0f, 0.0f));
+            world.sceneGraph->root.transform = glm::rotate(world.sceneGraph->root.transform, glm::radians(anglesPerSecond * deltaSeconds * movement.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        }
     }
 
 protected:

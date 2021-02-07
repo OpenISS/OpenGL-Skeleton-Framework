@@ -58,21 +58,6 @@ public:
         cube4->transform = glm::translate(cube4->transform, glm::vec3(0.0f, 0.0f, -1.5f));
     }
 
-    virtual void Render(World& world)
-    {
-        Module::Render(world);
-
-        glm::mat4 viewMatrix = glm::mat4(1.0f);
-
-        glm::mat4 projectionMatrix = glm::perspective(
-            glm::radians(45.0f), // field of view in degrees
-            world.windowAspectRatio,
-            0.01f, 100.0f); // near and far (near > 0)
-
-        Resources::basicShader.setViewMatrix(viewMatrix);
-        Resources::basicShader.setProjectionMatrix(projectionMatrix);
-    }
-
 protected:
 
     NodeModel* cube1;
