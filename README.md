@@ -36,7 +36,9 @@ Additional Flags:
 ### Visual Studio
 In Visual Studio 2017 with the `Visual C++ tools for CMake` component installed:
 
-File -> Open-> CMake... -> Select `CMakeLists.txt` in file browser
+1. Clone repo
+2. Open project: File -> Open-> CMake... -> Select `CMakeLists.txt` in file browser
+3. Startup item should be `SunRay.exe`
 
 ### VSCode
 🤷‍🤷‍🤷‍
@@ -65,4 +67,33 @@ File -> Open-> CMake... -> Select `CMakeLists.txt` in file browser
 * **J/L** (lowercase) to rotate model about Y axis and **I/K** (lowercase) for the X axis
 
 # Architecture
-TODO
+## Application Lifecycle
+* **main.cpp:** GLFW window & input handling + OpenGL setup.
+* **World:**: Contains global state such as the camera and scene graph. Runs update and render loops. Manages all modules.
+* **Module:** Logical class that can receive inputs and update/render - every major feature is implemented as a self-contained module.
+
+## Wrappers
+* **Camera:** Abstracts camera transform and projection math.
+* **Mesh:** Abstracts mesh GPU buffer construction, uploading, and rendering.
+* **Shader:** Abstracts shader compilation, linking, and uniform updates.
+
+## Modules
+* **ModuleAxis:** Constructs and renders the 3 axis lines.
+* **ModuleFPSCamera:** FPS game camera movement and orientation.
+* **ModuleGrid:** Constructs and renders the 128x128 grid.
+* **ModuleRenderingMode:** Sets OpenGL to point/line/triangle polygon mode.
+* **ModuleSceneGraph:** This is our hiearchical modelling system.
+* **ModuleWorldOrientation:** Rotates the hierarchy's root node in response to input.
+
+## Misc
+* **color.h:** Utility functions for dealing with colors.
+* **Node:** Invisible member of the scene graph.
+* **NodeModel:** Member of the scene graph, rendered using its associated mesh and shader.
+* **Resources:** For common constants (ex `unitSize` and `colorWhite`) and resources (ex `unitCube` and `quad`).
+* **ResourcesAlphabet:** For loading letter/digit cube transforms from an embedded text file.
+
+## Tests
+* **TestAlphabet:** The user can display any character model by pressing its key. Verifies that they load and render correctly.
+* **TestSceneGraph:** Displays a nested hierarchy which generates complex movement. Verifies the hierarchical modelling system.
+* **TestUnitCube:** Displays a simple rotating unit cube. This is the "hello world" of this framework.
+* **TestVertexDrawing:** Displays a simple rotating quad. Verifies the `glDrawArrays` code path (as opposed to the indexed `glDrawElements` code path).
