@@ -11,10 +11,10 @@ public:
 
     void OnKeyReleased(World& world, int key, int mods) override
     {
-        if (key == GLFW_KEY_LEFT || key == GLFW_KEY_RIGHT || key == GLFW_KEY_A || key == GLFW_KEY_D) {
+        if (key == GLFW_KEY_LEFT || key == GLFW_KEY_RIGHT) {
             movement.x = 0;
         }
-        if (key == GLFW_KEY_UP || key == GLFW_KEY_DOWN || key == GLFW_KEY_W || key == GLFW_KEY_S) {
+        if (key == GLFW_KEY_UP || key == GLFW_KEY_DOWN) {
             movement.y = 0;
         }
     }
@@ -24,16 +24,16 @@ public:
         if (key == GLFW_KEY_HOME) {
             reset = true;
         }
-        if (key == GLFW_KEY_LEFT || key == GLFW_KEY_A) {
+        if (key == GLFW_KEY_LEFT) {
             movement.x = -1;
         }
-        if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_D) {
+        if (key == GLFW_KEY_RIGHT) {
             movement.x = 1;
         }
-        if (key == GLFW_KEY_UP || key == GLFW_KEY_W) {
+        if (key == GLFW_KEY_UP) {
             movement.y = 1;
         }
-        if (key == GLFW_KEY_DOWN || key == GLFW_KEY_S) {
+        if (key == GLFW_KEY_DOWN) {
             movement.y = -1;
         }
     }
@@ -53,9 +53,9 @@ public:
     }
 
 protected:
+
     float anglesPerSecond = 60.0f;
     glm::vec2 movement;
     bool reset = false;
-    
 };
 

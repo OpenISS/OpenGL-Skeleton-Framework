@@ -15,6 +15,8 @@ public:
     {
         Module::Startup(world);
 
+        localRoot = new Node();
+
         cube1 = new NodeModel(Resources::basicShader, Resources::unitCube);
         cube2 = new NodeModel(Resources::basicShader, Resources::unitCube);
         cube3 = new NodeModel(Resources::basicShader, Resources::unitCube);
@@ -25,8 +27,9 @@ public:
         cube3->color = hexToFloatRGB(0xadebf7);
         cube4->color = hexToFloatRGB(0xadebf7);
 
-        world.sceneGraph->root.addChild(*cube1);
-        world.sceneGraph->root.addChild(*cube2);
+        world.sceneGraph->root.addChild(*localRoot);
+        localRoot->addChild(*cube1);
+        localRoot->addChild(*cube2);
         cube1->addChild(*cube3);
         cube2->addChild(*cube4);
 
@@ -40,6 +43,7 @@ public:
         delete cube2;
         delete cube3;
         delete cube4;
+        delete localRoot;
     }
 
     virtual void Update(World& world, float deltaSeconds)
@@ -48,11 +52,11 @@ public:
 
         angle += anglesPerSecond * deltaSeconds;
 
-        world.sceneGraph->root.transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -6.0f));
-        world.sceneGraph->root.transform = glm::rotate(world.sceneGraph->root.transform, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
+        localRoot->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -6.0f));
+        localRoot->transform = glm::rotate(localRoot->transform, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
 
-        cube3->transform = glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f)); //rotates in place
-        cube3->transform = glm::translate(cube3->transform, glm::vec3(0.0f, 0.0f, 1.5f)); //gives radius of rotation
+        cube3->transform = glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f)); // rotates in place
+        cube3->transform = glm::translate(cube3->transform, glm::vec3(0.0f, 0.0f, 1.5f)); // gives radius of rotation
 
         cube4->transform = glm::rotate(glm::mat4(1.0f), glm::radians(-angle), glm::vec3(1.0f, 0.0f, 0.0f));
         cube4->transform = glm::translate(cube4->transform, glm::vec3(0.0f, 0.0f, -1.5f));
@@ -60,6 +64,7 @@ public:
 
 protected:
 
+    Node* localRoot;
     NodeModel* cube1;
     NodeModel* cube2;
     NodeModel* cube3;

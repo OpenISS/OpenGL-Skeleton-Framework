@@ -34,11 +34,9 @@ void World::AddModules()
     // Modules
     modules.push_back(renderingMode);
     modules.push_back(new ModuleFpsCamera());
+    modules.push_back(new ModuleWorldOrientation());
     modules.push_back(new ModuleGrid());
     modules.push_back(new ModuleAxis());
-    // world orientation
-    //RE-ENABLE WHEN CAMERA IS DONE
-    //modules.push_back(new ModuleWorldOrientation());
 
     // Tests
     modules.push_back(new TestAlphabet());
