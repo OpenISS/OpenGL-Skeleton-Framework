@@ -41,8 +41,10 @@ public:
         if (curMode == RenderMode::Point)
         {
             mode = GL_POINT;
+            glEnable(GL_PROGRAM_POINT_SIZE);
+            glPointSize(4.0f);
         }
-        if (curMode == RenderMode::Line)
+        else if (curMode == RenderMode::Line)
         {
             mode = GL_LINE;
         }
