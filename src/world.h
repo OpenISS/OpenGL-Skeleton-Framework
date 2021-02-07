@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
 #include "mesh.h"
-#include "module_rendering_mode.h"
-#include "module_scene_graph.h"
+#include "modules/rendering_mode.h"
+#include "modules/scene_graph.h"
 #include "shader.h"
 #include "camera.h"
 
@@ -24,7 +24,7 @@ public:
     void OnMousePressed(int button, int mods);
     void OnMouseReleased(int button, int mods);
 
-    ModuleSceneGraph* sceneGraph;
+    SceneGraph* sceneGraph;
     Camera* camera;
 
     int windowWidth;
@@ -40,5 +40,5 @@ protected:
 
     std::vector<Module*> modules = std::vector<Module*>();
 
-    ModuleRenderingMode* renderingMode;
+    RenderingMode* renderingMode;
 };
