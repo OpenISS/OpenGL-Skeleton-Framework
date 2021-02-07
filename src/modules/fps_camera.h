@@ -5,6 +5,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "../module.h"
 
+
+enum class MouseInputMode
+{
+    Pan,
+    Tilt,
+    FreeCam,
+    Zoom,
+};
+
 class FpsCamera : public Module
 {
 public:
@@ -40,22 +49,25 @@ public:
 
     void OnMouseReleased(World& world, int button, int mods) override
     {
-
+        // return to freecam motion when none of the other modes are actives
+        if (button == GLFW_MOUSE_BUTTON_LEFT ||
+            button == GLFW_MOUSE_BUTTON_MIDDLE ||
+            button == GLFW_MOUSE_BUTTON_RIGHT)
+        {
+            mouseInputMode = MouseInputMode::FreeCam;
+        }
     }
 
     void OnMousePressed(World& world, int button, int mods) override
     {
         if (button == GLFW_MOUSE_BUTTON_LEFT) {
-            std::cout << "LEFT" << std::endl;
-            // can zoom
+            mouseInputMode = MouseInputMode::Zoom;
         }
         if (button == GLFW_MOUSE_BUTTON_MIDDLE) {
-            std::cout << "MIDDLE" << std::endl;
-            movement.x = 0;
+            mouseInputMode = MouseInputMode::Tilt;
         }
         if (button == GLFW_MOUSE_BUTTON_RIGHT) {
-            std::cout << "RIGHT" << std::endl;
-            movement.y = 0;
+            mouseInputMode = MouseInputMode::Pan;
         }
     }
 
@@ -99,16 +111,29 @@ public:
         }
 
         if (deltaMouse != glm::vec2()) {
+            bool allowPan = mouseInputMode == MouseInputMode::Pan || mouseInputMode == MouseInputMode::FreeCam;
+            bool allowTilt = mouseInputMode == MouseInputMode::Tilt || mouseInputMode == MouseInputMode::FreeCam;
+
             float yaw = deltaMouse.x * turnSpeed * deltaSeconds;
             float pitch = deltaMouse.y * turnSpeed * deltaSeconds;
 
-            camera->rotate(yaw, pitch);
-            deltaMouse = glm::vec2();
+            if (mouseInputMode == MouseInputMode::Zoom) {
+                float fov = camera->getFov();
+                camera->setFov(fov - pitch);
 
-            if (world.debug) {
-                std::cout << "Yaw, Pitch: " << yaw << ", " << pitch << std::endl;
-                std::cout << "Direction: " << camera->forward().x << ", " << camera->forward().y << ", " << camera->forward().z << std::endl;
+                if (world.debug) {
+                    std::cout << "Update FOV: " << fov << " - " << pitch << std::endl;
+                }
+            } else {
+                camera->rotate(yaw * static_cast<float>(allowPan), pitch * static_cast<float>(allowTilt));
+
+                if (world.debug) {
+                    std::cout << "Yaw, Pitch: " << yaw << ", " << pitch << std::endl;
+                    std::cout << "Direction: " << camera->forward().x << ", " << camera->forward().y << ", " << camera->forward().z << std::endl;
+                }
             }
+
+            deltaMouse = glm::vec2();
         }
 
         if (movement != glm::vec2()) {
@@ -127,12 +152,12 @@ public:
 
 protected:
     Camera* camera;
+    MouseInputMode mouseInputMode = MouseInputMode::FreeCam;
     glm::vec2 movement, deltaMouse, lastMouse;
     glm::vec3 position = glm::vec3(),
               direction = glm::vec3(0.00001f, 0.0f, -1.0f),
               up = glm::vec3(0.0f, 1.0f, 0.0f);
     float movementSpeed = 5.0f, turnSpeed = 0.1f;
     bool firstMoved = true, reset = false;
-    
 };
 

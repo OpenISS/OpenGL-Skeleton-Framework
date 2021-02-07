@@ -73,7 +73,7 @@ void Camera::setAspectRatio(const float aspect) {
 void Camera::setFov(const float fov) {
     if (fov <= 0.f && fov >= 180.f)
         throw std::range_error("fov must be between 0 and 180 degrees");
-    m_fov = glm::radians(fov);
+    m_fov = fov;
 }
 
 void Camera::setNearPlane(const float near) {
