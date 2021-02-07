@@ -41,7 +41,8 @@ void World::AddModules()
     //modules.push_back(new ModuleWorldOrientation());
 
     // Tests
-    modules.push_back(new TestUnitCube());
+    modules.push_back(new TestAlphabet());
+    //modules.push_back(new TestUnitCube());
     modules.push_back(new TestVertexDrawing());
     modules.push_back(new TestSceneGraph());
 
@@ -52,6 +53,7 @@ void World::AddModules()
 void World::Startup()
 {
     Resources::initialize();
+    ResourcesAlphabet::initialize();
 
     AddModules();
     for (Module* m : modules)
@@ -130,7 +132,7 @@ void World::OnKey(int key, int action, int mods)
 
         if (action == GLFW_RELEASE) {
             m->OnKeyReleased(*this, key, mods);
-        } else if (action == GLFW_PRESS) {
+        } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
             m->OnKeyPressed(*this, key, mods);
         }
     }

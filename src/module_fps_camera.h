@@ -21,7 +21,7 @@ public:
 
     void OnKeyPressed(World& world, int key, int mods) override
     {
-        if (key == GLFW_KEY_HOME || GLFW_KEY_R) {
+        if (key == GLFW_KEY_HOME || key == GLFW_KEY_R) {
             reset = true;
         }
         if (key == GLFW_KEY_LEFT || key == GLFW_KEY_A) {
@@ -101,12 +101,13 @@ public:
         if (movement != glm::vec2()) {
             glm::vec3 xAxis = world.camera->right() * movementSpeed * movement.x * deltaSeconds;
             glm::vec3 yAxis = world.camera->forward() * movementSpeed * movement.y * deltaSeconds;
-            world.camera->translate(xAxis);
-            world.camera->translate(yAxis);
+            glm::vec3 deltaPos = xAxis + yAxis;
+
+            world.camera->translate(deltaPos);
 
             if (world.debug) {
-                std::cout << "xAxis Change: " << xAxis.x << ", " << xAxis.y << ", " << xAxis.z << std::endl;
-                std::cout << "yAxis Change: " << yAxis.x << ", " << yAxis.y << ", " << yAxis.z << std::endl;
+                std::cout << "Position Change: " << movement.x << ", " << movement.y << ", " << std::endl;
+                std::cout << "Camera Moved By: " << deltaPos.x << ", " << deltaPos.y << ", " << deltaPos.z << std::endl;
             }
         }
     }
