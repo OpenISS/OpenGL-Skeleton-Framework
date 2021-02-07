@@ -13,7 +13,6 @@
 #include "test_unit_cube.h"
 #include "test_vertex_drawing.h"
 
-
 World::World()
 {
     sceneGraph = new ModuleSceneGraph();
@@ -24,8 +23,6 @@ World::World()
     windowAspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
     windowSamples = 8;
     windowTitle = "SunRay";
-
-    camera = new Camera(windowAspectRatio);
 }
 
 // Add your modules here (note: order in vector is the order of execution)
@@ -100,11 +97,6 @@ void World::Render()
     // Enalbe MSAA
     if (windowSamples > 0)
         glEnable(GL_MULTISAMPLE);
-
-    // Setup View / Projection matrices
-    glm::mat4 view = camera->view();
-    glm::mat4 projection = camera->projection();
-    Resources::basicShader.setViewProjectionMatrix(view, projection);
 
     for (Module* m : modules)
     {
