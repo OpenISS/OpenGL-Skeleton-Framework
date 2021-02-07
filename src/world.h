@@ -30,6 +30,7 @@ public:
     float windowAspectRatio;
     int windowSamples;
     const char* windowTitle;
+    bool debug = false;
 
 protected:
 

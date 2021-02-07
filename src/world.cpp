@@ -103,6 +103,16 @@ void World::Render()
 
 void World::OnKey(int key, int action, int mods)
 {
+    if (key == GLFW_KEY_TAB && action == GLFW_PRESS) {
+        debug = !debug;
+
+        std::cout << std::endl << "DEBUG OUTPUT: " << (debug ? "ENABLED" : "DISABLED") << std::endl;
+        std::cout << "GL_VENDOR: " << glGetString(GL_VENDOR) << std::endl;
+        std::cout << "GL_RENDERER: " << glGetString(GL_RENDERER) << std::endl;
+        std::cout << "GL_VERSION: " << glGetString(GL_VERSION) << std::endl;
+        std::cout << "GL_SHADING_LANGUAGE_VERSION: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl << std::endl;
+    }
+
     for (Module* m : modules)
     {
         m->OnKey(*this, key, action, mods);
