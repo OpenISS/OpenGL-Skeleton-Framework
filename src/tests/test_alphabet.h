@@ -12,7 +12,7 @@ public:
 
     virtual void Startup(World& world)
     {
-        auto res = ResourcesAlphabet::getCubes('A');
+        auto res = ResourcesAlphabet::getCubes('M');
         if (res != NULL)
             cubes = *res;
     }

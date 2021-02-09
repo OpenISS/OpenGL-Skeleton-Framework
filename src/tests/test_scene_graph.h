@@ -3,6 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "../color.h"
 #include "../module.h"
+#include "../node_letter.h"
 #include "../node_model.h"
 #include "../resources.h"
 #include "../world.h"
@@ -22,6 +23,10 @@ public:
         cube3 = new NodeModel(Resources::basicShader, Resources::unitCube);
         cube4 = new NodeModel(Resources::basicShader, Resources::unitCube);
 
+        letter1 = new NodeLetter('M', Resources::basicShader, 2.0f);
+        letter2 = new NodeLetter('N', Resources::basicShader, 2.0f);
+        letter3 = new NodeLetter('P', Resources::basicShader, 2.0f);
+
         cube1->color = hexToFloatRGB(0xfaf489);
         cube2->color = hexToFloatRGB(0xfaf489);
         cube3->color = hexToFloatRGB(0xadebf7);
@@ -35,6 +40,15 @@ public:
 
         cube1->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 1.5f));
         cube2->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.5f));
+
+
+        localRoot->addChild(*letter1);
+        localRoot->addChild(*letter2);
+        localRoot->addChild(*letter3);
+
+        letter1->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f,  2.5f));
+        letter2->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f,  3.5f));
+        letter3->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f,  4.5f));
     }
 
     virtual void Shutdown(World& world)
@@ -43,6 +57,10 @@ public:
         delete cube2;
         delete cube3;
         delete cube4;
+
+        delete letter1;
+        delete letter2;
+        delete letter3;
         delete localRoot;
     }
 
@@ -69,6 +87,9 @@ protected:
     NodeModel* cube2;
     NodeModel* cube3;
     NodeModel* cube4;
+    NodeLetter* letter1;
+    NodeLetter* letter2;
+    NodeLetter* letter3;
 
     float angle;
     float anglesPerSecond = 60.0f;
