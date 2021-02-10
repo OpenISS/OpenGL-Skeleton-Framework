@@ -71,17 +71,14 @@ public:
         placeName(*nicholas, interval);
         placeName(*paul,     interval);
 
-        andrew->transform   = glm::translate(glm::mat4(1.0f), glm::vec3( 16.0f, 0.0f,  16.0f)) * glm::rotate(glm::mat4(1.0f),  3.92699f ,glm::vec3(0.0f, 1.0f, 0.0f)) ;
-        mark->transform     = glm::translate(glm::mat4(1.0f), glm::vec3( 16.0f, 0.0f, -16.0f)) * glm::rotate(glm::mat4(1.0f),  5.49779f ,glm::vec3(0.0f, 1.0f, 0.0f)) ;
-        nicholas->transform = glm::translate(glm::mat4(1.0f), glm::vec3(-16.0f, 0.0f,  16.0f)) * glm::rotate(glm::mat4(1.0f),  2.35619f ,glm::vec3(0.0f, 1.0f, 0.0f)) ;
-        paul->transform     = glm::translate(glm::mat4(1.0f), glm::vec3(-16.0f, 0.0f, -16.0f)) * glm::rotate(glm::mat4(1.0f),  0.785398f ,glm::vec3(0.0f, 1.0f, 0.0f)) ;
+        andrew->transform   = glm::translate(glm::mat4(1.0f), glm::vec3( 15.0f, 0.0f,  15.0f)) * glm::rotate(glm::mat4(1.0f),  glm::radians(225.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
+        mark->transform     = glm::translate(glm::mat4(1.0f), glm::vec3( 15.0f, 0.0f, -15.0f)) * glm::rotate(glm::mat4(1.0f),  glm::radians(315.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
+        nicholas->transform = glm::translate(glm::mat4(1.0f), glm::vec3(-15.0f, 0.0f,  15.0f)) * glm::rotate(glm::mat4(1.0f),  glm::radians(135.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
+        paul->transform     = glm::translate(glm::mat4(1.0f), glm::vec3(-15.0f, 0.0f, -15.0f)) * glm::rotate(glm::mat4(1.0f),  glm::radians(45.0f)  ,glm::vec3(0.0f, 1.0f, 0.0f));
     }
 
     void placeName(Node& root, float interval) {
-        float x = interval * -1.5f;
-        //TODO use the rotations and increments properly
-        float rotation = 5.49779f;
-        float increment = 1.5708f;
+        float x = interval * -1.5f; 
         auto it = root.beginChildren();
         auto end = root.endChildren();
 
@@ -90,8 +87,15 @@ public:
             Node& child = **it;
             child.transform = glm::translate(glm::mat4(1.0f), glm::vec3(x , 0.0f,  0.0f));
             x+= interval;
-            rotation-= increment;
         }
+        Node* current = root.getChild(0);
+        current->transform = current->transform * glm::translate(glm::mat4(1.0f), glm::vec3( 0.0f, 0.0f, 3.0f)) * glm::rotate(glm::mat4(1.0f),  0.610865f ,glm::vec3(0.0f, 1.0f, 0.0f));
+        current = root.getChild(1);
+        current->transform = current->transform * glm::translate(glm::mat4(1.0f), glm::vec3( 0.0f, 0.0f, 2.0f)) * glm::rotate(glm::mat4(1.0f),  0.436332f ,glm::vec3(0.0f, 1.0f, 0.0f));
+        current = root.getChild(2);
+        current->transform = current->transform * glm::translate(glm::mat4(1.0f), glm::vec3( 0.0f, 0.0f, 2.0f)) * glm::rotate(glm::mat4(1.0f),  5.84685f  ,glm::vec3(0.0f, 1.0f, 0.0f));
+        current = root.getChild(3);
+        current->transform = current->transform * glm::translate(glm::mat4(1.0f), glm::vec3( 0.0f, 0.0f, 3.0f)) * glm::rotate(glm::mat4(1.0f),  5.67232f  ,glm::vec3(0.0f, 1.0f, 0.0f));
     }
 
     virtual void Shutdown(World& world)

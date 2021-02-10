@@ -19,6 +19,10 @@ public:
         children.push_back(&child);
     }
 
+    Node* getChild(int index) {
+        return children.at(index);
+    }
+
     void removeChild(Node& child)
     {
         auto found = std::find(children.begin(), children.end(), &child);
