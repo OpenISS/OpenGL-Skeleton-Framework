@@ -92,11 +92,11 @@ public:
         nicholas->addChild(*cube);
         paul->addChild(*cube);
 
-        andrew->transform   = glm::translate(glm::mat4(1.0f), getPosOnCircle(45.0f, radius))  * glm::rotate(glm::mat4(1.0f),  glm::radians(225.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
+        andrew->transform   = glm::translate(glm::mat4(1.0f), getPosOnCircle(45.0f,  radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(225.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
         mark->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(315.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(315.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
         nicholas->transform = glm::translate(glm::mat4(1.0f), getPosOnCircle(135.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(135.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
         paul->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(225.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(45.0f)  ,glm::vec3(0.0f, 1.0f, 0.0f));
-        fifth->transform    = glm::translate(glm::mat4(1.0f), glm::vec3(radius, 0.0f, radius));
+        fifth->transform    = glm::translate(glm::mat4(1.0f), glm::vec3(-radius, 0.0f, -radius));
     }
 
     glm::vec3 getPosOnCircle(float degree, float radius) {
