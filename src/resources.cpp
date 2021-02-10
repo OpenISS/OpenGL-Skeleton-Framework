@@ -45,29 +45,33 @@ void Resources::initialize()
     quad.createGPUBuffers();
 
     // Basic shader
-    const char* vertexSrc =
-        "#version 330 core\n"
-        "layout (location = 0) in vec3 aPos;"
-        "layout (location = 1) in vec3 aColor;"
-        "uniform mat4 modelMatrix = mat4(1.0);"
-        "uniform mat4 viewMatrix = mat4(1.0);"
-        "uniform mat4 projectionMatrix = mat4(1.0);"
-        "out vec3 vertexColor;"
-        "void main()"
-        "{"
-        "   vertexColor = aColor;"
-        "   gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(aPos.x, aPos.y, aPos.z, 1.0);"
-        "}";
+    const char* vertexSrc =  R""""(
+#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aColor;
+uniform mat4 modelMatrix = mat4(1.0);
+uniform mat4 viewMatrix = mat4(1.0);
+uniform mat4 projectionMatrix = mat4(1.0);
+out vec3 vertexColor;
+void main()
+{
+    vertexColor = aColor;
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(aPos.x, aPos.y, aPos.z, 1.0);
+}
+)"""";
 
-    const char* fragmentSrc =
-        "#version 330 core\n"
-        "in vec3 vertexColor;"
-        "uniform vec3 color = vec3(1.0, 1.0, 1.0);"
-        "out vec4 FragColor;"
-        "void main()"
-        "{"
-        "   FragColor = vec4(vertexColor.r * color.r, vertexColor.g * color.g, vertexColor.b * color.b, 1.0f);"
-        "}";
+    const char* fragmentSrc = R""""(
+#version 330 core
+in vec3 vertexColor;
+uniform vec3 color = vec3(1.0, 1.0, 1.0);
+out vec4 FragColor;
+void main()
+{
+    FragColor = vec4(vertexColor.r * color.r, vertexColor.g * color.g, vertexColor.b * color.b, 1.0f);
+}
+)"""";
+
     basicShader.create(vertexSrc, fragmentSrc);
     basicShader.setColor(Resources::colorWhite);
 }
+
