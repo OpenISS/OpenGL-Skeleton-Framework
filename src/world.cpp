@@ -1,6 +1,7 @@
 #include "world.h"
 
 #include <GL/glew.h>
+#include "modules/assignment1.h"
 #include "modules/origin_axis.h"
 #include "modules/groud_grid.h"
 #include "modules/fps_camera.h"
@@ -36,11 +37,13 @@ void World::AddModules()
     modules.push_back(new OriginAxis());
 
     // Tests
-    modules.push_back(new TestAlphabet());
-    //modules.push_back(new TestUnitCube());
-    modules.push_back(new TestVertexDrawing());
-    modules.push_back(new TestSceneGraph());
+    // modules.push_back(new TestAlphabet());
+    // modules.push_back(new TestUnitCube());
+    // modules.push_back(new TestVertexDrawing());
+    // modules.push_back(new TestSceneGraph());
 
+    modules.push_back(new Assignment1());
+    
     // Should always be last
     modules.push_back(sceneGraph);
 }
