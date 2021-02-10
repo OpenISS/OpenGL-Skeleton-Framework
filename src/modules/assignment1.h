@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "../color.h"
 #include "../module.h"
-#include "../node_letter.h"
+#include "../node_character.h"
 #include "../node_model.h"
 #include "../resources.h"
 #include "../world.h"
@@ -23,23 +23,23 @@ public:
         nicholas = new Node();
         paul     = new Node();
 
-        a =  new NodeLetter('A', Resources::basicShader, scale);
-        a2 = new NodeLetter('A', Resources::basicShader, scale);
-        b =  new NodeLetter('B', Resources::basicShader, scale);
-        h =  new NodeLetter('H', Resources::basicShader, scale);
-        n =  new NodeLetter('N', Resources::basicShader, scale);
-        m =  new NodeLetter('M', Resources::basicShader, scale);
-        p =  new NodeLetter('P', Resources::basicShader, scale);
-        v =  new NodeLetter('V', Resources::basicShader, scale);
+        a =  new NodeCharacter('A', Resources::basicShader, scale);
+        a2 = new NodeCharacter('A', Resources::basicShader, scale);
+        b =  new NodeCharacter('B', Resources::basicShader, scale);
+        h =  new NodeCharacter('H', Resources::basicShader, scale);
+        n =  new NodeCharacter('N', Resources::basicShader, scale);
+        m =  new NodeCharacter('M', Resources::basicShader, scale);
+        p =  new NodeCharacter('P', Resources::basicShader, scale);
+        v =  new NodeCharacter('V', Resources::basicShader, scale);
 
-        zero  = new NodeLetter('0', Resources::basicShader, scale);
-        one   = new NodeLetter('1', Resources::basicShader, scale);
-        one2  = new NodeLetter('1', Resources::basicShader, scale);
-        four  = new NodeLetter('4', Resources::basicShader, scale);
-        four2 = new NodeLetter('4', Resources::basicShader, scale);
-        four3 = new NodeLetter('4', Resources::basicShader, scale);
-        four4 = new NodeLetter('4', Resources::basicShader, scale);
-        seven = new NodeLetter('7', Resources::basicShader, scale);
+        zero  = new NodeCharacter('0', Resources::basicShader, scale);
+        one   = new NodeCharacter('1', Resources::basicShader, scale);
+        one2  = new NodeCharacter('1', Resources::basicShader, scale);
+        four  = new NodeCharacter('4', Resources::basicShader, scale);
+        four2 = new NodeCharacter('4', Resources::basicShader, scale);
+        four3 = new NodeCharacter('4', Resources::basicShader, scale);
+        four4 = new NodeCharacter('4', Resources::basicShader, scale);
+        seven = new NodeCharacter('7', Resources::basicShader, scale);
 
         andrew->addChild(*a);
         andrew->addChild(*h);
@@ -133,21 +133,21 @@ protected:
     Node* nicholas;
     Node* paul;
 
-    NodeLetter* a;
-    NodeLetter* a2;
-    NodeLetter* b;
-    NodeLetter* h;
-    NodeLetter* n;
-    NodeLetter* m;
-    NodeLetter* p;
-    NodeLetter* v;
+    NodeCharacter* a;
+    NodeCharacter* a2;
+    NodeCharacter* b;
+    NodeCharacter* h;
+    NodeCharacter* n;
+    NodeCharacter* m;
+    NodeCharacter* p;
+    NodeCharacter* v;
 
-    NodeLetter* zero;
-    NodeLetter* one;
-    NodeLetter* one2;
-    NodeLetter* four;
-    NodeLetter* four2;
-    NodeLetter* four3;
-    NodeLetter* four4;
-    NodeLetter* seven;
+    NodeCharacter* zero;
+    NodeCharacter* one;
+    NodeCharacter* one2;
+    NodeCharacter* four;
+    NodeCharacter* four2;
+    NodeCharacter* four3;
+    NodeCharacter* four4;
+    NodeCharacter* seven;
 };

@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "../color.h"
 #include "../module.h"
-#include "../node_letter.h"
+#include "../node_character.h"
 #include "../node_model.h"
 #include "../resources.h"
 #include "../world.h"
@@ -23,9 +23,9 @@ public:
         cube3 = new NodeModel(Resources::basicShader, Resources::unitCube);
         cube4 = new NodeModel(Resources::basicShader, Resources::unitCube);
 
-        letter1 = new NodeLetter('M', Resources::basicShader, 2.0f);
-        letter2 = new NodeLetter('N', Resources::basicShader, 2.0f);
-        letter3 = new NodeLetter('P', Resources::basicShader, 2.0f);
+        letter1 = new NodeCharacter('M', Resources::basicShader, 2.0f);
+        letter2 = new NodeCharacter('N', Resources::basicShader, 2.0f);
+        letter3 = new NodeCharacter('P', Resources::basicShader, 2.0f);
 
         cube1->color = hexToFloatRGB(0xfaf489);
         cube2->color = hexToFloatRGB(0xfaf489);
@@ -87,9 +87,9 @@ protected:
     NodeModel* cube2;
     NodeModel* cube3;
     NodeModel* cube4;
-    NodeLetter* letter1;
-    NodeLetter* letter2;
-    NodeLetter* letter3;
+    NodeCharacter* letter1;
+    NodeCharacter* letter2;
+    NodeCharacter* letter3;
 
     float angle;
     float anglesPerSecond = 60.0f;

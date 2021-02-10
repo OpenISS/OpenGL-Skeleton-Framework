@@ -7,7 +7,7 @@
 #include "shader.h"
 #include "world.h"
 
-class NodeLetter : public Node
+class NodeCharacter : public Node
 {
 public:
     const std::vector<glm::mat4>* cubes;
@@ -16,7 +16,7 @@ public:
     float scale;
 
     
-    NodeLetter(char letter, Shader& shader, float scale = 1.0f)
+    NodeCharacter(char letter, Shader& shader, float scale = 1.0f)
     {
         this->scale = scale;
         this->shader = &shader;
