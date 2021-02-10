@@ -20,29 +20,29 @@ public:
 
     void OnKeyReleased(World& world, int key, int mods) override
     {
-        if (key == GLFW_KEY_LEFT || key == GLFW_KEY_RIGHT || key == GLFW_KEY_A || key == GLFW_KEY_D) {
+        if (key == GLFW_KEY_A || key == GLFW_KEY_D) {
             movement.x = 0;
         }
-        if (key == GLFW_KEY_UP || key == GLFW_KEY_DOWN || key == GLFW_KEY_W || key == GLFW_KEY_S) {
+        if (key == GLFW_KEY_W || key == GLFW_KEY_S) {
             movement.y = 0;
         }
     }
 
     void OnKeyPressed(World& world, int key, int mods) override
     {
-        if (key == GLFW_KEY_HOME || key == GLFW_KEY_R) {
+        if (key == GLFW_KEY_R) {
             reset = true;
         }
-        if (key == GLFW_KEY_LEFT || key == GLFW_KEY_A) {
+        if (key == GLFW_KEY_A) {
             movement.x = -1;
         }
-        if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_D) {
+        if (key == GLFW_KEY_D) {
             movement.x = 1;
         }
-        if (key == GLFW_KEY_UP || key == GLFW_KEY_W) {
+        if (key == GLFW_KEY_W) {
             movement.y = 1;
         }
-        if (key == GLFW_KEY_DOWN || key == GLFW_KEY_S) {
+        if (key == GLFW_KEY_S) {
             movement.y = -1;
         }
     }
@@ -111,9 +111,6 @@ public:
         }
 
         if (deltaMouse != glm::vec2()) {
-            bool allowPan = mouseInputMode == MouseInputMode::Pan || mouseInputMode == MouseInputMode::FreeCam;
-            bool allowTilt = mouseInputMode == MouseInputMode::Tilt || mouseInputMode == MouseInputMode::FreeCam;
-
             float yaw = deltaMouse.x * turnSpeed * deltaSeconds;
             float pitch = deltaMouse.y * turnSpeed * deltaSeconds;
 
@@ -125,6 +122,9 @@ public:
                     std::cout << "Update FOV: " << fov << " - " << pitch << std::endl;
                 }
             } else {
+                bool allowPan = mouseInputMode == MouseInputMode::Pan || mouseInputMode == MouseInputMode::FreeCam;
+                bool allowTilt = mouseInputMode == MouseInputMode::Tilt || mouseInputMode == MouseInputMode::FreeCam;
+
                 camera->rotate(yaw * static_cast<float>(allowPan), pitch * static_cast<float>(allowTilt));
 
                 if (world.debug) {
