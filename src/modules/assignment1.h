@@ -12,7 +12,7 @@ class  Assignment1: public Module
 {
 public:
 
-    virtual void Startup(World& world)
+    void Startup(World& world) override
     {
         Module::Startup(world);
         const float scale = Resources::unitSize * 3.0f;
@@ -24,9 +24,6 @@ public:
         nicholas = new Node();
         paul     = new Node();
         fifth    = new Node();
-
-        auto* cube = new NodeModel(Resources::basicShader, Resources::unitCube);
-        cube->transform = glm::scale(cube->transform, glm::vec3(0.25f));
 
         a =  new NodeCharacter('A', Resources::basicShader, scale);
         a2 = new NodeCharacter('A', Resources::basicShader, scale);
@@ -75,22 +72,17 @@ public:
         fifth->addChild(*zero2);
         fifth->addChild(*zero3);
 
-        world.sceneGraph->root.addChild(*andrew);
-        world.sceneGraph->root.addChild(*mark);
-        world.sceneGraph->root.addChild(*nicholas);
-        world.sceneGraph->root.addChild(*paul);
-        world.sceneGraph->root.addChild(*fifth);
+        world.sceneGraph->addChild(*andrew);
+        world.sceneGraph->addChild(*mark);
+        world.sceneGraph->addChild(*nicholas);
+        world.sceneGraph->addChild(*paul);
+        world.sceneGraph->addChild(*fifth);
 
         placeName(*andrew,   interval, radius);
         placeName(*mark,     interval, radius);
         placeName(*nicholas, interval, radius);
         placeName(*paul,     interval, radius);
         placeName(*fifth,    interval, radius);
-
-        andrew->addChild(*cube);
-        mark->addChild(*cube);
-        nicholas->addChild(*cube);
-        paul->addChild(*cube);
 
         andrew->transform   = glm::translate(glm::mat4(1.0f), getPosOnCircle(45.0f,  radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(225.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
         mark->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(315.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(315.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
@@ -119,66 +111,87 @@ public:
         }
 }
 
-    virtual void Shutdown(World& world)
+    void Shutdown(World& world) override
     {
+        selected = nullptr;
         delete andrew;
         delete mark;
         delete nicholas;
         delete paul;
         delete fifth;
-        delete a;
-        delete a2;
-        delete a3;
-        delete b;
-        delete h;
-        delete n;
-        delete m;
-        delete p;
-        delete p2;
-        delete v;
-        delete zero;
-        delete zero2;
-        delete zero3;
-        delete one;
-        delete one2;
-        delete four;
-        delete four2;
-        delete four3;
-        delete four4;
-        delete seven;
     }
 
-    virtual void Update(World& world, float deltaSeconds)
+    void Update(World& world, float deltaSeconds) override
     {
-        Module::Update(world, deltaSeconds);
+        if (selected != nullptr) {
+
+            if (scaleUp) {
+                selected->scaleStep(deltaSeconds);
+            }
+
+            if (scaleDown) {
+                selected->scaleStep(-deltaSeconds);
+            }
+
+            //TODO: if ikjl move object up / left / right / down
+            //TODO: if lowercase rotate object by 5 deg
+
+        }
+    }
+
+
+    void OnKeyReleased(World& world, int key, int mods) override
+    {
+        if (key == GLFW_KEY_U) {
+            scaleUp = false;
+        }
+        if (key == GLFW_KEY_O) {
+            scaleDown = false;
+        }
+    }
+
+    void OnKeyPressed(World& world, int key, int mods) override
+    {
+        // model selection
+        if (key == GLFW_KEY_1) {
+            selected = andrew;
+        }
+        if (key == GLFW_KEY_2) {
+            selected = mark;
+        }
+        if (key == GLFW_KEY_3) {
+            selected = nicholas;
+        }
+        if (key == GLFW_KEY_4) {
+            selected = paul;
+        }
+        if (key == GLFW_KEY_5) {
+            selected = fifth;
+        }
+
+        // setup model scaling
+        if (key == GLFW_KEY_U) {
+            scaleUp = true;
+        }
+        if (key == GLFW_KEY_O) {
+            scaleDown = true;
+        }
+
+        // setup model manipulation mode: move vs rotate
+        caps = !(mods & GLFW_MOD_SHIFT) != !(mods & GLFW_MOD_CAPS_LOCK); // bitwise xor didn't work here
+
+        if (caps && (key == GLFW_KEY_J || key == GLFW_KEY_K)) {
+            std::cout << "JL move model left / right " << std::endl;
+        } else if (key == GLFW_KEY_J || key == GLFW_KEY_K) {
+            std::cout << "JL rotate model by 5 deg about y" << std::endl;
+        }
     }
 
 protected:
-    Node* andrew;
-    Node* mark;
-    Node* nicholas;
-    Node* paul;
-    Node* fifth;
+    bool scaleUp = false, scaleDown = false, rotate = false, caps = false;
+    Node* selected;
 
-    NodeCharacter* a;
-    NodeCharacter* a2;
-    NodeCharacter* a3;
-    NodeCharacter* b;
-    NodeCharacter* h;
-    NodeCharacter* n;
-    NodeCharacter* m;
-    NodeCharacter* p;
-    NodeCharacter* p2;
-    NodeCharacter* v;
+    Node *andrew, *mark, *nicholas, *paul, *fifth;
 
-    NodeCharacter* zero;
-    NodeCharacter* zero2;
-    NodeCharacter* zero3;
-    NodeCharacter* one;
-    NodeCharacter* one2;
-    NodeCharacter* four;
-    NodeCharacter* four2;
-    NodeCharacter* four3;
-    NodeCharacter* four4;
-    NodeCharacter* seven;
+    NodeCharacter *a, *a2, *a3, *b, *h, *n, *m, *p, *p2, *v, *zero, *zero2, *zero3, *one, *one2, *four, *four2, *four3, *four4, *seven;
 };

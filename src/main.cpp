@@ -95,6 +95,7 @@ GLFWwindow* setupGL()  {
     glfwSetMouseButtonCallback(window, glfwMouseButtonCallback);
     glfwSetCursorPosCallback(window, glfwCursorPosCallback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Lock cursor to window
+    glfwSetInputMode(window, GLFW_LOCK_KEY_MODS, GLFW_TRUE);
     glfwMakeContextCurrent(window);
 
     // Enable vsync

@@ -15,6 +15,10 @@ public:
         walkNode(world, root, stack);
     }
 
+    void addChild(Node &child) {
+        root.addChild(child);
+    }
+
     Node root;
 
 protected:

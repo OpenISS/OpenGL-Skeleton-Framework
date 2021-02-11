@@ -30,7 +30,7 @@ public:
 
     void OnKeyPressed(World& world, int key, int mods) override
     {
-        if (key == GLFW_KEY_R) {
+        if (key == GLFW_KEY_HOME || key == GLFW_KEY_R) {
             reset = true;
         }
         if (key == GLFW_KEY_A) {
