@@ -84,11 +84,11 @@ public:
         placeName(*paul,     interval, radius);
         placeName(*fifth,    interval, radius);
 
-        andrew->transform   = glm::translate(glm::mat4(1.0f), getPosOnCircle(45.0f,  radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(225.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
-        mark->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(315.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(315.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
-        nicholas->transform = glm::translate(glm::mat4(1.0f), getPosOnCircle(135.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(135.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
-        paul->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(225.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(45.0f)  ,glm::vec3(0.0f, 1.0f, 0.0f));
-        fifth->transform    = glm::translate(glm::mat4(1.0f), glm::vec3(-radius, 0.0f, -radius));
+        andrew->transform   = glm::translate(glm::mat4(1.0f), getPosOnCircle(45.0f,  radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(45.0f - 90.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
+        mark->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(315.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(315.0f + 90.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
+        nicholas->transform = glm::translate(glm::mat4(1.0f), getPosOnCircle(135.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(135.0f + 90.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
+        paul->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(225.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(225.0f - 90.0f)  ,glm::vec3(0.0f, 1.0f, 0.0f));
+        fifth->transform    = glm::mat4(1.0f)* glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     }
 
     glm::vec3 getPosOnCircle(float degree, float radius) {
@@ -105,7 +105,7 @@ public:
         for (; it != end; ++it)
         {
             Node& child = **it;
-            child.transform = glm::translate(glm::mat4(1.0f), getPosOnCircle(x, radius) + glm::vec3(0.0f, 0.0f, radius)) *
+            child.transform = glm::translate(glm::mat4(1.0f), getPosOnCircle(x, radius) - glm::vec3(radius, 0.0f, 0.0f)) *
                     glm::rotate(glm::mat4(1.0f), glm::radians(-x - 90.f), up);
             x+= interval;
         }
@@ -124,6 +124,7 @@ public:
     void Update(World& world, float deltaSeconds) override
     {
         if (selected != nullptr) {
+
 
             if (scaleUp) {
                 selected->scaleStep(deltaSeconds);
