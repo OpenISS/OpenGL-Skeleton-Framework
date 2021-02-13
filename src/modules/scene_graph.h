@@ -3,37 +3,18 @@
 #include "../module.h"
 #include "../node.h"
 
+class World;
+
 class SceneGraph : public Module
 {
 public:
 
-    virtual void Render(World& world)
-    {
-        Module::Render(world);
-
-        glm::mat4 stack = glm::mat4(1.0f); // Identity matrix
-        walkNode(world, root, stack);
-    }
-
-    void addChild(Node &child) {
-        root.addChild(child);
-    }
+    virtual void Render(World& world);
+    void addChild(Node& child);
 
     Node root;
 
 protected:
 
-    void walkNode(World& world, Node& node, glm::mat4 stack)
-    {
-        stack *= node.getTransform();
-        node.render(world, stack);
-
-        auto it = node.beginChildren();
-        auto end = node.endChildren();
-        for (; it != end; ++it)
-        {
-            Node& child = **it;
-            walkNode(world, child, stack);
-        }
-    }
+    void walkNode(World& world, Node& node, glm::mat4 stack);
 };

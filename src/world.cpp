@@ -85,8 +85,6 @@ void World::Update(float deltaSeconds)
 
 void World::Render()
 {
-    renderingMode->SetupPolygonMode();
-
     // Each frame, reset color of each pixel to glClearColor and clear depth
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

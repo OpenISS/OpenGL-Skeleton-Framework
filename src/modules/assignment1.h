@@ -186,6 +186,27 @@ public:
         } else if (key == GLFW_KEY_J || key == GLFW_KEY_K) {
             std::cout << "JL rotate model by 5 deg about y" << std::endl;
         }
+
+        // Polygon mode
+        if (selected != nullptr && (key == GLFW_KEY_P || key == GLFW_KEY_L || key == GLFW_KEY_T)) {
+            RenderMode polygonMode;
+            if (key == GLFW_KEY_P)
+                polygonMode = RenderMode::Point;
+            else if (key == GLFW_KEY_L)
+                polygonMode = RenderMode::Line;
+            else
+                polygonMode = RenderMode::Triangle;
+
+            auto it = selected->beginChildren();
+            auto end = selected->endChildren();
+            for (; it != end; ++it)
+            {
+                Node& child = **it;
+                NodeCharacter* character = dynamic_cast<NodeCharacter*>(&child);
+                if (character != nullptr)
+                    character->renderMode = polygonMode;
+            }
+        }
     }
 
 protected:
