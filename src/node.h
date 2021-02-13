@@ -58,11 +58,11 @@ public:
         return glm::normalize(transform * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f));
     }
 
-    glm::vec3 forward() {
+    glm::vec3 right() {
         return glm::normalize(transform * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f));
     }
 
-    glm::vec3 right() {
+    glm::vec3 forward() {
         return glm::normalize(transform * glm::vec4(0.0f, 0.0f, 1.0f, 0.0f));
     }
 
@@ -76,6 +76,10 @@ public:
         } else {
             scale(1.0f - step);
         }
+    }
+
+    void rotate(float degrees, glm::vec3 axis) {
+        transform = glm::rotate(transform, glm::radians(degrees), axis);
     }
 
     glm::mat4 transform = glm::mat4(1.0);

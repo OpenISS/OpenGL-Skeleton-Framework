@@ -135,7 +135,6 @@ public:
             }
 
             //TODO: if ikjl move object up / left / right / down
-            //TODO: if lowercase rotate object by 5 deg
 
         }
     }
@@ -143,10 +142,10 @@ public:
 
     void OnKeyReleased(World& world, int key, int mods) override
     {
-        if (key == GLFW_KEY_U) {
+        if (key == GLFW_KEY_Y) {
             scaleUp = false;
         }
-        if (key == GLFW_KEY_O) {
+        if (key == GLFW_KEY_I) {
             scaleDown = false;
         }
     }
@@ -171,25 +170,28 @@ public:
         }
 
         // setup model scaling
-        if (key == GLFW_KEY_U) {
+        if (key == GLFW_KEY_Y) {
             scaleUp = true;
         }
-        if (key == GLFW_KEY_O) {
+        if (key == GLFW_KEY_I) {
             scaleDown = true;
         }
 
         // setup model manipulation mode: move vs rotate
         caps = !(mods & GLFW_MOD_SHIFT) != !(mods & GLFW_MOD_CAPS_LOCK); // bitwise xor didn't work here
 
-        if (caps && (key == GLFW_KEY_J || key == GLFW_KEY_K)) {
-            std::cout << "JL move model left / right " << std::endl;
-        } else if (key == GLFW_KEY_J || key == GLFW_KEY_K) {
-            std::cout << "JL rotate model by 5 deg about y" << std::endl;
+        if (selected != nullptr && !caps) {
+            if (key == GLFW_KEY_H) {
+                selected->rotate(-5, selected->up());
+            } else if (key == GLFW_KEY_K) {
+                selected->rotate(5, selected->up());
+            }
         }
     }
 
 protected:
     bool scaleUp = false, scaleDown = false, rotate = false, caps = false;
+    glm::vec2 modelMovement;
     Node* selected;
 
     Node *andrew, *mark, *nicholas, *paul, *fifth;

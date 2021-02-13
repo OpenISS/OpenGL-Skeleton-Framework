@@ -62,9 +62,9 @@ In Visual Studio 2017 with the `Visual C++ tools for CMake` component installed:
 * World orientation: **left/right arrows** to rotate vertically, **up/down arrows** to rotate horizontally
 * **T/L/P** for triangle/line/point rendering modes
 * **1/2/3/4/5** to select model
-* **U/O** to scale model up/down
-* **I/J/K/L** (uppercase) to move model
-* **J/L** (lowercase) to rotate model about Y axis and **I/K** (lowercase) for the X axis
+* **Y/I** to scale model up/down
+* **U/H/J/K** (uppercase) to move model
+* **H/K** (lowercase) to rotate model about Y axis
 
 # Architecture
 ## Application Lifecycle
