@@ -11,6 +11,7 @@ public:
 
     virtual void Render(World& world);
     void addChild(Node& child);
+    void removeChild(Node& child);
 
     Node root;
 

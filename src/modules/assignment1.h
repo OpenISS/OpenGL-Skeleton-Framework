@@ -114,6 +114,11 @@ public:
     void Shutdown(World& world) override
     {
         selected = nullptr;
+        world.sceneGraph->removeChild(*andrew);
+        world.sceneGraph->removeChild(*mark);
+        world.sceneGraph->removeChild(*nicholas);
+        world.sceneGraph->removeChild(*paul);
+        world.sceneGraph->removeChild(*fifth);
         delete andrew;
         delete mark;
         delete nicholas;

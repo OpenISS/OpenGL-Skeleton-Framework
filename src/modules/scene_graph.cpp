@@ -17,6 +17,11 @@ void SceneGraph::addChild(Node& child)
     root.addChild(child);
 }
 
+void SceneGraph::removeChild(Node& child)
+{
+    root.removeChild(child);
+}
+
 void SceneGraph::walkNode(World& world, Node& node, glm::mat4 stack)
 {
     stack *= node.getTransform();

@@ -55,28 +55,24 @@ public:
         return children.end();
     }
 
-    glm::vec3 up() {
-        return glm::normalize(transform * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f));
+    glm::vec3 right() {
+        return glm::normalize(glm::vec3(transform[0]));
     }
 
-    glm::vec3 right() {
-        return glm::normalize(transform * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f));
+    glm::vec3 up() {
+        return glm::normalize(glm::vec3(transform[1]));
     }
 
     glm::vec3 forward() {
-        return glm::normalize(transform * glm::vec4(0.0f, 0.0f, 1.0f, 0.0f));
+        return glm::normalize(glm::vec3(transform[2]));
     }
 
     void scale(float scalar = 1.0f) {
         transform = glm::scale(transform, glm::vec3(scalar));
     }
 
-    void scaleStep(float step, bool up = true) {
-        if (up) {
-            scale(1.0f + step);
-        } else {
-            scale(1.0f - step);
-        }
+    void scaleStep(float step) {
+        scale(1.0f + step);
     }
 
     void rotate(float degrees, glm::vec3 axis) {

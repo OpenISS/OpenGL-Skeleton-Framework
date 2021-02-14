@@ -32,7 +32,7 @@ public:
         cube3->color = hexToFloatRGB(0xadebf7);
         cube4->color = hexToFloatRGB(0xadebf7);
 
-        world.sceneGraph->root.addChild(*localRoot);
+        world.sceneGraph->addChild(*localRoot);
         localRoot->addChild(*cube1);
         localRoot->addChild(*cube2);
         cube1->addChild(*cube3);
@@ -53,14 +53,7 @@ public:
 
     virtual void Shutdown(World& world)
     {
-        delete cube1;
-        delete cube2;
-        delete cube3;
-        delete cube4;
-
-        delete letter1;
-        delete letter2;
-        delete letter3;
+        world.sceneGraph->removeChild(*localRoot);
         delete localRoot;
     }
 
