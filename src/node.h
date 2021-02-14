@@ -14,7 +14,7 @@ public:
         }
     }
 
-    virtual glm::mat4 getTransform()
+    virtual const glm::mat4& getTransform() const
     {
         return transform;
     };
@@ -26,15 +26,26 @@ public:
         children.push_back(&child);
     }
 
-    Node* getChild(int index) {
-        return children.at(index);
-    }
-
     void removeChild(Node& child)
     {
         auto found = std::find(children.begin(), children.end(), &child);
         if (found != children.end())
             children.erase(found);
+    }
+
+    size_t numChildren() const
+    {
+        return children.size();
+    }
+
+    Node* getChild(int index)
+    {
+        return children.at(index);
+    }
+
+    Node* getChild(int index) const
+    {
+        return children.at(index);
     }
 
     std::vector<Node*>::iterator beginChildren()
@@ -55,15 +66,18 @@ public:
         return children.end();
     }
 
-    glm::vec3 right() {
+    glm::vec3 right() const
+    {
         return glm::normalize(glm::vec3(transform[0]));
     }
 
-    glm::vec3 up() {
+    glm::vec3 up() const
+    {
         return glm::normalize(glm::vec3(transform[1]));
     }
 
-    glm::vec3 forward() {
+    glm::vec3 forward() const
+    {
         return glm::normalize(glm::vec3(transform[2]));
     }
 

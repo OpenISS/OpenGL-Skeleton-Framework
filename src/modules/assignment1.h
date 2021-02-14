@@ -64,7 +64,7 @@ public:
 
     void placeCharacters(Node& root, float interval_degrees, float radius)
     {
-        float theta = interval_degrees * -1.5f; 
+        float theta = interval_degrees * -(static_cast<float>(root.numChildren() - 1) / 2.0f); 
 
         auto it = root.beginChildren();
         auto end = root.endChildren();
