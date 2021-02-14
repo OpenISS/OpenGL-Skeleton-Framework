@@ -15,62 +15,25 @@ public:
     void Startup(World& world) override
     {
         Module::Startup(world);
+
         const float scale = Resources::unitSize * 3.0f;
-        const float interval = 10.0f;
+        const float interval_degrees = 10.0f;
         const float radius = Resources::unitSize * 64.0f;
 
-        andrew   = new Node();
-        mark     = new Node();
+        andrew = new Node();
+        setCharacters(*andrew, "AH41", scale);
+
+        mark = new Node();
+        setCharacters(*mark, "MB47", scale);
+
         nicholas = new Node();
-        paul     = new Node();
-        fifth    = new Node();
+        setCharacters(*nicholas, "NA40", scale);
 
-        a =  new NodeCharacter('A', Resources::basicShader, scale);
-        a2 = new NodeCharacter('A', Resources::basicShader, scale);
-        a3 = new NodeCharacter('A', Resources::basicShader, scale);
-        b =  new NodeCharacter('B', Resources::basicShader, scale);
-        h =  new NodeCharacter('H', Resources::basicShader, scale);
-        n =  new NodeCharacter('N', Resources::basicShader, scale);
-        m =  new NodeCharacter('M', Resources::basicShader, scale);
-        p =  new NodeCharacter('P', Resources::basicShader, scale);
-        p2 = new NodeCharacter('P', Resources::basicShader, scale);
-        v =  new NodeCharacter('V', Resources::basicShader, scale);
+        paul = new Node();
+        setCharacters(*paul, "PV41", scale);
 
-        zero  = new NodeCharacter('0', Resources::basicShader, scale);
-        zero2 = new NodeCharacter('0', Resources::basicShader, scale);
-        zero3 = new NodeCharacter('0', Resources::basicShader, scale);
-        one   = new NodeCharacter('1', Resources::basicShader, scale);
-        one2  = new NodeCharacter('1', Resources::basicShader, scale);
-        four  = new NodeCharacter('4', Resources::basicShader, scale);
-        four2 = new NodeCharacter('4', Resources::basicShader, scale);
-        four3 = new NodeCharacter('4', Resources::basicShader, scale);
-        four4 = new NodeCharacter('4', Resources::basicShader, scale);
-        seven = new NodeCharacter('7', Resources::basicShader, scale);
-
-        andrew->addChild(*a);
-        andrew->addChild(*h);
-        andrew->addChild(*four);
-        andrew->addChild(*one);
-        
-        mark->addChild(*m);
-        mark->addChild(*b);
-        mark->addChild(*four2);
-        mark->addChild(*seven);
-        
-        nicholas->addChild(*n);
-        nicholas->addChild(*a2);
-        nicholas->addChild(*four3);
-        nicholas->addChild(*zero);
-        
-        paul->addChild(*p);
-        paul->addChild(*v);
-        paul->addChild(*four4);
-        paul->addChild(*one2);
-
-        fifth->addChild(*a3);
-        fifth->addChild(*p2);
-        fifth->addChild(*zero2);
-        fifth->addChild(*zero3);
+        fifth = new Node();
+        setCharacters(*fifth, "AP00", scale);
 
         world.sceneGraph->addChild(*andrew);
         world.sceneGraph->addChild(*mark);
@@ -78,38 +41,48 @@ public:
         world.sceneGraph->addChild(*paul);
         world.sceneGraph->addChild(*fifth);
 
-        placeName(*andrew,   interval, radius);
-        placeName(*mark,     interval, radius);
-        placeName(*nicholas, interval, radius);
-        placeName(*paul,     interval, radius);
-        placeName(*fifth,    interval, radius);
+        placeCharacters(*andrew,   interval_degrees, radius);
+        placeCharacters(*mark,     interval_degrees, radius);
+        placeCharacters(*nicholas, interval_degrees, radius);
+        placeCharacters(*paul,     interval_degrees, radius);
+        placeCharacters(*fifth,    interval_degrees, radius);
 
-        andrew->transform   = glm::translate(glm::mat4(1.0f), getPosOnCircle(45.0f,  radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(45.0f - 90.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
-        mark->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(315.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(315.0f + 90.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
-        nicholas->transform = glm::translate(glm::mat4(1.0f), getPosOnCircle(135.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(135.0f + 90.0f) ,glm::vec3(0.0f, 1.0f, 0.0f));
-        paul->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(225.0f, radius)) * glm::rotate(glm::mat4(1.0f),  glm::radians(225.0f - 90.0f)  ,glm::vec3(0.0f, 1.0f, 0.0f));
-        fifth->transform    = glm::mat4(1.0f)* glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        andrew->transform   = glm::translate(glm::mat4(1.0f), getPosOnCircle(45.0f,  radius)) * glm::rotate(glm::mat4(1.0f), glm::radians(45.0f - 90.0f),  glm::vec3(0.0f, 1.0f, 0.0f));
+        mark->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(315.0f, radius)) * glm::rotate(glm::mat4(1.0f), glm::radians(315.0f + 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        nicholas->transform = glm::translate(glm::mat4(1.0f), getPosOnCircle(135.0f, radius)) * glm::rotate(glm::mat4(1.0f), glm::radians(135.0f + 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        paul->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(225.0f, radius)) * glm::rotate(glm::mat4(1.0f), glm::radians(225.0f - 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        fifth->transform    = glm::mat4(1.0f) * glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     }
 
-    glm::vec3 getPosOnCircle(float degree, float radius) {
-        float radians = glm::radians(degree);
-        return glm::vec3(glm::cos(radians)*radius, 0.0f, glm::sin(radians)*radius);
+    void setCharacters(Node& root, const std::string& word, float scale)
+    {
+        for (const char& c : word)
+        {
+            root.addChild(*new NodeCharacter(c, Resources::basicShader, scale));
+        }
     }
 
-    void placeName(Node& root, float interval, float radius) {
-        glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-        float x = interval * -1.5f; 
+    void placeCharacters(Node& root, float interval_degrees, float radius)
+    {
+        float theta = interval_degrees * -1.5f; 
+
         auto it = root.beginChildren();
         auto end = root.endChildren();
-
         for (; it != end; ++it)
         {
             Node& child = **it;
-            child.transform = glm::translate(glm::mat4(1.0f), getPosOnCircle(x, radius) - glm::vec3(radius, 0.0f, 0.0f)) *
-                    glm::rotate(glm::mat4(1.0f), glm::radians(-x - 90.f), up);
-            x+= interval;
+            child.transform =
+                glm::translate(glm::mat4(1.0f), getPosOnCircle(theta, radius) - glm::vec3(radius, 0.0f, 0.0f)) *
+                glm::rotate(glm::mat4(1.0f), glm::radians(-theta - 90.f), glm::vec3(0.0f, 1.0f, 0.0f));
+            theta += interval_degrees;
         }
-}
+    }
+
+    glm::vec3 getPosOnCircle(float degrees, float radius)
+    {
+        float radians = glm::radians(degrees);
+        return glm::vec3(glm::cos(radians) * radius, 0.0f, glm::sin(radians) * radius);
+    }
 
     void Shutdown(World& world) override
     {
@@ -128,92 +101,73 @@ public:
 
     void Update(World& world, float deltaSeconds) override
     {
-        if (selected != nullptr) {
-
-
-            if (scaleUp) {
+        if (selected != nullptr)
+        {
+            if (scaleUp)
                 selected->scaleStep(deltaSeconds);
-            }
-
-            if (scaleDown) {
+            if (scaleDown)
                 selected->scaleStep(-deltaSeconds);
-            }
-
-            if (modelMovement != glm::vec2()) {
+            if (modelMovement != glm::vec2())
                 selected->translate(deltaSeconds * modelMovement);
-            }
-
         }
     }
 
-
     void OnKeyReleased(World& world, int key, int mods) override
     {
-        if (key == GLFW_KEY_Y) {
+        if (key == GLFW_KEY_Y)
             scaleUp = false;
-        }
-        if (key == GLFW_KEY_I) {
+        if (key == GLFW_KEY_I)
             scaleDown = false;
-        }
-        if (key == GLFW_KEY_H || key == GLFW_KEY_K) {
+        if (key == GLFW_KEY_H || key == GLFW_KEY_K)
             modelMovement.x = 0;
-        }
-        if (key == GLFW_KEY_U || key == GLFW_KEY_J) {
+        if (key == GLFW_KEY_U || key == GLFW_KEY_J)
             modelMovement.y = 0;
-        }
     }
 
     void OnKeyPressed(World& world, int key, int mods) override
     {
-        // model selection
-        if (key == GLFW_KEY_1) {
+        // Model selection
+        if (key == GLFW_KEY_1)
             selected = andrew;
-        }
-        if (key == GLFW_KEY_2) {
+        if (key == GLFW_KEY_2)
             selected = mark;
-        }
-        if (key == GLFW_KEY_3) {
+        if (key == GLFW_KEY_3)
             selected = nicholas;
-        }
-        if (key == GLFW_KEY_4) {
+        if (key == GLFW_KEY_4)
             selected = paul;
-        }
-        if (key == GLFW_KEY_5) {
+        if (key == GLFW_KEY_5)
             selected = fifth;
-        }
 
-        // setup model scaling
-        if (key == GLFW_KEY_Y) {
+        // Setup model scaling
+        if (key == GLFW_KEY_Y)
             scaleUp = true;
-        }
-        if (key == GLFW_KEY_I) {
+        if (key == GLFW_KEY_I)
             scaleDown = true;
-        }
 
-        // setup model manipulation mode: move vs rotate
-        caps = !(mods & GLFW_MOD_SHIFT) != !(mods & GLFW_MOD_CAPS_LOCK); // bitwise xor didn't work here
+        // Setup model manipulation mode: move vs rotate
+        caps = !(mods & GLFW_MOD_SHIFT) != !(mods & GLFW_MOD_CAPS_LOCK); // Bitwise xor didn't work here
 
-        if (selected != nullptr) {
-            if (key == GLFW_KEY_H && !caps) {
-                selected->rotate(-5, selected->up());
-            } else if (key == GLFW_KEY_H && caps) {
+        if (selected != nullptr)
+        {
+            if (key == GLFW_KEY_H && !caps)
+                selected->rotate(-5.0f, selected->up());
+            else if (key == GLFW_KEY_H && caps)
                 modelMovement.x = -1.0f;
-            }
-            if (key == GLFW_KEY_K && !caps) {
-                selected->rotate(5, selected->up());
-            } else if (key == GLFW_KEY_K && caps) {
+
+            if (key == GLFW_KEY_K && !caps)
+                selected->rotate(5.0f, selected->up());
+            else if (key == GLFW_KEY_K && caps)
                 modelMovement.x = 1.0f;
-            }
-            if (key == GLFW_KEY_U) {
+
+            if (key == GLFW_KEY_U)
                 modelMovement.y = 1.0f;
-            }
-            if (key == GLFW_KEY_J) {
+            if (key == GLFW_KEY_J)
                 modelMovement.y = -1.0f;
-            }
         }
 
         // Polygon mode
-        if (selected != nullptr && (key == GLFW_KEY_P || key == GLFW_KEY_L || key == GLFW_KEY_T)) {
+        if (selected != nullptr && (key == GLFW_KEY_P || key == GLFW_KEY_L || key == GLFW_KEY_T))
+        {
             RenderMode polygonMode;
             if (key == GLFW_KEY_P)
                 polygonMode = RenderMode::Point;
@@ -235,11 +189,10 @@ public:
     }
 
 protected:
+
     bool scaleUp = false, scaleDown = false, rotate = false, caps = false;
-    glm::vec2 modelMovement;
-    Node* selected;
+    glm::vec2 modelMovement = glm::vec2(0.0f);
+    Node* selected = nullptr;
 
-    Node *andrew, *mark, *nicholas, *paul, *fifth;
-
-    NodeCharacter *a, *a2, *a3, *b, *h, *n, *m, *p, *p2, *v, *zero, *zero2, *zero3, *one, *one2, *four, *four2, *four3, *four4, *seven;
+    Node *andrew = nullptr, *mark = nullptr, *nicholas = nullptr, *paul = nullptr, *fifth = nullptr;
 };
