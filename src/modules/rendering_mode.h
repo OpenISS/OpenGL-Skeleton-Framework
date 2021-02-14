@@ -14,7 +14,7 @@ class RenderingMode : public Module
 {
 public:
 
-    virtual void OnKey(World& world, int key, int action, int mods)
+    /*virtual void OnKey(World& world, int key, int action, int mods)
     {
         Module::OnKey(world, key, action, mods);
 
@@ -33,6 +33,12 @@ public:
                 curMode = RenderMode::Triangle;
             }
         }
+    }*/
+
+    void SetupPolygonMode(RenderMode polygonMode)
+    {
+        curMode = polygonMode;
+        SetupPolygonMode();
     }
 
     void SetupPolygonMode()

@@ -24,6 +24,7 @@ public:
     void OnMousePressed(int button, int mods);
     void OnMouseReleased(int button, int mods);
 
+    RenderingMode* renderingMode;
     SceneGraph* sceneGraph;
     Camera* camera;
 
@@ -39,6 +40,4 @@ protected:
     void AddModules();
 
     std::vector<Module*> modules = std::vector<Module*>();
-
-    RenderingMode* renderingMode;
 };

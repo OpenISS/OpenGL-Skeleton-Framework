@@ -2,6 +2,7 @@
 #include "mesh.h"
 #include "node.h"
 #include "node_model.h"
+#include "modules/rendering_mode.h"
 #include "resources.h"
 #include "resources_alphabet.h"
 #include "shader.h"
@@ -14,7 +15,7 @@ public:
     Shader* shader = nullptr;
     glm::vec3 color = Resources::colorWhite;
     float scale;
-
+    RenderMode renderMode = RenderMode::Triangle;
 
     NodeCharacter(char letter, Shader& shader, float scale = 1.0f)
     {
@@ -29,6 +30,8 @@ public:
     {
         if (shader != NULL)
         {
+            world.renderingMode->SetupPolygonMode(renderMode);
+
             shader->setColor(color);
             shader->activate();
             
