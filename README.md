@@ -25,37 +25,35 @@ cmake --build cmake-build --target install
 ```
 
 Additional Flags:
-* `-G`: Specifies output format
-  
-  Examples: `-G "CodeBlocks - Unix Makefiles"` to build a clion compatible project or `-G Xcode`
+* `-G`: Specifies output format, for example: `-G "CodeBlocks - Unix Makefiles"` to build a clion compatible project or `-G Xcode`
   
 
-* `-DCMAKE_BUILD_TYPE`: to specify a build type, for example `-DCMAKE_BUILD_TYPE=Debug` or `-DCMAKE_BUILD_TYPE=Release`
+* `-DCMAKE_BUILD_TYPE`: to specify a build type, for example: `-DCMAKE_BUILD_TYPE=Debug` or `-DCMAKE_BUILD_TYPE=Release`
 
 ## Importing Project into an IDE
 ### Visual Studio
 In Visual Studio 2017 with the `Visual C++ tools for CMake` component installed:
 
-1. Clone repo
-2. Open project: File -> Open-> CMake... -> Select `CMakeLists.txt` in file browser
-3. Startup item should be `SunRay.exe`
+1. Open project: File -> Open-> CMake... -> Select `CMakeLists.txt` in file browser
+2. Startup item should be `SunRay.exe`
 
 ### VSCode
-🤷‍🤷‍🤷‍
+In VSCode with the `CMake` and `CMake Tools` extensions installed:
+
+1. Open project folder, ask CMake extension to setup for an appropriate compiler (should support C++14)
+2. Set `SunRay` as build target and run target
 
 ### Clion 
 
-1. Clone repo
 1. Open project folder in clion
-1. Tweak any cmake / c++ configurations options you may need
-1. Target & Executable should be SunRay
+2. Tweak any cmake / c++ configurations options you may need
+3. Target & Executable should be `SunRay`
 
 ### XCode 
 
-1. Clone repo
 1. Run `cmake -G Xcode -S . -B cmake-xcode` to generate an xcode project file
-1. Open `./cmake-xcode/SunRay.xcodeproj`
-1. Set target to SunRay and build
+2. Open `./cmake-xcode/SunRay.xcodeproj`
+3. Set target to `SunRay` and build
 
 # Controls
 * Camera: **W/A/S/D** to move, move mouse to look, **left/right mouse buttons** to zoom in/out
