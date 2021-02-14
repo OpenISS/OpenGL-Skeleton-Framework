@@ -2,7 +2,7 @@
 #include "mesh.h"
 #include "node.h"
 #include "node_model.h"
-#include "rendering_mode.h"
+#include "modules/rendering_mode.h"
 #include "resources.h"
 #include "resources_alphabet.h"
 #include "shader.h"
