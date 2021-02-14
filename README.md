@@ -5,7 +5,7 @@
 * cmake >= 3.17.0
 * C++ >= 14
 
-## Build Steps
+## Build Steps (Windows/MacOS/Linux)
 ```bash
 cd <project_root>
 cmake -S . -B cmake-build
