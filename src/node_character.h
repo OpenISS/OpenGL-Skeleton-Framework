@@ -15,7 +15,7 @@ public:
     glm::vec3 color = Resources::colorWhite;
     float scale;
 
-    
+
     NodeCharacter(char letter, Shader& shader, float scale = 1.0f)
     {
         this->scale = scale;
@@ -34,7 +34,7 @@ public:
             
             for (auto transform : *cubes)
             {
-                glm::mat4 cubeMatrix = glm::scale(matrixStack, glm::vec3(scale, scale, scale)) * transform;
+                glm::mat4 cubeMatrix = glm::scale(matrixStack, glm::vec3(scale)) * transform;
                 Resources::basicShader.setModelMatrix(cubeMatrix);
                 Resources::unitCube.draw();
             }

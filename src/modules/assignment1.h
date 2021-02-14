@@ -134,7 +134,9 @@ public:
                 selected->scaleStep(-deltaSeconds);
             }
 
-            //TODO: if ikjl move object up / left / right / down
+            if (modelMovement != glm::vec2()) {
+                selected->translate(deltaSeconds * modelMovement);
+            }
 
         }
     }
@@ -147,6 +149,12 @@ public:
         }
         if (key == GLFW_KEY_I) {
             scaleDown = false;
+        }
+        if (key == GLFW_KEY_H || key == GLFW_KEY_K) {
+            modelMovement.x = 0;
+        }
+        if (key == GLFW_KEY_U || key == GLFW_KEY_J) {
+            modelMovement.y = 0;
         }
     }
 
@@ -180,11 +188,22 @@ public:
         // setup model manipulation mode: move vs rotate
         caps = !(mods & GLFW_MOD_SHIFT) != !(mods & GLFW_MOD_CAPS_LOCK); // bitwise xor didn't work here
 
-        if (selected != nullptr && !caps) {
-            if (key == GLFW_KEY_H) {
+        if (selected != nullptr) {
+            if (key == GLFW_KEY_H && !caps) {
                 selected->rotate(-5, selected->up());
-            } else if (key == GLFW_KEY_K) {
+            } else if (key == GLFW_KEY_H && caps) {
+                modelMovement.x = -1.0f;
+            }
+            if (key == GLFW_KEY_K && !caps) {
                 selected->rotate(5, selected->up());
+            } else if (key == GLFW_KEY_K && caps) {
+                modelMovement.x = 1.0f;
+            }
+            if (key == GLFW_KEY_U) {
+                modelMovement.y = 1.0f;
+            }
+            if (key == GLFW_KEY_J) {
+                modelMovement.y = -1.0f;
             }
         }
     }
