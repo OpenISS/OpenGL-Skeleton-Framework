@@ -23,10 +23,10 @@ static void glfwKeyCallback(GLFWwindow* window, int key, int scancode, int actio
 }
 
 static void glfwMouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-    if(action == GLFW_RELEASE) {
+    if (action == GLFW_RELEASE) {
         world.OnMouseReleased(button, mods);
     }
-    if(action == GLFW_PRESS) {
+    if (action == GLFW_PRESS) {
         world.OnMousePressed(button, mods);
     }
 }
@@ -50,7 +50,7 @@ int main(int argc, char*argv[])
     float deltaTime, lastFrameTime = 0;
 
     // Entering Main Loop
-    while(!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window)) {
         deltaTime = static_cast<float>(glfwGetTime()) - lastFrameTime; // In seconds
         lastFrameTime += deltaTime;
 

@@ -4,7 +4,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "../module.h"
 
-
 class WorldOrientation : public Module
 {
 public:
@@ -55,7 +54,6 @@ public:
 protected:
 
     float anglesPerSecond = 60.0f;
-    glm::vec2 movement;
+    glm::vec2 movement = glm::vec2(0.0f);
     bool reset = false;
 };
-

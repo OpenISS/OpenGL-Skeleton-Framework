@@ -74,4 +74,3 @@ void main()
     basicShader.create(vertexSrc, fragmentSrc);
     basicShader.setColor(Resources::colorWhite);
 }
-

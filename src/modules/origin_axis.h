@@ -38,7 +38,6 @@ public:
         axis.createGPUBuffers();
     };
 
-
     virtual void Render(World& world)
     {
         Module::Render(world);

@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
+#include "camera.h"
 #include "mesh.h"
 #include "modules/rendering_mode.h"
 #include "modules/scene_graph.h"
 #include "shader.h"
-#include "camera.h"
 
 class World
 {

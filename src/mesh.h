@@ -32,7 +32,7 @@ public:
     {
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
-        if(this->drawingMode == DrawMode::INDEXED)
+        if (this->drawingMode == DrawMode::INDEXED)
             glGenBuffers(1, &EBO);
 
         glBindVertexArray(VAO);
@@ -40,7 +40,7 @@ public:
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 
-        if(this->drawingMode == DrawMode::INDEXED){
+        if (this->drawingMode == DrawMode::INDEXED) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
         }
@@ -59,7 +59,7 @@ public:
     void draw()
     {
         glBindVertexArray(VAO);
-        if(this->drawingMode == DrawMode::INDEXED)
+        if (this->drawingMode == DrawMode::INDEXED)
             glDrawElements(this->polygonMode, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, nullptr);
         else
             glDrawArrays(this->polygonMode, 0, static_cast<GLsizei>(vertices.size()));

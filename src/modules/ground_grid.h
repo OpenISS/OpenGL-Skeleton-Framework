@@ -17,7 +17,7 @@ public:
         {
             Vertex start, end;
             start.position = glm::vec3(static_cast <float> (x) * Resources::unitSize, 0.0f, 0.0f);
-            end.position = glm::vec3(static_cast <float> (x) * Resources::unitSize, 0.0f,128.0f * Resources::unitSize);
+            end.position = glm::vec3(static_cast <float> (x) * Resources::unitSize, 0.0f, 128.0f * Resources::unitSize);
             start.color = Resources::colorWhite;
             end.color = Resources::colorWhite;
             grid.vertices.push_back(start);
@@ -38,9 +38,7 @@ public:
         grid.setPolygonMode(GL_LINES);
         grid.setDrawingMode(DrawMode::VERTEX);
         grid.createGPUBuffers();
-
     };
-
 
     virtual void Render(World& world)
     {

@@ -5,7 +5,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "../module.h"
 
-
 enum class MouseInputMode
 {
     Pan,
@@ -160,4 +159,3 @@ protected:
     float movementSpeed = 5.0f, turnSpeed = 0.1f;
     bool firstMoved = true, reset = false;
 };
-

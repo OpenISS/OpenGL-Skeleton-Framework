@@ -2,7 +2,6 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
-
 #include <iostream>
 #include <sstream>
 
@@ -55,7 +54,9 @@ const std::vector<glm::mat4>* ResourcesAlphabet::getCubes(char character)
 }
 
 std::unordered_map<char, std::vector<glm::mat4>> ResourcesAlphabet::cubesMap;
-// position(x, y, z), scale (x y z), rotate (x, y, z) 
+
+// Externally generated file, format:
+// position (x, y, z), scale (x y z), rotate (x, y, z) 
 const char* ResourcesAlphabet::exported = R""""(
 0
 0 0.125 0 1 0.25 0.25 0 0 0

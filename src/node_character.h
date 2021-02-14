@@ -1,8 +1,8 @@
 #pragma once
 #include "mesh.h"
+#include "modules/rendering_mode.h"
 #include "node.h"
 #include "node_model.h"
-#include "modules/rendering_mode.h"
 #include "resources.h"
 #include "resources_alphabet.h"
 #include "shader.h"
@@ -11,6 +11,7 @@
 class NodeCharacter : public Node
 {
 public:
+
     const std::vector<glm::mat4>* cubes;
     Shader* shader = nullptr;
     glm::vec3 color = Resources::colorWhite;

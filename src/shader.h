@@ -64,7 +64,8 @@ public:
 
         // check for linking errors
         glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-        if (!success) {
+        if (!success)
+        {
             glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
             std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
             overallSuccess = false;
