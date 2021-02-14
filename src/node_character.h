@@ -37,7 +37,7 @@ public:
             
             for (auto transform : *cubes)
             {
-                glm::mat4 cubeMatrix = glm::scale(matrixStack, glm::vec3(scale, scale, scale)) * transform;
+                glm::mat4 cubeMatrix = glm::scale(matrixStack, glm::vec3(scale)) * transform;
                 Resources::basicShader.setModelMatrix(cubeMatrix);
                 Resources::unitCube.draw();
             }

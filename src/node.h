@@ -83,6 +83,18 @@ public:
         transform = glm::rotate(transform, glm::radians(degrees), axis);
     }
 
+    void translate(glm::vec3 v) {
+        transform = glm::translate(transform, v);
+    }
+
+    void translate(glm::vec2 v) {
+        translate(glm::vec3(v, 0.f));
+    }
+
+    void translate(float x = 0.f, float y = 0.f) {
+        translate(glm::vec3(x, y, 0.f));
+    }
+
     glm::mat4 transform = glm::mat4(1.0);
 
 protected:
