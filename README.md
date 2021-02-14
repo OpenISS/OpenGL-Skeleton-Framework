@@ -6,22 +6,11 @@
 * C++ >= 14
 
 ## Build Steps
-
-### Windows
 ```bash
 cd <project_root>
 cmake -S . -B cmake-build
 cmake --build cmake-build --target install
 ./dist/SunRay
-```
-
-### Linux/MacOS
-
-```bash
-cd <project_root>
-cmake -S . -B cmake-build
-cmake --build cmake-build --target install
-./cmake-build/SunRay
 ```
 
 Additional Flags:
