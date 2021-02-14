@@ -71,7 +71,7 @@ public:
         }
     }
 
-    void OnMouseMoved(World& world, double x, double y) override
+    void OnMouseMoved(World& world, float x, float y) override
     {
         if (firstMoved) {
             lastMouse.x = x;

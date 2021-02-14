@@ -20,7 +20,7 @@ public:
 
     void OnKey(int key, int action, int mods);
 
-    void OnMouseMoved(double x, double y);
+    void OnMouseMoved(float x, float y);
     void OnMousePressed(int button, int mods);
     void OnMouseReleased(int button, int mods);
 

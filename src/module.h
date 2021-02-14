@@ -15,7 +15,7 @@ public:
     virtual void OnKeyReleased(World& world, int key, int mods) {};
     virtual void OnKey(World& world, int key, int action, int mods) {};
 
-    virtual void OnMouseMoved(World& world, double x, double y) {};
+    virtual void OnMouseMoved(World& world, float x, float y) {};
     virtual void OnMousePressed(World& world, int button, int mods) {};
     virtual void OnMouseReleased(World& world, int button, int mods) {};
 };

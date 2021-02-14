@@ -32,7 +32,7 @@ static void glfwMouseButtonCallback(GLFWwindow* window, int button, int action, 
 }
 
 static void glfwCursorPosCallback(GLFWwindow* window, const double x, const double y) {
-    world.OnMouseMoved(x, y);
+    world.OnMouseMoved(static_cast<float>(x), static_cast<float>(y));
 }
 
 GLFWwindow* setupGL();

@@ -65,11 +65,11 @@ void World::Startup()
 
 void World::Shutdown()
 {
-    for (int i = modules.size() - 1; i >= 0; --i)
+    for (int i = static_cast<int>(modules.size() - 1); i >= 0; --i)
     {
         modules.at(i)->Shutdown(*this);
     }
-    for (int i = modules.size() - 1; i >= 0; --i)
+    for (int i = static_cast<int>(modules.size() - 1); i >= 0; --i)
     {
         delete modules.at(i);
     }
@@ -129,7 +129,7 @@ void World::OnKey(int key, int action, int mods)
     }
 }
 
-void World::OnMouseMoved(double x, double y)
+void World::OnMouseMoved(float x, float y)
 {
     for (Module* m : modules)
     {

@@ -60,9 +60,9 @@ public:
     {
         glBindVertexArray(VAO);
         if(this->drawingMode == DrawMode::INDEXED)
-            glDrawElements(this->polygonMode, indices.size(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(this->polygonMode, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, nullptr);
         else
-            glDrawArrays(this->polygonMode, 0, vertices.size());
+            glDrawArrays(this->polygonMode, 0, static_cast<GLsizei>(vertices.size()));
 
         glBindVertexArray(0);
     }
