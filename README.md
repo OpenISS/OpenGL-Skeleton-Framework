@@ -63,13 +63,13 @@ In Visual Studio 2017 with the `Visual C++ tools for CMake` component installed:
 * **T/L/P** for triangle/line/point rendering modes
 * **1/2/3/4/5** to select model
 * **Y/I** to scale model up/down
-* **U/H/J/K** (uppercase) to move model
+* **H/K/U/J** (uppercase) to move model
 * **H/K** (lowercase) to rotate model about Y axis
 
 # Architecture
 ## Application Lifecycle
 * **main.cpp:** GLFW window & input handling + OpenGL setup.
-* **World:**: Contains global state such as the camera and scene graph. Runs update and render loops. Manages all modules.
+* **World:** Contains global state such as the camera and scene graph. Runs update and render loops. Manages all modules.
 * **Module:** Logical class that can receive inputs and update/render - every major feature is implemented as a self-contained module.
 
 ## Wrappers
@@ -78,16 +78,18 @@ In Visual Studio 2017 with the `Visual C++ tools for CMake` component installed:
 * **Shader:** Abstracts shader compilation, linking, and uniform updates.
 
 ## Modules
-* **ModuleAxis:** Constructs and renders the 3 axis lines.
-* **ModuleFPSCamera:** FPS game camera movement and orientation.
-* **ModuleGrid:** Constructs and renders the 128x128 grid.
-* **ModuleRenderingMode:** Sets OpenGL to point/line/triangle polygon mode.
-* **ModuleSceneGraph:** This is our hiearchical modelling system.
-* **ModuleWorldOrientation:** Rotates the hierarchy's root node in response to input.
+* **Assignment1:** Implements programming assignment 1 specifications.
+* **FPSCamera:** FPS game camera movement and orientation.
+* **GroundGrid:** Constructs and renders the 128x128 grid.
+* **OriginAxis:** Constructs and renders the 3 axis lines.
+* **RenderingMode:** Sets OpenGL to point/line/triangle polygon mode.
+* **SceneGraph:** This is our hiearchical modelling system.
+* **WorldOrientation:** Rotates the hierarchy's root node in response to input.
 
 ## Misc
 * **color.h:** Utility functions for dealing with colors.
 * **Node:** Invisible member of the scene graph.
+* **NodeCharacter:** Member of the scene graph, renders cubes that compose a character (from ResourcesAlphabet).
 * **NodeModel:** Member of the scene graph, rendered using its associated mesh and shader.
 * **Resources:** For common constants (ex `unitSize` and `colorWhite`) and resources (ex `unitCube` and `quad`).
 * **ResourcesAlphabet:** For loading letter/digit cube transforms from an embedded text file.

@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include "modules/assignment1.h"
 #include "modules/origin_axis.h"
-#include "modules/groud_grid.h"
+#include "modules/ground_grid.h"
 #include "modules/fps_camera.h"
 #include "modules/rendering_mode.h"
 #include "modules/world_orientation.h"
