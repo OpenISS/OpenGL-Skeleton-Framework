@@ -37,7 +37,6 @@ public:
         }
     }
 
-
     void Update(World& world, float deltaSeconds) override
     {
         if (reset) {

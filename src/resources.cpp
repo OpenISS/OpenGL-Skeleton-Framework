@@ -1,15 +1,16 @@
 #include "resources.h"
 
-float Resources::unitSize = 0.25f;
+const float Resources::unitSize = 0.25f;
 Mesh Resources::unitCube;
 Mesh Resources::quad;
 Shader Resources::basicShader;
-glm::vec3 Resources::colorWhite = glm::vec3(1.0f, 1.0f, 1.0f);
+const glm::vec3 Resources::colorWhite = glm::vec3(1.0f, 1.0f, 1.0f);
 
 void Resources::initialize()
 {
     // Unit cube
-    unitCube.vertices = {
+    unitCube.setBuffers(
+    {
         {glm::vec3(-0.5f, -0.5f, -0.5f), Resources::colorWhite}, // bot left  (back)
         {glm::vec3( 0.5f, -0.5f, -0.5f), Resources::colorWhite}, // bot right (back)
         {glm::vec3( 0.5f,  0.5f, -0.5f), Resources::colorWhite}, // top right (back)
@@ -18,20 +19,19 @@ void Resources::initialize()
         {glm::vec3( 0.5f, -0.5f,  0.5f), Resources::colorWhite}, // bot right (front)
         {glm::vec3( 0.5f,  0.5f,  0.5f), Resources::colorWhite}, // top right (front)
         {glm::vec3(-0.5f,  0.5f,  0.5f), Resources::colorWhite}  // top left  (front)
-    };
-    unitCube.indices = {
+    },
+    {
         1, 0, 3, 1, 3, 2,
         5, 1, 2, 5, 2, 6,
         4, 5, 6, 4, 6, 7,
         0, 4, 7, 0, 7, 3,
         2, 3, 7, 2, 7, 6,
         5, 4, 0, 5, 0, 1
-    };
-    unitCube.setDrawingMode(DrawMode::INDEXED);
-    unitCube.createGPUBuffers();
+    });
 
     // Quad
-    quad.vertices = {
+    quad.setBuffers(
+    {
         {glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite}, // top left
         {glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite}, // bot right
         {glm::vec3( 0.5f,  0.5f,  0.0f), Resources::colorWhite}, // top right
@@ -39,10 +39,7 @@ void Resources::initialize()
         {glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite}, // top right
         {glm::vec3(-0.5f, -0.5f,  0.0f), Resources::colorWhite}, // bot left
         {glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite}  // bot right
-    };
-
-    quad.setDrawingMode(DrawMode::VERTEX);
-    quad.createGPUBuffers();
+    });
 
     // Basic shader
     const char* vertexSrc =  R""""(

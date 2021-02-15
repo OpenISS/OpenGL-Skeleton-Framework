@@ -24,11 +24,25 @@ public:
         VAO = 0, VBO = 0, EBO = 0;
     }
 
+    void setBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices = {}, bool uploadToGPU = true)
+    {
+        if (indices.size() > 0)
+            drawingMode = DrawMode::INDEXED;
+        else
+            drawingMode = DrawMode::VERTEX;
+
+        this->vertices = vertices;
+        this->indices = indices;
+
+        if (uploadToGPU)
+            uploadBuffersToGPU();
+    }
+
     ~Mesh() {
         clearBuffers();
     }
 
-    void createGPUBuffers()
+    void uploadBuffersToGPU()
     {
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);

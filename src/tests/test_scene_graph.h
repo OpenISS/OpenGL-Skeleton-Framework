@@ -41,7 +41,6 @@ public:
         cube1->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 1.5f));
         cube2->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.5f));
 
-
         localRoot->addChild(*letter1);
         localRoot->addChild(*letter2);
         localRoot->addChild(*letter3);

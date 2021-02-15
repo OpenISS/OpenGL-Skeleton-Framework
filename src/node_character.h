@@ -27,7 +27,7 @@ public:
             cubes = res;
     }
 
-    virtual void render(World& world, glm::mat4& matrixStack)
+    virtual void render(World& world, const glm::mat4& matrixStack)
     {
         if (shader != NULL)
         {

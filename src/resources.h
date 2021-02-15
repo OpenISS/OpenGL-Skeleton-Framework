@@ -8,9 +8,9 @@ public:
 
     static void initialize();
 
-    static float unitSize;
+    static const float unitSize;
     static Mesh unitCube;
     static Mesh quad;
     static Shader basicShader;
-    static glm::vec3 colorWhite;
+    static const glm::vec3 colorWhite;
 };

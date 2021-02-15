@@ -47,8 +47,8 @@ In VSCode with the `CMake` and `CMake Tools` extensions installed:
 # Controls
 * Camera: **W/A/S/D** to move, move mouse to look, **left/right mouse buttons** to zoom in/out
 * World orientation: **left/right arrows** to rotate vertically, **up/down arrows** to rotate horizontally
-* **T/L/P** for triangle/line/point rendering modes
 * **1/2/3/4/5** to select model
+* **T/L/P** to set model to triangle/line/point rendering mode
 * **Y/I** to scale model up/down
 * **H/K/U/J** (uppercase) to move model
 * **H/K** (lowercase) to rotate model about Y axis

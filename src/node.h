@@ -19,7 +19,7 @@ public:
         return transform;
     };
 
-    virtual void render(World& world, glm::mat4& matrixStack) {};
+    virtual void render(World& world, const glm::mat4& matrixStack) {};
 
     void addChild(Node& child)
     {
@@ -89,15 +89,15 @@ public:
         scale(1.0f + step);
     }
 
-    void rotate(float degrees, glm::vec3 axis) {
+    void rotate(float degrees, const glm::vec3& axis) {
         transform = glm::rotate(transform, glm::radians(degrees), axis);
     }
 
-    void translate(glm::vec3 v) {
+    void translate(const glm::vec3& v) {
         transform = glm::translate(transform, v);
     }
 
-    void translate(glm::vec2 v) {
+    void translate(const glm::vec2& v) {
         translate(glm::vec3(v, 0.f));
     }
 

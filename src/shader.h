@@ -10,7 +10,7 @@ class Shader
 {
 public:
 
-    void activate()
+    void activate() const
     {
         glUseProgram(programID);
     }
@@ -79,37 +79,37 @@ public:
         return overallSuccess;
     }
 
-    int getProgramID()
+    int getProgramID() const
     {
         return programID;
     }
 
 
-    void setModelMatrix(glm::mat4& mat)
+    void setModelMatrix(const glm::mat4& mat) const
     {
         GLuint location = glGetUniformLocation(programID, "modelMatrix");
         glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
     }
 
-    void setViewProjectionMatrix(glm::mat4& view, glm::mat4& projection)
+    void setViewProjectionMatrix(const glm::mat4& view, const glm::mat4& projection) const
     {
         setViewMatrix(view);
         setProjectionMatrix(projection);
     }
 
-    void setViewMatrix(glm::mat4& mat)
+    void setViewMatrix(const glm::mat4& mat) const
     {
         GLuint location = glGetUniformLocation(programID, "viewMatrix");
         glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
     }
 
-    void setProjectionMatrix(glm::mat4& mat)
+    void setProjectionMatrix(const glm::mat4& mat) const
     {
         GLuint location = glGetUniformLocation(programID, "projectionMatrix");
         glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
     }
 
-    void setColor(glm::vec3& color)
+    void setColor(const glm::vec3& color) const
     {
         GLuint location = glGetUniformLocation(programID, "color");
         glUniform3fv(location, 1, glm::value_ptr(color));

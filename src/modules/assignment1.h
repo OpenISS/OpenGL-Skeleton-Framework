@@ -54,7 +54,7 @@ public:
         fifth->transform    = glm::mat4(1.0f) * glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     }
 
-    void setCharacters(Node& root, const std::string& word, float scale)
+    void setCharacters(Node& root, const std::string& word, float scale) const
     {
         for (const char& c : word)
         {
@@ -62,7 +62,7 @@ public:
         }
     }
 
-    void placeCharacters(Node& root, float interval_degrees, float radius)
+    void placeCharacters(Node& root, float interval_degrees, float radius) const
     {
         float theta = interval_degrees * -(static_cast<float>(root.numChildren() - 1) / 2.0f); 
 
@@ -78,7 +78,7 @@ public:
         }
     }
 
-    glm::vec3 getPosOnCircle(float degrees, float radius)
+    glm::vec3 getPosOnCircle(float degrees, float radius) const
     {
         float radians = glm::radians(degrees);
         return glm::vec3(glm::cos(radians) * radius, 0.0f, glm::sin(radians) * radius);

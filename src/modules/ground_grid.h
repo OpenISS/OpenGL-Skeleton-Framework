@@ -37,7 +37,7 @@ public:
 
         grid.setPolygonMode(GL_LINES);
         grid.setDrawingMode(DrawMode::VERTEX);
-        grid.createGPUBuffers();
+        grid.uploadBuffersToGPU();
     };
 
     virtual void Render(World& world)

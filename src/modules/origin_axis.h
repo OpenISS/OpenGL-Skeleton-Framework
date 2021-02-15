@@ -35,7 +35,7 @@ public:
 
         axis.setPolygonMode(GL_LINES);
         axis.setDrawingMode(DrawMode::VERTEX);
-        axis.createGPUBuffers();
+        axis.uploadBuffersToGPU();
     };
 
     virtual void Render(World& world)
