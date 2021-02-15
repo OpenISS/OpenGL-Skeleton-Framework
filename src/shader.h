@@ -24,49 +24,49 @@ public:
     {
         bool overallSuccess = true;
 
-        // vertex shader
+        // Vertex shader
         int vertexShader = glCreateShader(GL_VERTEX_SHADER);
         const char* vertexShaderSource = vertexSrc;
-        glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+        glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
         glCompileShader(vertexShader);
 
-        // check for shader compile errors
+        // Check for shader compile errors
         int success;
         char infoLog[512];
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
         if (!success)
         {
-            glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+            glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
             std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
             overallSuccess = false;
         }
 
-        // fragment shader
+        // Fragment shader
         int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         const char* fragmentShaderSource = fragmentSrc;
-        glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+        glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
         glCompileShader(fragmentShader);
 
-        // check for shader compile errors
+        // Check for shader compile errors
         glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
         if (!success)
         {
-            glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+            glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
             std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
             overallSuccess = false;
         }
 
-        // link shaders
+        // Link shaders
         int shaderProgram = glCreateProgram();
         glAttachShader(shaderProgram, vertexShader);
         glAttachShader(shaderProgram, fragmentShader);
         glLinkProgram(shaderProgram);
 
-        // check for linking errors
+        // Check for linking errors
         glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
         if (!success)
         {
-            glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+            glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
             std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
             overallSuccess = false;
         }

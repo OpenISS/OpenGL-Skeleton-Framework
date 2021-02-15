@@ -11,14 +11,14 @@ void Resources::initialize()
     // Unit cube
     unitCube.setBuffers(
     {
-        {glm::vec3(-0.5f, -0.5f, -0.5f), Resources::colorWhite}, // bot left  (back)
-        {glm::vec3( 0.5f, -0.5f, -0.5f), Resources::colorWhite}, // bot right (back)
-        {glm::vec3( 0.5f,  0.5f, -0.5f), Resources::colorWhite}, // top right (back)
-        {glm::vec3(-0.5f,  0.5f, -0.5f), Resources::colorWhite}, // top left  (back)
-        {glm::vec3(-0.5f, -0.5f,  0.5f), Resources::colorWhite}, // bot left  (front)
-        {glm::vec3( 0.5f, -0.5f,  0.5f), Resources::colorWhite}, // bot right (front)
-        {glm::vec3( 0.5f,  0.5f,  0.5f), Resources::colorWhite}, // top right (front)
-        {glm::vec3(-0.5f,  0.5f,  0.5f), Resources::colorWhite}  // top left  (front)
+        {glm::vec3(-0.5f, -0.5f, -0.5f), Resources::colorWhite}, // Bot left  (back)
+        {glm::vec3( 0.5f, -0.5f, -0.5f), Resources::colorWhite}, // Bot right (back)
+        {glm::vec3( 0.5f,  0.5f, -0.5f), Resources::colorWhite}, // Top right (back)
+        {glm::vec3(-0.5f,  0.5f, -0.5f), Resources::colorWhite}, // Top left  (back)
+        {glm::vec3(-0.5f, -0.5f,  0.5f), Resources::colorWhite}, // Bot left  (front)
+        {glm::vec3( 0.5f, -0.5f,  0.5f), Resources::colorWhite}, // Bot right (front)
+        {glm::vec3( 0.5f,  0.5f,  0.5f), Resources::colorWhite}, // Top right (front)
+        {glm::vec3(-0.5f,  0.5f,  0.5f), Resources::colorWhite}  // Top left  (front)
     },
     {
         1, 0, 3, 1, 3, 2,
@@ -32,13 +32,13 @@ void Resources::initialize()
     // Quad
     quad.setBuffers(
     {
-        {glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite}, // top left
-        {glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite}, // bot right
-        {glm::vec3( 0.5f,  0.5f,  0.0f), Resources::colorWhite}, // top right
+        {glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite}, // Top left
+        {glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite}, // Bot right
+        {glm::vec3( 0.5f,  0.5f,  0.0f), Resources::colorWhite}, // Top right
 
-        {glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite}, // top right
-        {glm::vec3(-0.5f, -0.5f,  0.0f), Resources::colorWhite}, // bot left
-        {glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite}  // bot right
+        {glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite}, // Top right
+        {glm::vec3(-0.5f, -0.5f,  0.0f), Resources::colorWhite}, // Bot left
+        {glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite}  // Bot right
     });
 
     // Basic shader

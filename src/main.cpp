@@ -15,23 +15,22 @@ static void glfwErrorCallback(int error, const char* description)
 
 static void glfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    } else {
+    else
         world.OnKey(key, action, mods);
-    }
 }
 
-static void glfwMouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-    if (action == GLFW_RELEASE) {
+static void glfwMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (action == GLFW_RELEASE)
         world.OnMouseReleased(button, mods);
-    }
-    if (action == GLFW_PRESS) {
+    if (action == GLFW_PRESS)
         world.OnMousePressed(button, mods);
-    }
 }
 
-static void glfwCursorPosCallback(GLFWwindow* window, const double x, const double y) {
+static void glfwCursorPosCallback(GLFWwindow* window, const double x, const double y)
+{
     world.OnMouseMoved(static_cast<float>(x), static_cast<float>(y));
 }
 
@@ -39,18 +38,18 @@ GLFWwindow* setupGL();
 
 int main(int argc, char*argv[])
 {
-    // setup openGL context GLEW / GLFW calls, callbacks, etc....
+    // Setup openGL context GLEW / GLFW calls, callbacks, etc....
     GLFWwindow *window = setupGL();
-    if (window == nullptr) {
+    if (window == nullptr)
         return -1;
-    }
 
     world.Startup();
 
     float deltaTime, lastFrameTime = 0;
 
     // Entering Main Loop
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window))
+    {
         deltaTime = static_cast<float>(glfwGetTime()) - lastFrameTime; // In seconds
         lastFrameTime += deltaTime;
 
@@ -70,7 +69,8 @@ int main(int argc, char*argv[])
     return 0;
 }
 
-GLFWwindow* setupGL()  {
+GLFWwindow* setupGL()
+{
     // Initialize GLFW and OpenGL version
     glfwSetErrorCallback(glfwErrorCallback);
     glfwInit();
@@ -86,7 +86,8 @@ GLFWwindow* setupGL()  {
 
     // Create Window and rendering context using GLFW
     GLFWwindow *window = glfwCreateWindow(world.windowWidth, world.windowHeight, world.windowTitle, nullptr, nullptr);
-    if (window == nullptr) {
+    if (window == nullptr)
+    {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return nullptr;
@@ -103,7 +104,8 @@ GLFWwindow* setupGL()  {
 
     // Initialize GLEW
     glewExperimental = GL_TRUE; // Needed for core profile
-    if (glewInit() != GLEW_OK) {
+    if (glewInit() != GLEW_OK)
+    {
         std::cerr << "Failed to create GLEW" << std::endl;
         glfwTerminate();
         return nullptr;

@@ -7,7 +7,7 @@ void SceneGraph::Render(World& world)
     Module::Render(world);
 
     world.renderingMode->SetupPolygonMode(RenderMode::Triangle);
-    glm::mat4 stack = glm::mat4(1.0f); // Identity matrix
+    glm::mat4 stack = glm::mat4(1.0f);
     walkNode(world, root, stack);
     world.renderingMode->SetupPolygonMode(RenderMode::Triangle);
 }

@@ -21,7 +21,7 @@ public:
 
     virtual void render(World& world, const glm::mat4& matrixStack)
     {
-        if (shader != NULL && mesh != NULL)
+        if (shader != nullptr && mesh != nullptr)
         {
             shader->setModelMatrix(matrixStack);
             shader->setColor(color);
@@ -30,7 +30,7 @@ public:
         }
     }
 
-    Shader* shader = NULL;
-    Mesh* mesh = NULL;
+    Shader* shader = nullptr;
+    Mesh* mesh = nullptr;
     glm::vec3 color = Resources::colorWhite;
 };

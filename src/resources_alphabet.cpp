@@ -44,13 +44,9 @@ const std::vector<glm::mat4>* ResourcesAlphabet::getCubes(char character)
     std::unordered_map<char, std::vector<glm::mat4>>::const_iterator iter = cubesMap.find(character);
 
     if (iter != cubesMap.end())
-    {
         return &(iter->second);
-    }
     else
-    {
-        return NULL;
-    }
+        return nullptr;
 }
 
 std::unordered_map<char, std::vector<glm::mat4>> ResourcesAlphabet::cubesMap;

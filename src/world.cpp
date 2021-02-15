@@ -107,7 +107,8 @@ void World::Render()
 
 void World::OnKey(int key, int action, int mods)
 {
-    if (key == GLFW_KEY_TAB && action == GLFW_PRESS) {
+    if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+    {
         debug = !debug;
 
         std::cout << std::endl << "DEBUG OUTPUT: " << (debug ? "ENABLED" : "DISABLED") << std::endl;
@@ -121,11 +122,10 @@ void World::OnKey(int key, int action, int mods)
     {
         m->OnKey(*this, key, action, mods);
 
-        if (action == GLFW_RELEASE) {
+        if (action == GLFW_RELEASE)
             m->OnKeyReleased(*this, key, mods);
-        } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+        else if (action == GLFW_PRESS || action == GLFW_REPEAT)
             m->OnKeyPressed(*this, key, mods);
-        }
     }
 }
 

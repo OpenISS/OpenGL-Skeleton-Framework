@@ -20,8 +20,15 @@ enum class DrawMode
 class Mesh
 {
 public:
-    Mesh() {
+
+    Mesh()
+    {
         VAO = 0, VBO = 0, EBO = 0;
+    }
+
+    ~Mesh()
+    {
+        clearBuffers();
     }
 
     void setBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices = {}, bool uploadToGPU = true)
@@ -38,10 +45,6 @@ public:
             uploadBuffersToGPU();
     }
 
-    ~Mesh() {
-        clearBuffers();
-    }
-
     void uploadBuffersToGPU()
     {
         glGenVertexArrays(1, &VAO);
@@ -54,7 +57,8 @@ public:
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 
-        if (this->drawingMode == DrawMode::INDEXED) {
+        if (this->drawingMode == DrawMode::INDEXED)
+        {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
         }
@@ -65,7 +69,6 @@ public:
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
         glEnableVertexAttribArray(1);
 
-        //clear state
         glBindBuffer(GL_ARRAY_BUFFER, 0); 
         glBindVertexArray(0);
     }
@@ -73,6 +76,7 @@ public:
     void draw()
     {
         glBindVertexArray(VAO);
+
         if (this->drawingMode == DrawMode::INDEXED)
             glDrawElements(this->polygonMode, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, nullptr);
         else
@@ -81,26 +85,34 @@ public:
         glBindVertexArray(0);
     }
 
-    void clearBuffers() {
-        if (EBO != 0) {
+    void clearBuffers()
+    {
+        if (EBO != 0)
+        {
             glDeleteBuffers(1, &EBO);
             EBO = 0;
         }
-        if (VBO != 0) {
+
+        if (VBO != 0)
+        {
             glDeleteBuffers(1, &VBO);
             VBO = 0;
         }
-        if (VAO != 0) {
+
+        if (VAO != 0)
+        {
             glDeleteVertexArrays(1, &VAO);
             VAO = 0;
         }
     }
 
-    void setPolygonMode(GLenum mode) {
+    void setPolygonMode(GLenum mode)
+    {
         this->polygonMode = mode;
     }
 
-    void setDrawingMode(DrawMode mode) {
+    void setDrawingMode(DrawMode mode)
+    {
         this->drawingMode = mode;
     }
 
@@ -109,6 +121,7 @@ public:
     GLuint VAO, VBO, EBO;
 
 protected:
+
     GLenum polygonMode = GL_TRIANGLES;
     DrawMode drawingMode = DrawMode::VERTEX;
 };

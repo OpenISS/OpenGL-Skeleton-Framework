@@ -29,7 +29,7 @@ public:
 
     virtual void render(World& world, const glm::mat4& matrixStack)
     {
-        if (shader != NULL)
+        if (shader != nullptr)
         {
             world.renderingMode->SetupPolygonMode(renderMode);
 

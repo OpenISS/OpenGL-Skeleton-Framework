@@ -8,8 +8,10 @@ class Node
 {
 public:
 
-    ~Node() {
-        for (auto child: children) {
+    ~Node()
+    {
+        for (auto child: children)
+        {
             delete child;
         }
     }
@@ -81,27 +83,33 @@ public:
         return glm::normalize(glm::vec3(transform[2]));
     }
 
-    void scale(float scalar = 1.0f) {
+    void scale(float scalar = 1.0f)
+    {
         transform = glm::scale(transform, glm::vec3(scalar));
     }
 
-    void scaleStep(float step) {
+    void scaleStep(float step)
+    {
         scale(1.0f + step);
     }
 
-    void rotate(float degrees, const glm::vec3& axis) {
+    void rotate(float degrees, const glm::vec3& axis)
+    {
         transform = glm::rotate(transform, glm::radians(degrees), axis);
     }
 
-    void translate(const glm::vec3& v) {
+    void translate(const glm::vec3& v)
+    {
         transform = glm::translate(transform, v);
     }
 
-    void translate(const glm::vec2& v) {
+    void translate(const glm::vec2& v)
+    {
         translate(glm::vec3(v, 0.f));
     }
 
-    void translate(float x = 0.f, float y = 0.f) {
+    void translate(float x = 0.f, float y = 0.f)
+    {
         translate(glm::vec3(x, y, 0.f));
     }
 

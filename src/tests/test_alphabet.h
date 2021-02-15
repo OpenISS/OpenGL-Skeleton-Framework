@@ -13,7 +13,7 @@ public:
     virtual void Startup(World& world)
     {
         auto res = ResourcesAlphabet::getCubes('M');
-        if (res != NULL)
+        if (res != nullptr)
             cubes = *res;
     }
 
@@ -54,7 +54,7 @@ public:
             if (isDigit || isLetter)
             {
                 auto res = ResourcesAlphabet::getCubes(static_cast<char>(key));
-                if (res != NULL)
+                if (res != nullptr)
                     cubes = *res;
             }
         }
