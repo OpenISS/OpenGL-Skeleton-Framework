@@ -8,7 +8,7 @@
 #include "../resources.h"
 #include "../world.h"
 
-class  Assignment1: public Module
+class Assignment1: public Module
 {
 public:
 
@@ -108,7 +108,7 @@ public:
             if (scaleDown)
                 selected->scaleStep(-deltaSeconds);
             if (modelMovement != glm::vec2())
-                selected->translate(deltaSeconds * modelMovement);
+                selected->translate(deltaSeconds * glm::vec3(0.0f, modelMovement.y, modelMovement.x));
         }
     }
 
