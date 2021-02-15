@@ -9,7 +9,7 @@ class GroundGrid : public Module
 {
 public:
 
-    virtual void Startup(World& world) 
+    void Startup(World& world) override
     {
         grid.vertices.clear();
 
@@ -40,7 +40,7 @@ public:
         grid.uploadBuffersToGPU();
     };
 
-    virtual void Render(World& world)
+    void Render(World& world) override
     {
         Module::Render(world);
 

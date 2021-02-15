@@ -9,14 +9,14 @@ class TestUnitCube : public Module
 {
 public:
 
-    virtual void Update(World& world, float deltaSeconds)
+    void Update(World& world, float deltaSeconds) override
     {
         Module::Update(world, deltaSeconds);
 
         angle += anglesPerSecond * deltaSeconds;
     }
 
-    virtual void Render(World& world)
+    void Render(World& world) override
     {
         Module::Render(world);
 

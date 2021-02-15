@@ -105,15 +105,15 @@ public:
 
     void translate(const glm::vec2& v)
     {
-        translate(glm::vec3(v, 0.f));
+        translate(glm::vec3(v, 0.0f));
     }
 
-    void translate(float x = 0.f, float y = 0.f)
+    void translate(float x = 0.0f, float y = 0.0f)
     {
-        translate(glm::vec3(x, y, 0.f));
+        translate(glm::vec3(x, y, 0.0f));
     }
 
-    glm::mat4 transform = glm::mat4(1.0);
+    glm::mat4 transform = glm::mat4(1.0f);
 
 protected:
 

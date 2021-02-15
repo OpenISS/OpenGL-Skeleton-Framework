@@ -1,17 +1,9 @@
 #pragma once
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-class Camera {
-    glm::vec3 m_position{};		// camera position
-    glm::vec3 m_direction{};	// direction the camera is looking at
-    const glm::vec3 m_up{};	    // camera relative up position in the world
-    float m_fov{};				// angle of the camera's field-of-view, in degrees
-    float m_aspect{};		    // ratio between the width and height of the viewport
-    float m_near{};			    // distance between the camera and the near image plane
-    float m_far{};			    // distance between the camera and the far image plane
-
+class Camera
+{
 public:
 
     Camera(const float aspect,
@@ -57,4 +49,13 @@ public:
     void setNearPlane(float);
     void setFarPlane(float);
 
+protected:
+
+    glm::vec3 m_position;       // Camera position
+    glm::vec3 m_direction;      // Direction the camera is looking at
+    const glm::vec3 m_up;       // Camera relative up position in the world
+    float m_fov;                // Angle of the camera's field-of-view, in degrees
+    float m_aspect;             // Ratio between the width and height of the viewport
+    float m_near;               // Distance between the camera and the near image plane
+    float m_far;                // Distance between the camera and the far image plane
 };

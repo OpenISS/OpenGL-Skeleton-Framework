@@ -10,21 +10,21 @@ class TestAlphabet : public Module
 {
 public:
 
-    virtual void Startup(World& world)
+    void Startup(World& world) override
     {
         auto res = ResourcesAlphabet::getCubes('M');
         if (res != nullptr)
             cubes = *res;
     }
 
-    virtual void Update(World& world, float deltaSeconds)
+    void Update(World& world, float deltaSeconds) override
     {
         Module::Update(world, deltaSeconds);
 
         angle += anglesPerSecond * deltaSeconds;
     }
 
-    virtual void Render(World& world)
+    void Render(World& world) override
     {
         Module::Render(world);
 
@@ -43,7 +43,7 @@ public:
         }
     }
 
-    virtual void OnKey(World& world, int key, int action, int mods)
+    void OnKey(World& world, int key, int action, int mods) override
     {
         Module::OnKey(world, key, action, mods);
 

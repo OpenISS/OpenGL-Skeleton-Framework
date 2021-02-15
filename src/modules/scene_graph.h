@@ -9,7 +9,7 @@ class SceneGraph : public Module
 {
 public:
 
-    virtual void Render(World& world);
+    void Render(World& world) override;
     void addChild(Node& child);
     void removeChild(Node& child);
 

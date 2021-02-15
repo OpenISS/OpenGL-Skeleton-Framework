@@ -73,7 +73,7 @@ public:
             Node& child = **it;
             child.transform =
                 glm::translate(glm::mat4(1.0f), getPosOnCircle(theta, radius) - glm::vec3(radius, 0.0f, 0.0f)) *
-                glm::rotate(glm::mat4(1.0f), glm::radians(-theta - 90.f), glm::vec3(0.0f, 1.0f, 0.0f));
+                glm::rotate(glm::mat4(1.0f), glm::radians(-theta - 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             theta += interval_degrees;
         }
     }

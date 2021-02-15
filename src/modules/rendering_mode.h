@@ -14,7 +14,7 @@ class RenderingMode : public Module
 {
 public:
 
-    /*virtual void OnKey(World& world, int key, int action, int mods)
+    /*void OnKey(World& world, int key, int action, int mods) override
     {
         Module::OnKey(world, key, action, mods);
 

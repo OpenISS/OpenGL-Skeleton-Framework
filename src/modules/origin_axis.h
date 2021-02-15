@@ -9,7 +9,7 @@ class OriginAxis : public Module
 {
 public:
 
-    virtual void Startup(World& world)
+    void Startup(World& world) override
     {
         axis.vertices.clear();
 
@@ -38,7 +38,7 @@ public:
         axis.uploadBuffersToGPU();
     };
 
-    virtual void Render(World& world)
+    void Render(World& world) override
     {
         Module::Render(world);
 

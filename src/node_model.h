@@ -19,7 +19,7 @@ public:
         this->mesh = &mesh;
     }
 
-    virtual void render(World& world, const glm::mat4& matrixStack)
+    virtual void render(World& world, const glm::mat4& matrixStack) override
     {
         if (shader != nullptr && mesh != nullptr)
         {

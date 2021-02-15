@@ -1,5 +1,4 @@
 #pragma once
-
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -19,36 +18,29 @@ public:
 
     void OnKeyReleased(World& world, int key, int mods) override
     {
-        if (key == GLFW_KEY_A || key == GLFW_KEY_D) {
+        if (key == GLFW_KEY_A || key == GLFW_KEY_D)
             movement.x = 0;
-        }
-        if (key == GLFW_KEY_W || key == GLFW_KEY_S) {
+        if (key == GLFW_KEY_W || key == GLFW_KEY_S)
             movement.y = 0;
-        }
     }
 
     void OnKeyPressed(World& world, int key, int mods) override
     {
-        if (key == GLFW_KEY_HOME || key == GLFW_KEY_R) {
+        if (key == GLFW_KEY_HOME || key == GLFW_KEY_R)
             reset = true;
-        }
-        if (key == GLFW_KEY_A) {
+        if (key == GLFW_KEY_A)
             movement.x = -1;
-        }
-        if (key == GLFW_KEY_D) {
+        if (key == GLFW_KEY_D)
             movement.x = 1;
-        }
-        if (key == GLFW_KEY_W) {
+        if (key == GLFW_KEY_W)
             movement.y = 1;
-        }
-        if (key == GLFW_KEY_S) {
+        if (key == GLFW_KEY_S)
             movement.y = -1;
-        }
     }
 
     void OnMouseReleased(World& world, int button, int mods) override
     {
-        // return to freecam motion when none of the other modes are actives
+        // Return to freecam motion when none of the other modes are actives
         if (button == GLFW_MOUSE_BUTTON_LEFT ||
             button == GLFW_MOUSE_BUTTON_MIDDLE ||
             button == GLFW_MOUSE_BUTTON_RIGHT)
@@ -59,20 +51,18 @@ public:
 
     void OnMousePressed(World& world, int button, int mods) override
     {
-        if (button == GLFW_MOUSE_BUTTON_LEFT) {
+        if (button == GLFW_MOUSE_BUTTON_LEFT)
             mouseInputMode = MouseInputMode::Zoom;
-        }
-        if (button == GLFW_MOUSE_BUTTON_MIDDLE) {
+        if (button == GLFW_MOUSE_BUTTON_MIDDLE)
             mouseInputMode = MouseInputMode::Tilt;
-        }
-        if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+        if (button == GLFW_MOUSE_BUTTON_RIGHT)
             mouseInputMode = MouseInputMode::Pan;
-        }
     }
 
     void OnMouseMoved(World& world, float x, float y) override
     {
-        if (firstMoved) {
+        if (firstMoved)
+        {
             lastMouse.x = x;
             lastMouse.y = y;
             firstMoved = false;
@@ -84,9 +74,8 @@ public:
         lastMouse.x = x;
         lastMouse.y = y;
 
-        if (world.debug) {
+        if (world.debug)
             std::cout << "Cursor Pos: " << x << ", " << y << "\tCursor Change: " << deltaMouse.x << ", " << deltaMouse.y << std::endl;
-        }
     }
 
     void Startup(World& world) override
@@ -103,30 +92,37 @@ public:
 
     void Update(World& world, float deltaSeconds) override
     {
-        if (reset) {
+        if (reset)
+        {
             camera->setPosition(position);
             camera->setDirection(direction);
             reset = false;
         }
 
-        if (deltaMouse != glm::vec2()) {
+        if (deltaMouse != glm::vec2())
+        {
             float yaw = deltaMouse.x * turnSpeed * deltaSeconds;
             float pitch = deltaMouse.y * turnSpeed * deltaSeconds;
 
-            if (mouseInputMode == MouseInputMode::Zoom) {
+            if (mouseInputMode == MouseInputMode::Zoom)
+            {
                 float fov = camera->getFov();
                 camera->setFov(fov - pitch);
 
-                if (world.debug) {
+                if (world.debug)
+                {
                     std::cout << "Update FOV: " << fov << " - " << pitch << std::endl;
                 }
-            } else {
+            }
+            else
+            {
                 bool allowPan = mouseInputMode == MouseInputMode::Pan || mouseInputMode == MouseInputMode::FreeCam;
                 bool allowTilt = mouseInputMode == MouseInputMode::Tilt || mouseInputMode == MouseInputMode::FreeCam;
 
                 camera->rotate(yaw * static_cast<float>(allowPan), pitch * static_cast<float>(allowTilt));
 
-                if (world.debug) {
+                if (world.debug)
+                {
                     std::cout << "Yaw, Pitch: " << yaw << ", " << pitch << std::endl;
                     std::cout << "Direction: " << camera->forward().x << ", " << camera->forward().y << ", " << camera->forward().z << std::endl;
                 }
@@ -135,14 +131,16 @@ public:
             deltaMouse = glm::vec2();
         }
 
-        if (movement != glm::vec2()) {
+        if (movement != glm::vec2())
+        {
             glm::vec3 xAxis = camera->right() * movementSpeed * movement.x * deltaSeconds;
             glm::vec3 yAxis = camera->forward() * movementSpeed * movement.y * deltaSeconds;
             glm::vec3 deltaPos = xAxis + yAxis;
 
             camera->translate(deltaPos);
 
-            if (world.debug) {
+            if (world.debug)
+            {
                 std::cout << "Position Change: " << movement.x << ", " << movement.y << ", " << std::endl;
                 std::cout << "Camera Moved By: " << deltaPos.x << ", " << deltaPos.y << ", " << deltaPos.z << std::endl;
             }
@@ -150,6 +148,7 @@ public:
     }
 
 protected:
+
     Camera* camera;
     MouseInputMode mouseInputMode = MouseInputMode::FreeCam;
     glm::vec2 movement, deltaMouse, lastMouse;

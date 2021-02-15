@@ -12,7 +12,7 @@ class TestSceneGraph : public Module
 {
 public:
 
-    virtual void Startup(World& world)
+    void Startup(World& world) override
     {
         Module::Startup(world);
 
@@ -50,13 +50,13 @@ public:
         letter3->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f,  4.5f));
     }
 
-    virtual void Shutdown(World& world)
+    void Shutdown(World& world) override
     {
         world.sceneGraph->removeChild(*localRoot);
         delete localRoot;
     }
 
-    virtual void Update(World& world, float deltaSeconds)
+    void Update(World& world, float deltaSeconds) override
     {
         Module::Update(world, deltaSeconds);
 
