@@ -207,6 +207,9 @@ Same thing for `glm::`.
 
 Other namespaces judged on a case-by-case basis.
 
+## Float format
+A trailing zero is preferred for whole numbers: `1.0f` instead of `1.f`
+
 # Misc
 ## Class member order
 Member functions and properties should be declared in the following order:
