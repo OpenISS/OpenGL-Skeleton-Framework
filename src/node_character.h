@@ -8,21 +8,23 @@
 #include "shader.h"
 #include "world.h"
 
+/**
+ * Member of the scene graph, renders cubes that compose a character.
+ * 
+ * Note that not all characters are supported.
+ * 
+ * @see ResourcesAlphabet
+ * @see SceneGraph
+ */
 class NodeCharacter : public Node
 {
 public:
 
-    const std::vector<glm::mat4>* cubes;
-    Shader* shader = nullptr;
-    glm::vec3 color = Resources::colorWhite;
-    float scale;
-    RenderMode renderMode = RenderMode::Triangle;
-
-    NodeCharacter(char letter, Shader& shader, float scale = 1.0f)
+    NodeCharacter(char character, Shader& shader, float scale = 1.0f)
     {
         this->scale = scale;
         this->shader = &shader;
-        auto res = ResourcesAlphabet::getCubes(letter);
+        auto res = ResourcesAlphabet::getCubes(character);
         if (res != nullptr)
             cubes = res;
     }
@@ -35,7 +37,8 @@ public:
 
             shader->setColor(color);
             shader->activate();
-            
+
+            // Render the transformed unit cubes that compose the current character
             for (auto transform : *cubes)
             {
                 glm::mat4 cubeMatrix = glm::scale(matrixStack, glm::vec3(scale)) * transform;
@@ -44,4 +47,10 @@ public:
             }
         }
     }
+
+    const std::vector<glm::mat4>* cubes = nullptr;
+    Shader* shader = nullptr;
+    glm::vec3 color = Resources::colorWhite;
+    float scale = 1.0f;
+    RenderMode renderMode = RenderMode::Triangle;
 };

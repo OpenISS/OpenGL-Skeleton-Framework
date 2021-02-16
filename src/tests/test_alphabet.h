@@ -43,7 +43,7 @@ public:
 
         Resources::basicShader.activate();
 
-        // Render the transformed unit cubes that compose the current letter
+        // Render the transformed unit cubes that compose the current character
         for (auto transform : cubes)
         {
             glm::mat4 cubeMatrix = modelMatrix * transform;

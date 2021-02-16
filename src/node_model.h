@@ -4,6 +4,11 @@
 #include "resources.h"
 #include "shader.h"
 
+/**
+ * Member of the scene graph, rendered using its associated mesh and shader.
+ * 
+ * @see SceneGraph
+ */
 class NodeModel : public Node
 {
 public:

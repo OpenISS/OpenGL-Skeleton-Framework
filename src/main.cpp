@@ -38,7 +38,6 @@ GLFWwindow* setupGL();
 
 int main(int argc, char*argv[])
 {
-    // Setup openGL context GLEW / GLFW calls, callbacks, etc....
     GLFWwindow *window = setupGL();
     if (window == nullptr)
         return -1;
@@ -69,12 +68,14 @@ int main(int argc, char*argv[])
     return 0;
 }
 
+// Setup OpenGL context GLEW/GLFW calls, callbacks, etc...
 GLFWwindow* setupGL()
 {
     // Initialize GLFW and OpenGL version
     glfwSetErrorCallback(glfwErrorCallback);
     glfwInit();
 
+    // Request OpenGL v3.2 core profile
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -84,7 +85,7 @@ GLFWwindow* setupGL()
     glfwWindowHint(GLFW_SAMPLES, world.windowSamples); // MSAA
     glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE); // Double buffering
 
-    // Create Window and rendering context using GLFW
+    // Create window and rendering context using GLFW
     GLFWwindow *window = glfwCreateWindow(world.windowWidth, world.windowHeight, world.windowTitle, nullptr, nullptr);
     if (window == nullptr)
     {
