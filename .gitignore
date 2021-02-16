@@ -385,3 +385,6 @@ FodyWeavers.xsd
 .AppleDouble
 .LSOverride
 ._*
+/docs/sphinx/_api
+/docs/sphinx/_build
+/docs/doxygen
