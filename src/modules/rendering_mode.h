@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "../module.h"
 
+/// OpenGL polygon mode for rendering
 enum class RenderMode
 {
     Point,
@@ -10,30 +11,14 @@ enum class RenderMode
     Triangle
 };
 
+/**
+ * Sets OpenGL polygon mode.
+ * 
+ * @see RenderMode
+ */
 class RenderingMode : public Module
 {
 public:
-
-    /*void OnKey(World& world, int key, int action, int mods) override
-    {
-        Module::OnKey(world, key, action, mods);
-
-        if (action == GLFW_PRESS)
-        {
-            if (key == GLFW_KEY_P)
-            {
-                curMode = RenderMode::Point;
-            }
-            else if (key == GLFW_KEY_L)
-            {
-                curMode = RenderMode::Line;
-            }
-            else if (key == GLFW_KEY_T)
-            {
-                curMode = RenderMode::Triangle;
-            }
-        }
-    }*/
 
     void SetupPolygonMode(RenderMode polygonMode)
     {

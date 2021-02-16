@@ -1,6 +1,10 @@
 #pragma once
 #include <glm/glm.hpp>
 
+/** @file
+ * Utility functions for dealing with colors.
+*/
+
 /**
  * Transforms hex code to float vector format
  * 
