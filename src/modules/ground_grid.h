@@ -5,14 +5,20 @@
 #include "../resources.h"
 #include "../world.h"
 
+/*
+* grid class 
+* 
+* creation and rendering of grid
+*/
 class GroundGrid : public Module
 {
 public:
-
+    /// overriden startup function for grid 
     void Startup(World& world) override
     {
         grid.vertices.clear();
 
+        // loop for 128 lines along x axis
         for (int x = 0; x <= 128; x++)
         {
             Vertex start, end;
@@ -24,6 +30,7 @@ public:
             grid.vertices.push_back(end);
         }
 
+        // loop for 128 lines along z axis
         for (int z = 0; z <= 128; z++)
         {
             Vertex start, end;
@@ -40,6 +47,7 @@ public:
         grid.uploadBuffersToGPU();
     };
 
+    /// overriden render function for grid
     void Render(World& world) override
     {
         Module::Render(world);
