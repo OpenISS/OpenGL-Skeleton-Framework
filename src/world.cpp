@@ -31,7 +31,7 @@ void World::AddModules()
 {
     // Modules
     modules.push_back(renderingMode);
-    modules.push_back(new FpsCamera());
+    modules.push_back(new FPSCamera());
     modules.push_back(new WorldOrientation());
     modules.push_back(new GroundGrid());
     modules.push_back(new OriginAxis());

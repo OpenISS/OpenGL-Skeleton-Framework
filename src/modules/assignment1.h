@@ -106,17 +106,22 @@ public:
         }
     }
 
+    /**
+     * Places each child in root in an arc centered at (radius, 0, 0), evenly spaced out by interval_degrees.
+     * 
+     * Children are rotated to face (0, 0, 0). Their positions are relative to (radius, 0, 0).
+     */
     void placeCharacters(Node& root, float interval_degrees, float radius) const
     {
+        // For symmetry around angle 0
         float theta = interval_degrees * -(static_cast<float>(root.numChildren() - 1) / 2.0f); 
 
-        auto it = root.beginChildren();
-        auto end = root.endChildren();
-        for (; it != end; ++it)
+        for (auto child : root)
         {
-            Node& child = **it;
-            child.transform =
+            child->transform =
+                // Position on arc, relative to (radius, 0, 0)
                 glm::translate(glm::mat4(1.0f), getPosOnCircle(theta, radius) - glm::vec3(radius, 0.0f, 0.0f)) *
+                // Rotation to face (0, 0, 0)
                 glm::rotate(glm::mat4(1.0f), glm::radians(-theta - 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             theta += interval_degrees;
         }
@@ -221,12 +226,9 @@ public:
             else
                 polygonMode = RenderMode::Triangle;
 
-            auto it = selected->beginChildren();
-            auto end = selected->endChildren();
-            for (; it != end; ++it)
+            for (auto child : *selected)
             {
-                Node& child = **it;
-                NodeCharacter* character = dynamic_cast<NodeCharacter*>(&child);
+                NodeCharacter* character = dynamic_cast<NodeCharacter*>(child);
                 if (character != nullptr)
                     character->renderMode = polygonMode;
             }

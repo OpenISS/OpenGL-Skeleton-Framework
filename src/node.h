@@ -50,20 +50,20 @@ public:
         return children.at(index);
     }
 
-    std::vector<Node*>::iterator beginChildren()
+    std::vector<Node*>::iterator begin()
     {
         return children.begin();
     }
-    std::vector<Node*>::const_iterator beginChildren() const
+    std::vector<Node*>::const_iterator begin() const
     {
         return children.begin();
     }
 
-    std::vector<Node*>::iterator endChildren()
+    std::vector<Node*>::iterator end()
     {
         return children.end();
     }
-    std::vector<Node*>::const_iterator endChildren() const
+    std::vector<Node*>::const_iterator end() const
     {
         return children.end();
     }

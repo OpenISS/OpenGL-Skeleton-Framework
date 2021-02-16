@@ -27,11 +27,8 @@ void SceneGraph::walkNode(World& world, Node& node, glm::mat4 stack)
     stack *= node.getTransform();
     node.render(world, stack);
 
-    auto it = node.beginChildren();
-    auto end = node.endChildren();
-    for (; it != end; ++it)
+    for (auto child : node)
     {
-        Node& child = **it;
-        walkNode(world, child, stack);
+        walkNode(world, *child, stack);
     }
 }

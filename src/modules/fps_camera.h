@@ -12,7 +12,7 @@ enum class MouseInputMode
     Zoom,
 };
 
-class FpsCamera : public Module
+class FPSCamera : public Module
 {
 public:
 
