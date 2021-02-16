@@ -18,7 +18,7 @@ public:
     {
         grid.vertices.clear();
 
-        // loop for 128 lines along x axis
+        // loop for creating 128 lines along x axis
         for (int x = 0; x <= 128; x++)
         {
             Vertex start, end;
@@ -30,7 +30,7 @@ public:
             grid.vertices.push_back(end);
         }
 
-        // loop for 128 lines along z axis
+        // loop for creating 128 lines along z axis
         for (int z = 0; z <= 128; z++)
         {
             Vertex start, end;
