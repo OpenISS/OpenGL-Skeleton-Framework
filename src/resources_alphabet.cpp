@@ -10,28 +10,31 @@ void ResourcesAlphabet::initialize()
     std::istringstream s = std::istringstream(exported);
     std::string line;
 
+    // Read line by line
     char currentCharacter;
     while (std::getline(s, line))
     {
-        if (line.length() <= 0)
+        if (line.length() <= 0) // Slipping empty line
         {
             continue;
         }
-        else if (line.length() == 1)
+        else if (line.length() == 1) // Handling a new character
         {
             currentCharacter = line.at(0);
             cubesMap.emplace(currentCharacter, std::vector<glm::mat4>());
         }
-        else
+        else // Add a new cube transform to the current character
         {
             std::istringstream l = std::istringstream(line);
 
+            // Parse position, scale, rotation
             float px, py, pz, sx, sy, sz, rx, ry, rz;
             l >> px  >> py  >> pz >> sx  >> sy  >> sz  >> rx >> ry >> rz;
 
+            // Combine position, scale, rotation into a transformation matrix
             glm::mat4 transform = glm::mat4(1.0f);
             transform = glm::translate(transform, glm::vec3(px, py, pz));
-            transform *= glm::eulerAngleXZ(glm::radians(rx), glm::radians(rz)); // Y angle is always 0
+            transform *= glm::eulerAngleXZ(glm::radians(rx), glm::radians(rz)); // Y angle is always 0, therefore unused
             transform = glm::scale(transform, glm::vec3(sx, sy, sz));
 
             cubesMap.find(currentCharacter)->second.push_back(transform);
