@@ -4,8 +4,11 @@
 #include <iostream>
 #include <string>
 
-// Inspired by code from Lab
-
+/**
+ * Abstracts shader compilation, linking, and uniform updates.
+ * 
+ * Inspired by code from Lab from the labs.
+ */
 class Shader
 {
 public:

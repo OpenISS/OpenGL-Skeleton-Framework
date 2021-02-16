@@ -63,6 +63,7 @@ void World::Startup()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
+// Shuts down modules in reverse order
 void World::Shutdown()
 {
     for (int i = static_cast<int>(modules.size() - 1); i >= 0; --i)
@@ -95,7 +96,7 @@ void World::Render()
     glCullFace(GL_BACK);
     glEnable(GL_CULL_FACE);
 
-    // Enalbe MSAA
+    // Enable MSAA
     if (windowSamples > 0)
         glEnable(GL_MULTISAMPLE);
 

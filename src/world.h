@@ -6,6 +6,11 @@
 #include "modules/scene_graph.h"
 #include "shader.h"
 
+/**
+ * Manages all modules. Contains global state like the SceneGraph and the Camera.
+ * 
+ * Add new modules inside World::AddModules().
+ */
 class World
 {
 public:
