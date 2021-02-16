@@ -8,6 +8,13 @@
 #include "../resources.h"
 #include "../world.h"
 
+/**
+ * Tests the SceneGraph hierarchy system.
+ * Displays complex circular motion thanks to a nested hierarchy.
+ * 
+ * @see NodeModel
+ * @see SceneGraph
+ */
 class TestSceneGraph : public Module
 {
 public:
@@ -15,6 +22,16 @@ public:
     void Startup(World& world) override
     {
         Module::Startup(world);
+
+        // Hierarchy and movement:
+        // * localRoot (rotates around itself)
+        //     * cube1 (no local motion)
+        //         * cube3 (rotates in a circle around local origin)
+        //     * cube2 (no local motion)
+        //         * cube4 (rotates in a circle around local origin)
+        //     * letter1 (no local motion)
+        //     * letter2 (no local motion)
+        //     * letter3 (no local motion)
 
         localRoot = new Node();
 
@@ -27,10 +44,12 @@ public:
         letter2 = new NodeCharacter('N', Resources::basicShader, 2.0f);
         letter3 = new NodeCharacter('P', Resources::basicShader, 2.0f);
 
-        cube1->color = hexToFloatRGB(0xfaf489);
-        cube2->color = hexToFloatRGB(0xfaf489);
-        cube3->color = hexToFloatRGB(0xadebf7);
-        cube4->color = hexToFloatRGB(0xadebf7);
+        const glm::vec3 yellow = hexToFloatRGB(0xfaf489);
+        const glm::vec3 blue   = hexToFloatRGB(0xadebf7);
+        cube1->color = yellow;
+        cube2->color = yellow;
+        cube3->color = blue;
+        cube4->color = blue;
 
         world.sceneGraph->addChild(*localRoot);
         localRoot->addChild(*cube1);
@@ -53,7 +72,7 @@ public:
     void Shutdown(World& world) override
     {
         world.sceneGraph->removeChild(*localRoot);
-        delete localRoot;
+        delete localRoot; // Recursively deletes all its children
     }
 
     void Update(World& world, float deltaSeconds) override
@@ -62,8 +81,8 @@ public:
 
         angle += anglesPerSecond * deltaSeconds;
 
-        localRoot->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -6.0f));
-        localRoot->transform = glm::rotate(localRoot->transform, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
+        localRoot->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -6.0f)); // Pushes back from origin
+        localRoot->transform = glm::rotate(localRoot->transform, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotates around itself
 
         cube3->transform = glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotates in place
         cube3->transform = glm::translate(cube3->transform, glm::vec3(0.0f, 0.0f, 1.5f)); // Gives it a radius of rotation
