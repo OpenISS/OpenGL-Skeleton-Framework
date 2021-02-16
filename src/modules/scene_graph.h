@@ -14,6 +14,9 @@ class World;
  * 
  * Node subtypes can represent different scene objects (ex NodeModel).
  * 
+ * Children are managed as pointers, but SceneGraph takes no ownership over them.
+ * The user is responsible for managing their memory allocation/deallocation.
+ * 
  * @see Node
  * @see NodeModel
  */
