@@ -63,6 +63,7 @@ public:
 
     void OnMousePressed(World& world, int button, int mods) override
     {
+        // Select appropriate Mouse Mode based on what button was clicked
         if (button == GLFW_MOUSE_BUTTON_LEFT)
             mouseInputMode = MouseInputMode::Zoom;
         if (button == GLFW_MOUSE_BUTTON_MIDDLE)
@@ -73,6 +74,7 @@ public:
 
     void OnMouseMoved(World& world, float x, float y) override
     {
+        // Short workaround for avoiding huge camera motion on initial mouse movement
         if (firstMoved)
         {
             lastMouse.x = x;
@@ -113,6 +115,7 @@ public:
 
         if (deltaMouse != glm::vec2())
         {
+            // set angle changes since last frame
             float yaw = deltaMouse.x * turnSpeed * deltaSeconds;
             float pitch = deltaMouse.y * turnSpeed * deltaSeconds;
 
@@ -122,12 +125,11 @@ public:
                 camera->setFov(fov - pitch);
 
                 if (world.debug)
-                {
                     std::cout << "Update FOV: " << fov << " - " << pitch << std::endl;
-                }
             }
             else
             {
+                // To support Freecam mode, we track whether pan / tilt actions are enabled and only send the angle if they are
                 bool allowPan = mouseInputMode == MouseInputMode::Pan || mouseInputMode == MouseInputMode::FreeCam;
                 bool allowTilt = mouseInputMode == MouseInputMode::Tilt || mouseInputMode == MouseInputMode::FreeCam;
 
@@ -140,11 +142,13 @@ public:
                 }
             }
 
+            // reset the change of mouse coordinates
             deltaMouse = glm::vec2();
         }
 
         if (movement != glm::vec2())
         {
+            // smooth camera movement using input from keyboard and delta time
             glm::vec3 xAxis = camera->right() * movementSpeed * movement.x * deltaSeconds;
             glm::vec3 yAxis = camera->forward() * movementSpeed * movement.y * deltaSeconds;
             glm::vec3 deltaPos = xAxis + yAxis;
