@@ -76,7 +76,7 @@ public:
     /**
      * Rotates by modifying direction. Yaw and pitch are in radians.
      * 
-     * Yaw rotates around up(). Pitch rotates around right().
+     * Yaw rotates around getUpAxis(). Pitch rotates around right().
      */
     void rotate(float yaw = 0.0f, float pitch = 0.0f);
 

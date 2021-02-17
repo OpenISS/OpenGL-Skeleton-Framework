@@ -4,9 +4,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "../module.h"
 
-/**
- * Various camera operation modes
- */
 enum class MouseInputMode
 {
     /// Camera can only rotate horizontally
@@ -24,6 +21,8 @@ enum class MouseInputMode
 
 /**
  * Implements classic FPS game camera movement and rotation.
+ * 
+ * @see Camera
  */
 class FPSCamera : public Module
 {
