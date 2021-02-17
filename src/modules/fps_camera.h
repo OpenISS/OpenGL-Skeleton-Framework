@@ -4,14 +4,27 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "../module.h"
 
+/**
+ * Various camera operation modes
+ */
 enum class MouseInputMode
 {
+    /// Camera can only rotate horizontally
     Pan,
+
+    /// Camera can only rotate vertically
     Tilt,
+
+    /// Camera can rotate on both axis
     FreeCam,
+
+    /// Camera does not rotate at all, while zoom is being changed through the FOV
     Zoom,
 };
 
+/**
+ * Implements classic FPS game camera movement and rotation.
+ */
 class FPSCamera : public Module
 {
 public:

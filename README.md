@@ -45,15 +45,21 @@ In VSCode with the `CMake` and `CMake Tools` extensions installed:
 3. Set target to `SunRay` and build
 
 # Controls
-* Camera: **W/A/S/D** to move, move mouse to look, **left/right mouse buttons** to zoom in/out
-* World orientation: **left/right arrows** to rotate vertically, **up/down arrows** to rotate horizontally
+* **W/A/S/D** to move camera, **mouse movement** to rotate camera
+* **Left mouse button + mouse movement** to zoom camera in/out
+* **Middle mouse button + mouse movement** to tilt camera
+* **Right mouse button + mouse movement** to pan camera
+* **Left/right arrows** to rotate world around its `X` axis, **up/down arrows** to rotate world around its `Y` axis
 * **1/2/3/4/5** to select model
 * **T/L/P** to set model to triangle/line/point rendering mode
 * **Y/I** to scale model up/down
-* **H/K/U/J** (uppercase) to move model
-* **H/K** (lowercase) to rotate model about Y axis
+* **U/J** (uppercase) to move model up/down
+* **H/K** (uppercase) to move model to its left/right
+* **H/K** (lowercase) to rotate model about its `Y` axis
 
 # Architecture
+API docs also available.
+
 ## Application Lifecycle
 * **main.cpp:** GLFW window & input handling + OpenGL setup.
 * **World:** Contains global state such as the camera and scene graph. Runs update and render loops. Manages all modules.
