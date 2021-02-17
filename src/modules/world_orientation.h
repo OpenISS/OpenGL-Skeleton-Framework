@@ -4,12 +4,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "../module.h"
 
-/*
-* WorldOrientation class
-*
-* Creating key commands orient around the world
-* Rotates the world around the x and y axis 
-*/
+/**
+ * WorldOrientation class
+ *
+ * Creating key commands orient around the world
+ * Rotates the world around the x and y axis
+ */
 class WorldOrientation : public Module
 {
 public:
@@ -23,7 +23,7 @@ public:
             movement.y = 0;
     }
 
-    /// Key commands to move around axis 
+    /// Key commands to move around axis
     void OnKeyPressed(World& world, int key, int mods) override
     {
         if (key == GLFW_KEY_HOME || key == GLFW_KEY_R)

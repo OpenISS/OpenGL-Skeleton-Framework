@@ -5,13 +5,13 @@
 #include "../resources.h"
 #include "../world.h"
 
-/*
-* Grid class 
-* 
-* Each line is set to a constant unit size (0.25f), set in resources
-* 128x128 lines set along x and z axis
-* Creation and rendering of grid
-*/
+/**
+ * Grid class
+ * 
+ * Each line is set to a constant unit size (0.25f), set in resources
+ * 128x128 lines set along x and z axis
+ * Creation and rendering of grid
+ */
 class GroundGrid : public Module
 {
 public:

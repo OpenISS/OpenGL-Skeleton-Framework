@@ -5,13 +5,13 @@
 #include "../resources.h"
 #include "../world.h"
 
-/*
-* OriginAxis class
-*
-* Each line are for each world direction (x,y,z), where each line is 7 units long 
-* Width size set to the consatnt unitsize (0.25f) same as the grid
-* Creation and rendering of OriginAxis
-*/
+/**
+ * OriginAxis class
+ *
+ * Each line are for each world direction (x,y,z), where each line is 7 units long
+ * Width size set to the consatnt unitsize (0.25f) same as the grid
+ * Creation and rendering of OriginAxis
+ */
 class OriginAxis : public Module
 {
 public:
@@ -21,14 +21,14 @@ public:
     {
         axis.vertices.clear();
 
-        //Coordinates for OriginAxis
+        // Coordinates for OriginAxis
         Vertex center, x, y, z;
         center.position = glm::vec3(0.0f, 0.0f, 0.0f);
         x.position = glm::vec3(Resources::unitSize * 7.0f, 0.0f, 0.0f);
         y.position = glm::vec3(0.0f, Resources::unitSize * 7.0f, 0.0f);
         z.position = glm::vec3(0.0f, 0.0f, Resources::unitSize * 7.0f);
 
-        //Colour for OriginAxis
+        // Colour for OriginAxis
         x.color = glm::vec3(1.0f, 0.0f, 0.0f);
         y.color = glm::vec3(0.0f, 1.0f, 0.0f);
         z.color = glm::vec3(0.0f, 0.0f, 1.0f);
