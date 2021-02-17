@@ -6,19 +6,21 @@
 #include "../world.h"
 
 /*
-* grid class 
+* Grid class 
 * 
-* creation and rendering of grid
+* Each line is set to a constant unit size (0.25f), set in resources
+* 128x128 lines set along x and z axis
+* Creation and rendering of grid
 */
 class GroundGrid : public Module
 {
 public:
-    /// overriden startup function for grid 
+    /// Overriden startup function for grid 
     void Startup(World& world) override
     {
         grid.vertices.clear();
 
-        // loop for creating 128 lines along x axis
+        // Loop for creating 128 lines along x axis
         for (int x = 0; x <= 128; x++)
         {
             Vertex start, end;
@@ -30,7 +32,7 @@ public:
             grid.vertices.push_back(end);
         }
 
-        // loop for creating 128 lines along z axis
+        // Loop for creating 128 lines along z axis
         for (int z = 0; z <= 128; z++)
         {
             Vertex start, end;
@@ -47,7 +49,7 @@ public:
         grid.uploadBuffersToGPU();
     };
 
-    /// overriden render function for grid
+    /// Overriden render function for grid
     void Render(World& world) override
     {
         Module::Render(world);

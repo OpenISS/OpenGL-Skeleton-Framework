@@ -8,25 +8,27 @@
 /*
 * OriginAxis class
 *
-* creation and rendering of OriginAxis
+* Each line are for each world direction (x,y,z), where each line is 7 units long 
+* Width size set to the consatnt unitsize (0.25f) same as the grid
+* Creation and rendering of OriginAxis
 */
 class OriginAxis : public Module
 {
 public:
 
-    /// overriden startup function for OriginAxis 
+    /// Overriden startup function for OriginAxis 
     void Startup(World& world) override
     {
         axis.vertices.clear();
 
-        //coordinates for OriginAxis
+        //Coordinates for OriginAxis
         Vertex center, x, y, z;
         center.position = glm::vec3(0.0f, 0.0f, 0.0f);
         x.position = glm::vec3(Resources::unitSize * 7.0f, 0.0f, 0.0f);
         y.position = glm::vec3(0.0f, Resources::unitSize * 7.0f, 0.0f);
         z.position = glm::vec3(0.0f, 0.0f, Resources::unitSize * 7.0f);
 
-        //colour for OriginAxis
+        //Colour for OriginAxis
         x.color = glm::vec3(1.0f, 0.0f, 0.0f);
         y.color = glm::vec3(0.0f, 1.0f, 0.0f);
         z.color = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -46,7 +48,7 @@ public:
         axis.uploadBuffersToGPU();
     };
 
-    /// overriden Render function for OriginAxis 
+    /// Overriden Render function for OriginAxis 
     void Render(World& world) override
     {
         Module::Render(world);
