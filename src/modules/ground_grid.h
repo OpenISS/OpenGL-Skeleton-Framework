@@ -15,7 +15,7 @@
 class GroundGrid : public Module
 {
 public:
-    /// Overriden startup function for grid 
+    
     void Startup(World& world) override
     {
         grid.vertices.clear();
@@ -48,8 +48,7 @@ public:
         grid.setDrawingMode(DrawMode::VERTEX);
         grid.uploadBuffersToGPU();
     };
-
-    /// Overriden render function for grid
+  
     void Render(World& world) override
     {
         Module::Render(world);
