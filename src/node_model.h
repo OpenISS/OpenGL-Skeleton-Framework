@@ -1,8 +1,14 @@
 #pragma once
 #include "mesh.h"
 #include "node.h"
+#include "resources.h"
 #include "shader.h"
 
+/**
+ * Member of the scene graph, rendered using its associated mesh and shader.
+ * 
+ * @see SceneGraph
+ */
 class NodeModel : public Node
 {
 public:
@@ -18,9 +24,9 @@ public:
         this->mesh = &mesh;
     }
 
-    virtual void render(World& world, glm::mat4& matrixStack)
+    virtual void render(World& world, const glm::mat4& matrixStack) override
     {
-        if (shader != NULL && mesh != NULL)
+        if (shader != nullptr && mesh != nullptr)
         {
             shader->setModelMatrix(matrixStack);
             shader->setColor(color);
@@ -29,7 +35,7 @@ public:
         }
     }
 
-    Shader* shader = NULL;
-    Mesh* mesh = NULL;
-    glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+    Shader* shader = nullptr;
+    Mesh* mesh = nullptr;
+    glm::vec3 color = Resources::colorWhite;
 };

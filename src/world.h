@@ -1,10 +1,16 @@
 #pragma once
 #include <vector>
+#include "camera.h"
 #include "mesh.h"
-#include "module_rendering_mode.h"
-#include "module_scene_graph.h"
+#include "modules/rendering_mode.h"
+#include "modules/scene_graph.h"
 #include "shader.h"
 
+/**
+ * Manages all modules. Contains global state like the SceneGraph and the Camera.
+ * 
+ * Add new modules inside World::AddModules().
+ */
 class World
 {
 public:
@@ -19,19 +25,24 @@ public:
 
     void OnKey(int key, int action, int mods);
 
-    ModuleSceneGraph* sceneGraph;
+    void OnMouseMoved(float x, float y);
+    void OnMousePressed(int button, int mods);
+    void OnMouseReleased(int button, int mods);
+
+    RenderingMode* renderingMode;
+    SceneGraph* sceneGraph;
+    Camera* camera;
 
     int windowWidth;
     int windowHeight;
     float windowAspectRatio;
     int windowSamples;
     const char* windowTitle;
+    bool debug = false;
 
 protected:
 
     void AddModules();
 
     std::vector<Module*> modules = std::vector<Module*>();
-
-    ModuleRenderingMode* renderingMode;
 };

@@ -16,60 +16,43 @@ static void glfwErrorCallback(int error, const char* description)
 static void glfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-    {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
     else
-    {
         world.OnKey(key, action, mods);
-    }
 }
+
+static void glfwMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (action == GLFW_RELEASE)
+        world.OnMouseReleased(button, mods);
+    if (action == GLFW_PRESS)
+        world.OnMousePressed(button, mods);
+}
+
+static void glfwCursorPosCallback(GLFWwindow* window, const double x, const double y)
+{
+    world.OnMouseMoved(static_cast<float>(x), static_cast<float>(y));
+}
+
+GLFWwindow* setupGL();
 
 int main(int argc, char*argv[])
 {
-    // Initialize GLFW and OpenGL version
-    glfwSetErrorCallback(glfwErrorCallback);
-    glfwInit();
-    
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // Prevent window resize
-    glfwWindowHint(GLFW_SAMPLES, world.windowSamples); // MSAA
-    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE); // Double buffering
-
-    // Create Window and rendering context using GLFW
-    GLFWwindow* window = glfwCreateWindow(world.windowWidth, world.windowHeight, world.windowTitle, NULL, NULL);
-    if (window == NULL)
-    {
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
+    GLFWwindow *window = setupGL();
+    if (window == nullptr)
         return -1;
-    }
-    glfwSetKeyCallback(window, glfwKeyCallback);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Lock cursor to window
-    glfwMakeContextCurrent(window);
-
-    // Initialize GLEW
-    glewExperimental = true; // Needed for core profile
-    if (glewInit() != GLEW_OK) {
-        std::cerr << "Failed to create GLEW" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-
-    // Enable vsync
-    glfwSwapInterval(1);
 
     world.Startup();
 
-    float lastFrameTime = static_cast<float>(glfwGetTime());
+    float deltaTime, lastFrameTime = 0;
+
     // Entering Main Loop
-    while(!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window))
     {
-        world.Update(lastFrameTime);
+        deltaTime = static_cast<float>(glfwGetTime()) - lastFrameTime; // In seconds
+        lastFrameTime += deltaTime;
+
+        world.Update(deltaTime);
         world.Render();
 
         // End Frame
@@ -83,4 +66,51 @@ int main(int argc, char*argv[])
     glfwTerminate();
 
     return 0;
+}
+
+// Setup OpenGL context GLEW/GLFW calls, callbacks, etc...
+GLFWwindow* setupGL()
+{
+    // Initialize GLFW and OpenGL version
+    glfwSetErrorCallback(glfwErrorCallback);
+    glfwInit();
+
+    // Request OpenGL v3.2 core profile
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // Prevent window resize
+    glfwWindowHint(GLFW_SAMPLES, world.windowSamples); // MSAA
+    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE); // Double buffering
+
+    // Create window and rendering context using GLFW
+    GLFWwindow *window = glfwCreateWindow(world.windowWidth, world.windowHeight, world.windowTitle, nullptr, nullptr);
+    if (window == nullptr)
+    {
+        std::cerr << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return nullptr;
+    }
+    glfwSetKeyCallback(window, glfwKeyCallback);
+    glfwSetMouseButtonCallback(window, glfwMouseButtonCallback);
+    glfwSetCursorPosCallback(window, glfwCursorPosCallback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Lock cursor to window
+    glfwSetInputMode(window, GLFW_LOCK_KEY_MODS, GLFW_TRUE);
+    glfwMakeContextCurrent(window);
+
+    // Enable vsync
+    glfwSwapInterval(1);
+
+    // Initialize GLEW
+    glewExperimental = GL_TRUE; // Needed for core profile
+    if (glewInit() != GLEW_OK)
+    {
+        std::cerr << "Failed to create GLEW" << std::endl;
+        glfwTerminate();
+        return nullptr;
+    }
+
+    return window;
 }

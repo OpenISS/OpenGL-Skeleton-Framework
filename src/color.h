@@ -1,6 +1,16 @@
 #pragma once
 #include <glm/glm.hpp>
 
+/** @file
+ * Utility functions for dealing with colors.
+*/
+
+/**
+ * Transforms hex code to float vector format
+ * 
+ * @param hex RRGGBB in hex, each channel ranging 0-255
+ * @return An RGB float vector, each channel ranging 0-1
+ */
 glm::vec3 hexToFloatRGB(int hex)
 {
     int r = (hex >> 16) & 255;

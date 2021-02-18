@@ -4,68 +4,72 @@
 #include <iostream>
 #include <string>
 
-// Inspired by code from Lab
-
+/**
+ * Abstracts shader compilation, linking, and uniform updates.
+ * 
+ * Inspired by code from Lab from the labs.
+ */
 class Shader
 {
 public:
 
-    void activate()
+    void activate() const
     {
         glUseProgram(programID);
     }
 
     bool create(const std::string vertexSrc, const std::string fragmentSrc)
     {
-        create(vertexSrc.c_str(), fragmentSrc.c_str());
+        return create(vertexSrc.c_str(), fragmentSrc.c_str());
     }
 
     bool create(const char* vertexSrc, const char* fragmentSrc)
     {
         bool overallSuccess = true;
 
-        // vertex shader
+        // Vertex shader
         int vertexShader = glCreateShader(GL_VERTEX_SHADER);
         const char* vertexShaderSource = vertexSrc;
-        glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+        glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
         glCompileShader(vertexShader);
 
-        // check for shader compile errors
+        // Check for shader compile errors
         int success;
         char infoLog[512];
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
         if (!success)
         {
-            glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+            glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
             std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
             overallSuccess = false;
         }
 
-        // fragment shader
+        // Fragment shader
         int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         const char* fragmentShaderSource = fragmentSrc;
-        glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+        glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
         glCompileShader(fragmentShader);
 
-        // check for shader compile errors
+        // Check for shader compile errors
         glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
         if (!success)
         {
-            glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+            glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
             std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
             overallSuccess = false;
         }
 
-        // link shaders
+        // Link shaders
         int shaderProgram = glCreateProgram();
         glAttachShader(shaderProgram, vertexShader);
         glAttachShader(shaderProgram, fragmentShader);
         glLinkProgram(shaderProgram);
 
-        // check for linking errors
+        // Check for linking errors
         glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-        if (!success) {
-            glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        if (!success)
+        {
+            glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
             std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
             overallSuccess = false;
         }
@@ -78,31 +82,37 @@ public:
         return overallSuccess;
     }
 
-    int getProgramID()
+    int getProgramID() const
     {
         return programID;
     }
 
 
-    void setModelMatrix(glm::mat4& mat)
+    void setModelMatrix(const glm::mat4& mat) const
     {
         GLuint location = glGetUniformLocation(programID, "modelMatrix");
         glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
     }
 
-    void setViewMatrix(glm::mat4& mat)
+    void setViewProjectionMatrix(const glm::mat4& view, const glm::mat4& projection) const
+    {
+        setViewMatrix(view);
+        setProjectionMatrix(projection);
+    }
+
+    void setViewMatrix(const glm::mat4& mat) const
     {
         GLuint location = glGetUniformLocation(programID, "viewMatrix");
         glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
     }
 
-    void setProjectionMatrix(glm::mat4& mat)
+    void setProjectionMatrix(const glm::mat4& mat) const
     {
         GLuint location = glGetUniformLocation(programID, "projectionMatrix");
         glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
     }
 
-    void setColor(glm::vec3& color)
+    void setColor(const glm::vec3& color) const
     {
         GLuint location = glGetUniformLocation(programID, "color");
         glUniform3fv(location, 1, glm::value_ptr(color));
