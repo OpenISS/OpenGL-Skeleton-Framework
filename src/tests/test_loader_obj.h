@@ -31,6 +31,7 @@ public:
         Resources::basicShader.setModelMatrix(modelMatrix);
         Resources::basicShader.setColor(Resources::colorWhite);
 
+        glDisable(GL_CULL_FACE);
         mesh.draw();
     }
 
