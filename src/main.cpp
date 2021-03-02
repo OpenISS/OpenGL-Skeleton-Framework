@@ -42,7 +42,7 @@ int main(int argc, char*argv[])
     if (window == nullptr)
         return -1;
 
-    world.Startup();
+    world.Startup(window);
 
     float deltaTime, lastFrameTime = 0;
 

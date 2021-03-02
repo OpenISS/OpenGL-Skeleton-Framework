@@ -10,6 +10,7 @@
 #include "resources.h"
 #include "resources_alphabet.h"
 #include "tests/test_alphabet.h"
+#include "tests/test_imgui_integration.h"
 #include "tests/test_loader_obj.h"
 #include "tests/test_scene_graph.h"
 #include "tests/test_unit_cube.h"
@@ -17,6 +18,7 @@
 
 World::World()
 {
+    imgui = new ImGuiIntegration();
     sceneGraph = new SceneGraph();
     renderingMode = new RenderingMode();
 
@@ -31,6 +33,7 @@ World::World()
 void World::AddModules()
 {
     // Modules
+    modules.push_back(imgui);
     modules.push_back(renderingMode);
     modules.push_back(new FPSCamera());
     modules.push_back(new WorldOrientation());
@@ -39,19 +42,22 @@ void World::AddModules()
 
     // Tests
     // modules.push_back(new TestAlphabet());
+    // modules.push_back(new TestImGuiIntegration());
     // modules.push_back(new TestLoaderObj());
     // modules.push_back(new TestUnitCube());
     // modules.push_back(new TestVertexDrawing());
     // modules.push_back(new TestSceneGraph());
 
     modules.push_back(new Assignment1());
-    
+
     // Should always be last
     modules.push_back(sceneGraph);
 }
 
-void World::Startup()
+void World::Startup(void* window)
 {
+    this->window = window;
+
     Resources::initialize();
     ResourcesAlphabet::initialize();
 
@@ -104,14 +110,21 @@ void World::Render()
     if (windowSamples > 0)
         glEnable(GL_MULTISAMPLE);
 
+    imgui->PreRender(*this);
     for (Module* m : modules)
     {
         m->Render(*this);
     }
+    imgui->PostRender(*this);
 }
 
 void World::OnKey(int key, int action, int mods)
 {
+    if (imgui->wantCaptureKeyboard())
+        return;
+    if (key == GLFW_KEY_M && action == GLFW_PRESS)
+        imgui->enabled = !imgui->enabled;
+
     if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
     {
         debug = !debug;
@@ -136,6 +149,9 @@ void World::OnKey(int key, int action, int mods)
 
 void World::OnMouseMoved(float x, float y)
 {
+    if (imgui->wantCaptureMouse())
+        return;
+
     for (Module* m : modules)
     {
         m->OnMouseMoved(*this, x, y);
@@ -144,6 +160,9 @@ void World::OnMouseMoved(float x, float y)
 
 void World::OnMousePressed(int button, int mods)
 {
+    if (imgui->wantCaptureMouse())
+        return;
+
     for (Module* m : modules)
     {
         m->OnMousePressed(*this, button, mods);
@@ -152,6 +171,9 @@ void World::OnMousePressed(int button, int mods)
 
 void World::OnMouseReleased(int button, int mods)
 {
+    if (imgui->wantCaptureMouse())
+        return;
+
     for (Module* m : modules)
     {
         m->OnMouseReleased(*this, button, mods);

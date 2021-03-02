@@ -11,7 +11,7 @@ class TestLoaderObj : public Module
 {
 public:
 
-    void Startup(World& world)
+    void Startup(World& world) override
     {
         loader.loadFile(mesh, "teapot.obj");
         if (loader.getStatus() == LoaderOBJ::Status::SUCCESS)

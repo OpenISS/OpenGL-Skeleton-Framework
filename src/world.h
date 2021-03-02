@@ -2,6 +2,7 @@
 #include <vector>
 #include "camera.h"
 #include "mesh.h"
+#include "modules/imgui_integration.h"
 #include "modules/rendering_mode.h"
 #include "modules/scene_graph.h"
 #include "shader.h"
@@ -17,7 +18,7 @@ public:
 
     World();
 
-    void Startup();
+    void Startup(void* window);
     void Shutdown();
 
     void Update(float deltaSeconds);
@@ -29,9 +30,13 @@ public:
     void OnMousePressed(int button, int mods);
     void OnMouseReleased(int button, int mods);
 
-    /// Total seconds elapsed since the application started
-    float getTime() const { return time; };
+    /// Window object from the window library currently in use (ex: GLFW), cast as needed
+    void* getWindow() const { return window; }
 
+    /// Total seconds elapsed since the application started
+    float getTime() const { return time; }
+
+    ImGuiIntegration* imgui;
     RenderingMode* renderingMode;
     SceneGraph* sceneGraph;
     Camera* camera;
@@ -48,5 +53,6 @@ protected:
     void AddModules();
 
     std::vector<Module*> modules = std::vector<Module*>();
+    void* window = nullptr;
     float time = 0.0f;
 };
