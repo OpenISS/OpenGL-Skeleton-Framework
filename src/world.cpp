@@ -10,6 +10,7 @@
 #include "resources.h"
 #include "resources_alphabet.h"
 #include "tests/test_alphabet.h"
+#include "tests/test_loader_obj.h"
 #include "tests/test_scene_graph.h"
 #include "tests/test_unit_cube.h"
 #include "tests/test_vertex_drawing.h"
@@ -38,6 +39,7 @@ void World::AddModules()
 
     // Tests
     // modules.push_back(new TestAlphabet());
+    // modules.push_back(new TestLoaderObj());
     // modules.push_back(new TestUnitCube());
     // modules.push_back(new TestVertexDrawing());
     // modules.push_back(new TestSceneGraph());
