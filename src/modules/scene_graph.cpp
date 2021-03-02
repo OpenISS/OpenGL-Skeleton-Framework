@@ -24,12 +24,15 @@ void SceneGraph::removeChild(Node& child)
 
 void SceneGraph::walkNode(World& world, Node& node, glm::mat4 stack)
 {
-    // The stack object is a copy on the stack, can safely modify and pass forward
-    stack *= node.getTransform();
-    node.render(world, stack);
-
-    for (auto child : node)
+    if (node.visible)
     {
-        walkNode(world, *child, stack);
+        // The stack object is a copy on the stack, can safely modify and pass forward
+        stack *= node.getTransform();
+        node.render(world, stack);
+
+        for (auto child : node)
+        {
+            walkNode(world, *child, stack);
+        }
     }
 }

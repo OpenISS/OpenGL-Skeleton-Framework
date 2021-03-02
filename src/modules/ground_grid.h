@@ -56,10 +56,10 @@ public:
         glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-64.0f * Resources::unitSize, 0.0f, -64.0f * Resources::unitSize));
         modelMatrix = world.sceneGraph->root.transform * modelMatrix; // Take world orientation into account
 
+        Resources::basicShader.activate();
         Resources::basicShader.setModelMatrix(modelMatrix);
         Resources::basicShader.setColor(Resources::colorWhite);
 
-        Resources::basicShader.activate();
         grid.draw();
     }
 

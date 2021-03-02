@@ -101,7 +101,12 @@ public:
     {
         glm::mat4 view = camera->view();
         glm::mat4 projection = camera->projection();
-        Resources::basicShader.setViewProjectionMatrix(view, projection);
+
+        for (auto shader : Resources::getShaders())
+        {
+            shader->activate();
+            shader->setViewProjectionMatrix(view, projection);
+        }
     }
 
     void Update(World& world, float deltaSeconds) override

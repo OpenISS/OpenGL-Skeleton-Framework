@@ -29,6 +29,9 @@ public:
     void OnMousePressed(int button, int mods);
     void OnMouseReleased(int button, int mods);
 
+    /// Total seconds elapsed since the application started
+    float getTime() const { return time; };
+
     RenderingMode* renderingMode;
     SceneGraph* sceneGraph;
     Camera* camera;
@@ -45,4 +48,5 @@ protected:
     void AddModules();
 
     std::vector<Module*> modules = std::vector<Module*>();
+    float time = 0.0f;
 };

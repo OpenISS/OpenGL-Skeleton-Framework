@@ -35,14 +35,14 @@ public:
         {
             world.renderingMode->SetupPolygonMode(renderMode);
 
-            shader->setColor(color);
             shader->activate();
+            shader->setColor(color);
 
             // Render the transformed unit cubes that compose the current character
             for (auto transform : *cubes)
             {
                 glm::mat4 cubeMatrix = glm::scale(matrixStack, glm::vec3(scale)) * transform;
-                Resources::basicShader.setModelMatrix(cubeMatrix);
+                shader->setModelMatrix(cubeMatrix);
                 Resources::unitCube.draw();
             }
         }

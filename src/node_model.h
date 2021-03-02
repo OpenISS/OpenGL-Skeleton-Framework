@@ -28,9 +28,9 @@ public:
     {
         if (shader != nullptr && mesh != nullptr)
         {
+            shader->activate();
             shader->setModelMatrix(matrixStack);
             shader->setColor(color);
-            shader->activate();
             mesh->draw();
         }
     }

@@ -137,6 +137,9 @@ public:
     /// Transformation matrix, relative to the parent node
     glm::mat4 transform = glm::mat4(1.0f);
 
+    /// When false, this node and all its children will not be rendered
+    bool visible = true;
+
 protected:
 
     std::vector<Node*> children;

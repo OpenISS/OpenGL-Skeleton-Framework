@@ -82,6 +82,8 @@ void World::Update(float deltaSeconds)
     {
         m->Update(*this, deltaSeconds);
     }
+
+    time += deltaSeconds;
 }
 
 void World::Render()

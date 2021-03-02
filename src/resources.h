@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "mesh.h"
 #include "shader.h"
 
@@ -10,6 +11,9 @@ class Resources
 public:
 
     static void initialize();
+
+    /// Returns the list of all shaders used in the application, can be used to set uniforms globally for example
+    static const std::vector<const Shader*>& getShaders();
 
     /// Scales all meshes and layouts used in assignments
     static const float unitSize;
@@ -24,4 +28,8 @@ public:
     static Shader basicShader;
 
     static const glm::vec3 colorWhite;
+
+protected:
+
+    static std::vector<const Shader*> shaders;
 };

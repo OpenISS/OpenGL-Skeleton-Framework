@@ -118,6 +118,24 @@ public:
         glUniform3fv(location, 1, glm::value_ptr(color));
     }
 
+    void setTime(float time) const
+    {
+        GLuint location = glGetUniformLocation(programID, "time");
+        glUniform1f(location, time);
+    }
+
+    void setCustomVector(const char* name, const glm::vec3& value) const
+    {
+        GLuint location = glGetUniformLocation(programID, name);
+        glUniform3fv(location, 1, glm::value_ptr(value));
+    }
+
+    void setCustomFloat(const char* name, float value) const
+    {
+        GLuint location = glGetUniformLocation(programID, name);
+        glUniform1f(location, value);
+    }
+
 protected:
 
     int programID = -1;

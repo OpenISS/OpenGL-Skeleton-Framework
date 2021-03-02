@@ -5,6 +5,7 @@ Mesh Resources::unitCube;
 Mesh Resources::quad;
 Shader Resources::basicShader;
 const glm::vec3 Resources::colorWhite = glm::vec3(1.0f, 1.0f, 1.0f);
+std::vector<const Shader*> Resources::shaders;
 
 void Resources::initialize()
 {
@@ -70,4 +71,10 @@ void main()
 
     basicShader.create(vertexSrc, fragmentSrc);
     basicShader.setColor(Resources::colorWhite);
+    shaders.push_back(&basicShader);
+}
+
+const std::vector<const Shader*>& Resources::getShaders()
+{
+    return shaders;
 }
