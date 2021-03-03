@@ -20,6 +20,8 @@ class RenderingMode : public Module
 {
 public:
 
+    MODULE_CONSTRUCTOR(RenderingMode)
+
     void SetupPolygonMode(RenderMode polygonMode)
     {
         curMode = polygonMode;

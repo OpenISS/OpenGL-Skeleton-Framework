@@ -11,6 +11,8 @@ class TestLoaderObj : public Module
 {
 public:
 
+    MODULE_CONSTRUCTOR(TestLoaderObj)
+
     void Startup(World& world) override
     {
         loader.loadFile(mesh, "teapot.obj");
@@ -24,7 +26,7 @@ public:
 
         // Push back from camera + rotate around itself over time
         float angle = world.getTime() * anglesPerSecond;
-        glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -6.0f));
+        glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2.0f, -6.0f));
         modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
 
         Resources::basicShader.activate();

@@ -19,6 +19,8 @@ class TestSceneGraph : public Module
 {
 public:
 
+    MODULE_CONSTRUCTOR(TestSceneGraph)
+
     void Startup(World& world) override
     {
         Module::Startup(world);
@@ -67,12 +69,20 @@ public:
         letter1->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f,  2.5f));
         letter2->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f,  3.5f));
         letter3->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f,  4.5f));
+
+        setEnabled(enabled);
     }
 
     void Shutdown(World& world) override
     {
         world.sceneGraph->removeChild(*localRoot);
         delete localRoot; // Recursively deletes all its children
+    }
+
+    void setEnabled(bool enabled) override
+    {
+        this->enabled = enabled;
+        localRoot->visible = enabled;
     }
 
     void Update(World& world, float deltaSeconds) override
@@ -93,15 +103,15 @@ public:
 
 protected:
 
-    Node* localRoot;
-    NodeModel* cube1;
-    NodeModel* cube2;
-    NodeModel* cube3;
-    NodeModel* cube4;
-    NodeCharacter* letter1;
-    NodeCharacter* letter2;
-    NodeCharacter* letter3;
+    Node* localRoot = nullptr;
+    NodeModel* cube1 = nullptr;
+    NodeModel* cube2 = nullptr;
+    NodeModel* cube3 = nullptr;
+    NodeModel* cube4 = nullptr;
+    NodeCharacter* letter1 = nullptr;
+    NodeCharacter* letter2 = nullptr;
+    NodeCharacter* letter3 = nullptr;
 
-    float angle;
+    float angle = 0.0f;
     float anglesPerSecond = 60.0f;
 };

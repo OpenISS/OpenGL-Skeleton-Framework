@@ -17,6 +17,8 @@ class TestVertexDrawing : public Module
 {
 public:
 
+    MODULE_CONSTRUCTOR(TestVertexDrawing)
+
     void Update(World& world, float deltaSeconds) override
     {
         Module::Update(world, deltaSeconds);
@@ -41,6 +43,6 @@ public:
 
 protected:
 
-    float angle;
+    float angle = 0.0f;
     float anglesPerSecond = 30.0f;
 };

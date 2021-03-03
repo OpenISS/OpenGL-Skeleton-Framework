@@ -16,7 +16,8 @@ class OriginAxis : public Module
 {
 public:
 
-    
+    MODULE_CONSTRUCTOR(OriginAxis)
+
     void Startup(World& world) override
     {
         axis.vertices.clear();

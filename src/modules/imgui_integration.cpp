@@ -29,29 +29,16 @@ void ImGuiIntegration::Shutdown(World& world)
 
 void ImGuiIntegration::PreRender(World& world)
 {
+    glfwSetInputMode(static_cast<GLFWwindow*>(world.getWindow()), GLFW_CURSOR, enabled ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+
     // Feed inputs, start new frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
-    ImGuiIO &io = ImGui::GetIO();
-
-    // Handle cursor wrap around window edges
-    const int w = world.windowWidth;
-    const int h = world.windowHeight;
-    io.MousePos.x = io.MousePos.x - static_cast<float>(static_cast<int>(io.MousePos.x / w) * w);
-    io.MousePos.y = io.MousePos.y - static_cast<float>(static_cast<int>(io.MousePos.y / h) * h);
-    if (io.MousePos.x < 0)
-        io.MousePos.x += static_cast<float>(w);
-    if (io.MousePos.y < 0)
-        io.MousePos.y += static_cast<float>(h);
-
     ImGui::NewFrame();
 }
 
 void ImGuiIntegration::PostRender(World& world)
 {
-    // Our native window cursor is invisible, so ask imgui to render another one
-    ImGui::GetIO().MouseDrawCursor = enabled;
-
     // Render into screen
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -14,6 +14,8 @@ class WorldOrientation : public Module
 {
 public:
 
+    MODULE_CONSTRUCTOR(WorldOrientation)
+
     /// On key release reset movement to 0;
     void OnKeyReleased(World& world, int key, int mods) override
     {

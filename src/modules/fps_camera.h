@@ -28,6 +28,8 @@ class FPSCamera : public Module
 {
 public:
 
+    MODULE_CONSTRUCTOR(FPSCamera)
+
     void OnKeyReleased(World& world, int key, int mods) override
     {
         if (key == GLFW_KEY_A || key == GLFW_KEY_D)
@@ -118,7 +120,7 @@ public:
             reset = false;
         }
 
-        if (deltaMouse != glm::vec2())
+        if (deltaMouse != glm::vec2() && !world.imgui->getEnabled())
         {
             // set angle changes since last frame
             float yaw = deltaMouse.x * turnSpeed * deltaSeconds;
@@ -170,10 +172,10 @@ public:
 
 protected:
 
-    Camera* camera;
+    Camera* camera = nullptr;
     MouseInputMode mouseInputMode = MouseInputMode::FreeCam;
-    glm::vec2 movement, deltaMouse, lastMouse;
-    glm::vec3 position = glm::vec3(),
+    glm::vec2 movement = glm::vec2(0.0f), deltaMouse = glm::vec2(0.0f), lastMouse = glm::vec2(0.0f);
+    glm::vec3 position = glm::vec3(0.0f),
               direction = glm::vec3(0.00001f, 0.0f, -1.0f),
               up = glm::vec3(0.0f, 1.0f, 0.0f);
     float movementSpeed = 5.0f, turnSpeed = 0.1f;

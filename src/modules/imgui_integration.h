@@ -6,6 +6,8 @@ class ImGuiIntegration : public Module
 {
 public:
 
+    MODULE_CONSTRUCTOR(ImGuiIntegration)
+
     void Startup(World& world) override;
 
     void Shutdown(World& world) override;
@@ -16,6 +18,4 @@ public:
 
     bool wantCaptureMouse();
     bool wantCaptureKeyboard();
-
-    bool enabled = false;
 };

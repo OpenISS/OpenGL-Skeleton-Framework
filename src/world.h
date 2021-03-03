@@ -36,6 +36,8 @@ public:
     /// Total seconds elapsed since the application started
     float getTime() const { return time; }
 
+    std::vector<Module*> modules = std::vector<Module*>();
+
     ImGuiIntegration* imgui;
     RenderingMode* renderingMode;
     SceneGraph* sceneGraph;
@@ -52,7 +54,6 @@ protected:
 
     void AddModules();
 
-    std::vector<Module*> modules = std::vector<Module*>();
     void* window = nullptr;
     float time = 0.0f;
 };

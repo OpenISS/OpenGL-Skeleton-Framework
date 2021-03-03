@@ -19,6 +19,8 @@ class TestUnitCube : public Module
 {
 public:
 
+    MODULE_CONSTRUCTOR(TestUnitCube)
+
     void Update(World& world, float deltaSeconds) override
     {
         Module::Update(world, deltaSeconds);
@@ -43,6 +45,6 @@ public:
 
 protected:
 
-    float angle;
+    float angle = 0.0f;
     float anglesPerSecond = 180.0f;
 };

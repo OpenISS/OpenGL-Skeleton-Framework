@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 class World;
 
 /**
@@ -29,4 +30,15 @@ public:
     virtual void OnMouseMoved(World& world, float x, float y) {};
     virtual void OnMousePressed(World& world, int button, int mods) {};
     virtual void OnMouseReleased(World& world, int button, int mods) {};
+
+    const std::string& getName() const { return name; };
+    bool getEnabled() const { return enabled; };
+    virtual void setEnabled(bool enabled) { this->enabled = enabled; };
+
+protected:
+
+    std::string name = "Module";
+    bool enabled = true;
 };
+
+#define MODULE_CONSTRUCTOR(CLASSNAME) CLASSNAME(bool enabled = true) { this->enabled = enabled; name = #CLASSNAME; }

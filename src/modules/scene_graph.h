@@ -24,6 +24,8 @@ class SceneGraph : public Module
 {
 public:
 
+    MODULE_CONSTRUCTOR(SceneGraph)
+
     void Render(World& world) override;
     void addChild(Node& child);
     void removeChild(Node& child);

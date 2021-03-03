@@ -28,6 +28,8 @@ class Assignment1: public Module
 {
 public:
 
+    MODULE_CONSTRUCTOR(Assignment1)
+
     /**
      * Sets up model hierarchy
      * 
@@ -44,22 +46,23 @@ public:
 
         // Hierarchy:
         // * root (Node) (rotated by WorldOrientation module)
-        //     * andrew (Node) (translated, rotated, scaled)
-        //         * A (NodeCharacter)
-        //         * H (NodeCharacter)
-        //         * 4 (NodeCharacter)
-        //         * 1 (NodeCharacter)
-        //     * mark
-        //         * M (NodeCharacter)
-        //         * B (NodeCharacter)
-        //         * 4 (NodeCharacter)
-        //         * 7 (NodeCharacter)
-        //     * nicholas (Node)
-        //         ...
-        //     * paul (Node)
-        //         ...
-        //     * fifth (Node)
-        //         ...
+        //     * localRoot (Node) (not transformed)
+        //         * andrew (Node) (translated, rotated, scaled)
+        //             * A (NodeCharacter)
+        //             * H (NodeCharacter)
+        //             * 4 (NodeCharacter)
+        //             * 1 (NodeCharacter)
+        //         * mark
+        //             * M (NodeCharacter)
+        //             * B (NodeCharacter)
+        //             * 4 (NodeCharacter)
+        //             * 7 (NodeCharacter)
+        //         * nicholas (Node)
+        //             ...
+        //         * paul (Node)
+        //             ...
+        //         * fifth (Node)
+        //             ...
 
         andrew = new Node();
         setCharacters(*andrew, "AH41", scale);
@@ -76,11 +79,13 @@ public:
         fifth = new Node();
         setCharacters(*fifth, "AP00", scale);
 
-        world.sceneGraph->addChild(*andrew);
-        world.sceneGraph->addChild(*mark);
-        world.sceneGraph->addChild(*nicholas);
-        world.sceneGraph->addChild(*paul);
-        world.sceneGraph->addChild(*fifth);
+        localRoot = new Node();
+        world.sceneGraph->addChild(*localRoot);
+        localRoot->addChild(*andrew);
+        localRoot->addChild(*mark);
+        localRoot->addChild(*nicholas);
+        localRoot->addChild(*paul);
+        localRoot->addChild(*fifth);
 
         // Positions and orients characters on an arc
         placeCharacters(*andrew,   interval_degrees, radius);
@@ -95,6 +100,8 @@ public:
         nicholas->transform = glm::translate(glm::mat4(1.0f), getPosOnCircle(135.0f, radius)) * glm::rotate(glm::mat4(1.0f), glm::radians(135.0f + 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         paul->transform     = glm::translate(glm::mat4(1.0f), getPosOnCircle(225.0f, radius)) * glm::rotate(glm::mat4(1.0f), glm::radians(225.0f - 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         fifth->transform    = glm::mat4(1.0f) * glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+        setEnabled(enabled);
     }
 
     /// For every character in word, create a new NodeCharacter and add it to root
@@ -137,16 +144,14 @@ public:
     void Shutdown(World& world) override
     {
         selected = nullptr;
-        world.sceneGraph->removeChild(*andrew); // Recursively deletes all its children
-        world.sceneGraph->removeChild(*mark);
-        world.sceneGraph->removeChild(*nicholas);
-        world.sceneGraph->removeChild(*paul);
-        world.sceneGraph->removeChild(*fifth);
-        delete andrew;
-        delete mark;
-        delete nicholas;
-        delete paul;
-        delete fifth;
+        world.sceneGraph->removeChild(*localRoot);
+        delete localRoot; // Recursively deletes all its children
+    }
+
+    void setEnabled(bool enabled) override
+    {
+        this->enabled = enabled;
+        localRoot->visible = enabled;
     }
 
     void Update(World& world, float deltaSeconds) override
@@ -241,5 +246,6 @@ protected:
     glm::vec2 modelMovement = glm::vec2(0.0f);
     Node* selected = nullptr;
 
+    Node* localRoot = nullptr;
     Node *andrew = nullptr, *mark = nullptr, *nicholas = nullptr, *paul = nullptr, *fifth = nullptr;
 };

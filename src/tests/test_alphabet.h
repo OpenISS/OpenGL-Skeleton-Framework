@@ -17,6 +17,8 @@ class TestAlphabet : public Module
 {
 public:
 
+    MODULE_CONSTRUCTOR(TestAlphabet)
+
     void Startup(World& world) override
     {
         auto res = ResourcesAlphabet::getCubes('M');
@@ -73,6 +75,6 @@ protected:
 
     std::vector<glm::mat4> cubes;
 
-    float angle;
+    float angle = 0.0f;
     float anglesPerSecond = 180.0f;
 };

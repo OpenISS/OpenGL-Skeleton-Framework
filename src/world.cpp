@@ -4,6 +4,7 @@
 #include "modules/assignment1.h"
 #include "modules/fps_camera.h"
 #include "modules/ground_grid.h"
+#include "modules/module_manager_ui.h"
 #include "modules/origin_axis.h"
 #include "modules/rendering_mode.h"
 #include "modules/world_orientation.h"
@@ -18,9 +19,9 @@
 
 World::World()
 {
-    imgui = new ImGuiIntegration();
-    sceneGraph = new SceneGraph();
-    renderingMode = new RenderingMode();
+    imgui = new ImGuiIntegration(true);
+    sceneGraph = new SceneGraph(true);
+    renderingMode = new RenderingMode(true);
 
     windowWidth = 1024;
     windowHeight = 768;
@@ -36,22 +37,23 @@ void World::AddModules()
     modules.push_back(imgui);
     modules.push_back(renderingMode);
     modules.push_back(new FPSCamera());
-    modules.push_back(new WorldOrientation());
-    modules.push_back(new GroundGrid());
-    modules.push_back(new OriginAxis());
+    modules.push_back(new WorldOrientation(true));
+    modules.push_back(new GroundGrid(true));
+    modules.push_back(new OriginAxis(true));
 
     // Tests
-    // modules.push_back(new TestAlphabet());
-    // modules.push_back(new TestImGuiIntegration());
-    // modules.push_back(new TestLoaderObj());
-    // modules.push_back(new TestUnitCube());
-    // modules.push_back(new TestVertexDrawing());
-    // modules.push_back(new TestSceneGraph());
+    modules.push_back(new TestAlphabet(false));
+    modules.push_back(new TestImGuiIntegration(false));
+    modules.push_back(new TestLoaderObj(false));
+    modules.push_back(new TestUnitCube(false));
+    modules.push_back(new TestVertexDrawing(false));
+    modules.push_back(new TestSceneGraph(false));
 
-    modules.push_back(new Assignment1());
+    modules.push_back(new Assignment1(true));
 
     // Should always be last
     modules.push_back(sceneGraph);
+    modules.push_back(new ModuleManagerUI(true));
 }
 
 void World::Startup(void* window)
@@ -88,7 +90,8 @@ void World::Update(float deltaSeconds)
 {
     for (Module* m : modules)
     {
-        m->Update(*this, deltaSeconds);
+        if (m->getEnabled())
+            m->Update(*this, deltaSeconds);
     }
 
     time += deltaSeconds;
@@ -113,7 +116,8 @@ void World::Render()
     imgui->PreRender(*this);
     for (Module* m : modules)
     {
-        m->Render(*this);
+        if (m->getEnabled())
+            m->Render(*this);
     }
     imgui->PostRender(*this);
 }
@@ -123,7 +127,7 @@ void World::OnKey(int key, int action, int mods)
     if (imgui->wantCaptureKeyboard())
         return;
     if (key == GLFW_KEY_M && action == GLFW_PRESS)
-        imgui->enabled = !imgui->enabled;
+        imgui->setEnabled(!imgui->getEnabled());
 
     if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
     {
@@ -138,12 +142,15 @@ void World::OnKey(int key, int action, int mods)
 
     for (Module* m : modules)
     {
-        m->OnKey(*this, key, action, mods);
+        if (m->getEnabled())
+        {
+            m->OnKey(*this, key, action, mods);
 
-        if (action == GLFW_RELEASE)
-            m->OnKeyReleased(*this, key, mods);
-        else if (action == GLFW_PRESS || action == GLFW_REPEAT)
-            m->OnKeyPressed(*this, key, mods);
+            if (action == GLFW_RELEASE)
+                m->OnKeyReleased(*this, key, mods);
+            else if (action == GLFW_PRESS || action == GLFW_REPEAT)
+                m->OnKeyPressed(*this, key, mods);
+        }
     }
 }
 
@@ -154,7 +161,8 @@ void World::OnMouseMoved(float x, float y)
 
     for (Module* m : modules)
     {
-        m->OnMouseMoved(*this, x, y);
+        if (m->getEnabled())
+            m->OnMouseMoved(*this, x, y);
     }
 }
 
@@ -165,7 +173,8 @@ void World::OnMousePressed(int button, int mods)
 
     for (Module* m : modules)
     {
-        m->OnMousePressed(*this, button, mods);
+        if (m->getEnabled())
+            m->OnMousePressed(*this, button, mods);
     }
 }
 
@@ -176,6 +185,7 @@ void World::OnMouseReleased(int button, int mods)
 
     for (Module* m : modules)
     {
-        m->OnMouseReleased(*this, button, mods);
+        if (m->getEnabled())
+            m->OnMouseReleased(*this, button, mods);
     }
 }

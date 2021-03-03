@@ -8,14 +8,11 @@ class TestImGuiIntegration : public Module
 {
 public:
 
-    void Startup(World& world) override
-    {
-        world.imgui->enabled = true;
-    }
+    MODULE_CONSTRUCTOR(TestImGuiIntegration)
 
     void Render(World& world) override
     {
-        if (world.imgui->enabled)
+        if (world.imgui->getEnabled())
             ImGui::ShowDemoWindow();
     }
 };

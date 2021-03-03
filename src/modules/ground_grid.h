@@ -15,7 +15,9 @@
 class GroundGrid : public Module
 {
 public:
-    
+
+    MODULE_CONSTRUCTOR(GroundGrid)
+
     void Startup(World& world) override
     {
         grid.vertices.clear();
