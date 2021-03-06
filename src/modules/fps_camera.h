@@ -74,24 +74,13 @@ public:
             mouseInputMode = MouseInputMode::Pan;
     }
 
-    void OnMouseMoved(World& world, float x, float y) override
+    void OnMouseMovedDelta(World& world, float deltaX, float deltaY) override
     {
-        // Short workaround for avoiding huge camera motion on initial mouse movement
-        if (firstMoved)
-        {
-            lastMouse.x = x;
-            lastMouse.y = y;
-            firstMoved = false;
-        }
-
-        deltaMouse.x = lastMouse.x - x;
-        deltaMouse.y = lastMouse.y - y;
-
-        lastMouse.x = x;
-        lastMouse.y = y;
+        deltaMouse.x = deltaX;
+        deltaMouse.y = deltaY;
 
         if (world.debug)
-            std::cout << "Cursor Pos: " << x << ", " << y << "\tCursor Change: " << deltaMouse.x << ", " << deltaMouse.y << std::endl;
+            std::cout << "Cursor Change: " << deltaMouse.x << ", " << deltaMouse.y << std::endl;
     }
 
     void Startup(World& world) override
@@ -123,8 +112,8 @@ public:
         if (deltaMouse != glm::vec2() && !world.imgui->getEnabled())
         {
             // set angle changes since last frame
-            float yaw = deltaMouse.x * turnSpeed * deltaSeconds;
-            float pitch = deltaMouse.y * turnSpeed * deltaSeconds;
+            float yaw = -deltaMouse.x * turnSpeed * deltaSeconds;
+            float pitch = -deltaMouse.y * turnSpeed * deltaSeconds;
 
             if (mouseInputMode == MouseInputMode::Zoom)
             {
@@ -148,10 +137,9 @@ public:
                     std::cout << "Direction: " << camera->forward().x << ", " << camera->forward().y << ", " << camera->forward().z << std::endl;
                 }
             }
-
-            // reset the change of mouse coordinates
-            deltaMouse = glm::vec2();
         }
+        // Reset the change of mouse coordinates
+        deltaMouse = glm::vec2();
 
         if (movement != glm::vec2())
         {
@@ -174,10 +162,10 @@ protected:
 
     Camera* camera = nullptr;
     MouseInputMode mouseInputMode = MouseInputMode::FreeCam;
-    glm::vec2 movement = glm::vec2(0.0f), deltaMouse = glm::vec2(0.0f), lastMouse = glm::vec2(0.0f);
+    glm::vec2 movement = glm::vec2(0.0f), deltaMouse = glm::vec2(0.0f);
     glm::vec3 position = glm::vec3(0.0f),
               direction = glm::vec3(0.00001f, 0.0f, -1.0f),
               up = glm::vec3(0.0f, 1.0f, 0.0f);
     float movementSpeed = 5.0f, turnSpeed = 0.1f;
-    bool firstMoved = true, reset = false;
+    bool reset = false;
 };

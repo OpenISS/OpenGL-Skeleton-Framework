@@ -56,4 +56,10 @@ protected:
 
     void* window = nullptr;
     float time = 0.0f;
+
+    float lastMouseX = 0.0f;
+    float lastMouseY = 0.0f;
+
+    // Short workaround for avoiding huge camera motion on initial mouse movement
+    bool skipNextMouseDelta = true;
 };

@@ -33,7 +33,7 @@ public:
                     if (dynamic_cast<ModuleManagerUI*>(module) != nullptr)
                         continue;
 
-                    ImGui::PushID(row);
+                    ImGui::PushID(static_cast<int>(row));
 
                     ImGui::TableNextRow();
 

@@ -126,8 +126,12 @@ void World::OnKey(int key, int action, int mods)
 {
     if (imgui->wantCaptureKeyboard())
         return;
+
     if (key == GLFW_KEY_M && action == GLFW_PRESS)
+    {
         imgui->setEnabled(!imgui->getEnabled());
+        skipNextMouseDelta = true;
+    }
 
     if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
     {
@@ -157,13 +161,34 @@ void World::OnKey(int key, int action, int mods)
 void World::OnMouseMoved(float x, float y)
 {
     if (imgui->wantCaptureMouse())
+    {
+        lastMouseX = x;
+        lastMouseY = y;
         return;
+    }
 
     for (Module* m : modules)
     {
         if (m->getEnabled())
             m->OnMouseMoved(*this, x, y);
     }
+
+    const float deltaX = x - lastMouseX;
+    const float deltaY = y - lastMouseY;
+    if (skipNextMouseDelta)
+    {
+        skipNextMouseDelta = false;
+    }
+    else
+    {
+        for (Module* m : modules)
+        {
+            if (m->getEnabled())
+                m->OnMouseMovedDelta(*this, deltaX, deltaY);
+        }
+    }
+    lastMouseX = x;
+    lastMouseY = y;
 }
 
 void World::OnMousePressed(int button, int mods)

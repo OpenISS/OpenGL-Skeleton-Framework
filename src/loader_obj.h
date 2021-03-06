@@ -100,7 +100,7 @@ protected:
         if (index > 0)
             return index - 1;
         else
-            return destination.vertices.size() - index;
+            return static_cast<int>(destination.vertices.size()) - index;
     }
 
     Status status;
