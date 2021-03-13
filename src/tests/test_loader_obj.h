@@ -15,7 +15,7 @@ public:
 
     void Startup(World& world) override
     {
-        loader.loadFile(mesh, "teapot.obj");
+        loader.loadFile(mesh, "assets/teapot.obj");
         if (loader.getStatus() == LoaderOBJ::Status::SUCCESS)
             mesh.uploadBuffersToGPU();
     }
