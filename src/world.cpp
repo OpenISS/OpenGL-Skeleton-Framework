@@ -110,13 +110,14 @@ void World::Render()
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
 
+    shadows->PreRender(*this);
     if (shadows->getEnabled())
-        shadows->PreRender(*this);
-
-    for (Module* m : modules)
     {
-        if (m->getEnabled())
-            m->Render(*this, RenderPass::Shadow);
+        for (Module* m : modules)
+        {
+            if (m->getEnabled())
+                m->Render(*this, RenderPass::Shadow);
+        }
     }
 
 
