@@ -33,7 +33,7 @@ public:
     };
 
     /// Does nothing by default. Can be overriden by subclasses for their rendering logic.
-    virtual void render(World& world, const glm::mat4& matrixStack) {};
+    virtual void render(World& world, RenderPass pass, const glm::mat4& matrixStack) {};
 
     /// O(1)
     void addChild(Node& child)

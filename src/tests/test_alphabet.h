@@ -33,23 +33,33 @@ public:
         angle += anglesPerSecond * deltaSeconds;
     }
 
-    void Render(World& world) override
+    void Render(World& world, RenderPass pass) override
     {
-        Module::Render(world);
+        Module::Render(world, pass);
 
         // Push back and down + rotate around itself over time
         glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.0f, -6.0f));
         modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
 
-        Resources::basicShader.activate();
-        Resources::basicShader.setColor(Resources::colorWhite);
+        if (pass == RenderPass::Color)
+        {
+            Resources::basicShader.activate();
+            Resources::basicShader.setColor(Resources::colorWhite);
+        }
+        else if (pass == RenderPass::Shadow)
+        {
+            Resources::shadowCastShader.activate();
+        }
 
 
         // Render the transformed unit cubes that compose the current character
         for (auto transform : cubes)
         {
             glm::mat4 cubeMatrix = modelMatrix * transform;
-            Resources::basicShader.setModelMatrix(cubeMatrix);
+            if (pass == RenderPass::Color)
+                Resources::basicShader.setModelMatrix(cubeMatrix);
+            else if (pass == RenderPass::Shadow)
+                Resources::shadowCastShader.setModelMatrix(cubeMatrix);
             Resources::unitCube.draw();
         }
     }

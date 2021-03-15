@@ -88,7 +88,7 @@ public:
         world.camera = camera = new Camera(world.windowAspectRatio, position, direction, up);
     }
 
-    void Render(World& world) override
+    void Render(World& world, RenderPass pass) override
     {
         glm::mat4 view = camera->view();
         glm::mat4 projection = camera->projection();

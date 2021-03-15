@@ -10,9 +10,9 @@ public:
 
     MODULE_CONSTRUCTOR(TestImGuiIntegration)
 
-    void Render(World& world) override
+    void Render(World& world, RenderPass pass) override
     {
-        if (world.imgui->getEnabled())
+        if (world.imgui->getEnabled() && pass == RenderPass::Color)
             ImGui::ShowDemoWindow();
     }
 };

@@ -26,7 +26,7 @@ public:
 
     MODULE_CONSTRUCTOR(SceneGraph)
 
-    void Render(World& world) override;
+    void Render(World& world, RenderPass pass) override;
     void addChild(Node& child);
     void removeChild(Node& child);
 
@@ -36,5 +36,5 @@ public:
 protected:
 
     /// Recursively walks a node's children to resolving their transforms and render them
-    void walkNode(World& world, Node& node, glm::mat4 stack);
+    void walkNode(World& world, RenderPass pass, Node& node, glm::mat4 stack);
 };

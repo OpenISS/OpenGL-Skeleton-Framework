@@ -4,7 +4,7 @@ const float Resources::unitSize = 0.25f;
 Mesh Resources::unitCube;
 Mesh Resources::quad;
 Shader Resources::basicShader;
-Shader Resources::shadowMapShader;
+Shader Resources::shadowCastShader;
 const glm::vec3 Resources::colorWhite = glm::vec3(1.0f, 1.0f, 1.0f);
 std::vector<const Shader*> Resources::shaders;
 
@@ -75,18 +75,18 @@ void main()
     shaders.push_back(&basicShader);
 
     // Shadowmap shader
-    const char* shadowMapVertexSrc = R"""(
+    const char* shadowCastVertexSrc = R"""(
 #version 330 core
 layout (location = 0) in vec3 aPos;
-uniform mat4 lightSpaceMatrix;
-uniform mat4 modelMatrix;
+uniform mat4 lightSpaceMatrix = mat4(1.0);
+uniform mat4 modelMatrix = mat4(1.0);
 void main()
 {
-    gl_Position = lightSpaceMatrix * modelMatrix * vec4(aPos, 1.0);
+    gl_Position = lightSpaceMatrix * modelMatrix * vec4(aPos.x, aPos.y, aPos.z, 1.0);
 }
 )""";
 
-const char* shadowMapFragmentSrc = R"""(
+const char* shadowCastFragmentSrc = R"""(
 #version 330 core
 void main()
 {
@@ -94,7 +94,10 @@ void main()
 }
 )""";
 
-    shadowMapShader.create(shadowMapVertexSrc, shadowMapFragmentSrc);
+    shadowCastShader.create(shadowCastVertexSrc, shadowCastFragmentSrc);
+    shadowCastShader.needsCamera = false;
+    shadowCastShader.castsShadows = true;
+    shaders.push_back(&shadowCastShader);
 }
 
 const std::vector<const Shader*>& Resources::getShaders()

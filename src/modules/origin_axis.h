@@ -49,17 +49,25 @@ public:
         axis.uploadBuffersToGPU();
     };
 
-    void Render(World& world) override
+    void Render(World& world, RenderPass pass) override
     {
-        Module::Render(world);
+        Module::Render(world, pass);
 
         // A bit raised to avoid Z-fighting with the grid
         glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.02f * Resources::unitSize, 0.0f));
         modelMatrix = world.sceneGraph->root.transform * modelMatrix; // Take world orientation into account
 
-        Resources::basicShader.activate();
-        Resources::basicShader.setModelMatrix(modelMatrix);
-        Resources::basicShader.setColor(Resources::colorWhite);
+        if (pass == RenderPass::Color)
+        {
+            Resources::basicShader.activate();
+            Resources::basicShader.setModelMatrix(modelMatrix);
+            Resources::basicShader.setColor(Resources::colorWhite);
+        }
+        else if (pass == RenderPass::Shadow)
+        {
+            Resources::shadowCastShader.activate();
+            Resources::shadowCastShader.setModelMatrix(modelMatrix);
+        }
 
         axis.draw();
     }

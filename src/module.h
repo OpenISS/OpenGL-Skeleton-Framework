@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 class World;
+enum class RenderPass;
 
 /**
  * A module can receive inputs and update/render, as well as access global world state. Designed to be extended and overriden.
@@ -21,7 +22,7 @@ public:
     virtual void Update(World& world, float deltaSeconds) {};
 
     /// For rendering logic
-    virtual void Render(World& world) {};
+    virtual void Render(World& world, RenderPass pass) {};
 
     virtual void OnKeyPressed(World& world, int key, int mods) {};
     virtual void OnKeyReleased(World& world, int key, int mods) {};

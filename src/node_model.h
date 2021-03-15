@@ -24,13 +24,22 @@ public:
         this->mesh = &mesh;
     }
 
-    virtual void render(World& world, const glm::mat4& matrixStack) override
+    virtual void render(World& world, RenderPass pass, const glm::mat4& matrixStack) override
     {
         if (shader != nullptr && mesh != nullptr)
         {
-            shader->activate();
-            shader->setModelMatrix(matrixStack);
-            shader->setColor(color);
+            if (pass == RenderPass::Color)
+            {
+                shader->activate();
+                shader->setModelMatrix(matrixStack);
+                shader->setColor(color);
+            }
+            else if (pass == RenderPass::Shadow)
+            {
+                Resources::shadowCastShader.activate();
+                Resources::shadowCastShader.setModelMatrix(matrixStack);
+            }
+
             mesh->draw();
         }
     }

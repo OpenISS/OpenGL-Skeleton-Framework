@@ -47,13 +47,13 @@ public:
         glClear(GL_DEPTH_BUFFER_BIT);
 
         // Directional only at the moment, TODO spotlight
-        glm::mat4 lightProjection = glm::ortho(-size, size, -size, size, 0.1f, size * 2.0f); // Cube with side = size
-        glm::mat4 lightView = glm::lookAt(light->direction * -size * 0.75f, glm::vec3(0.0f), glm::vec3( 0.0f, 1.0f, 0.0f));
+        glm::mat4 lightProjection = glm::ortho(-size, size, -size, size, 1.0f, size * 2.0f); // Cube with side = size
+        glm::mat4 lightView = glm::lookAt(light->direction * -size, glm::vec3(0.0f), glm::vec3( 0.0f, 1.0f, 0.0f));
         glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 
         for (auto shader : Resources::getShaders())
         {
-            if (shader->receivesShadows)
+            if (shader->castsShadows || shader->receivesShadows)
             {
                 shader->activate();
                 shader->setLightSpaceMatrix(lightSpaceMatrix);
@@ -61,9 +61,14 @@ public:
         }
     }
 
+    void setLight(const LightData& light)
+    {
+        this->light = &light;
+    }
+
 protected:
 
-    LightData* light = nullptr;
+    const LightData* light = nullptr;
     int width = 1024;
     int height = 1024;
     float size = 15.0f;

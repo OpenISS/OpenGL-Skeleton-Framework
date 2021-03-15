@@ -8,6 +8,12 @@
 #include "modules/shadows.h"
 #include "shader.h"
 
+enum class RenderPass
+{
+    Color,
+    Shadow
+};
+
 /**
  * Manages all modules. Contains global state like the SceneGraph and the Camera.
  * 

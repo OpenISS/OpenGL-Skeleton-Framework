@@ -143,6 +143,7 @@ public:
     }
 
     bool needsCamera = true;
+    bool castsShadows = false;
     bool receivesShadows = false;
 
 protected:

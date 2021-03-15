@@ -14,6 +14,7 @@
 #include "tests/test_imgui_integration.h"
 #include "tests/test_loader_obj.h"
 #include "tests/test_scene_graph.h"
+#include "tests/test_shadows.h"
 #include "tests/test_unit_cube.h"
 #include "tests/test_vertex_drawing.h"
 
@@ -50,6 +51,7 @@ void World::AddModules()
     modules.push_back(new TestUnitCube(false));
     modules.push_back(new TestVertexDrawing(false));
     modules.push_back(new TestSceneGraph(false));
+    modules.push_back(new TestShadows(false));
 
     modules.push_back(new Assignment1(true));
 
@@ -101,8 +103,26 @@ void World::Update(float deltaSeconds)
 
 void World::Render()
 {
+    // Enable MSAA
+    if (windowSamples > 0)
+        glEnable(GL_MULTISAMPLE);
+
+    // Enable depth test
+    glEnable(GL_DEPTH_TEST);
+
+    // Disable backface culling
+    glCullFace(GL_BACK);
+    glDisable(GL_CULL_FACE);
+
     if (shadows->getEnabled())
         shadows->PreRender(*this);
+
+    for (Module* m : modules)
+    {
+        if (m->getEnabled())
+            m->Render(*this, RenderPass::Shadow);
+    }
+
 
     // Render to screen
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -113,22 +133,15 @@ void World::Render()
     // Each frame, reset color of each pixel to glClearColor and clear depth
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Enable depth test
-    glEnable(GL_DEPTH_TEST);
-
     // Enable backface culling
     glCullFace(GL_BACK);
     glEnable(GL_CULL_FACE);
-
-    // Enable MSAA
-    if (windowSamples > 0)
-        glEnable(GL_MULTISAMPLE);
 
     imgui->PreRender(*this);
     for (Module* m : modules)
     {
         if (m->getEnabled())
-            m->Render(*this);
+            m->Render(*this, RenderPass::Color);
     }
     imgui->PostRender(*this);
 }

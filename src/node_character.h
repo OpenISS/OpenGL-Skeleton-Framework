@@ -29,20 +29,30 @@ public:
             cubes = res;
     }
 
-    virtual void render(World& world, const glm::mat4& matrixStack) override
+    virtual void render(World& world, RenderPass pass, const glm::mat4& matrixStack) override
     {
         if (shader != nullptr)
         {
             world.renderingMode->SetupPolygonMode(renderMode);
 
-            shader->activate();
-            shader->setColor(color);
+            if (pass == RenderPass::Color)
+            {
+                shader->activate();
+                shader->setColor(color);
+            }
+            else if (pass == RenderPass::Shadow)
+            {
+                Resources::shadowCastShader.activate();
+            }
 
             // Render the transformed unit cubes that compose the current character
             for (auto transform : *cubes)
             {
                 glm::mat4 cubeMatrix = glm::scale(matrixStack, glm::vec3(scale)) * transform;
-                shader->setModelMatrix(cubeMatrix);
+                if (pass == RenderPass::Color)
+                    shader->setModelMatrix(cubeMatrix);
+                else if (pass == RenderPass::Shadow)
+                    Resources::shadowCastShader.setModelMatrix(cubeMatrix);
                 Resources::unitCube.draw();
             }
         }
