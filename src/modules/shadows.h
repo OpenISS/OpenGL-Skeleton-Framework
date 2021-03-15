@@ -53,9 +53,16 @@ public:
         glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT);
 
-        // Enable front-face culling to fix peter panning
-        glCullFace(GL_FRONT);
-        glEnable(GL_CULL_FACE);
+        if (cullFrontFaces)
+        {
+            glCullFace(GL_FRONT);
+            glEnable(GL_CULL_FACE);
+        }
+        else
+        {
+            glCullFace(GL_BACK);
+            glDisable(GL_CULL_FACE);
+        }
 
         glActiveTexture(GL_TEXTURE8);
         glBindTexture(GL_TEXTURE_2D, depthMap);
@@ -71,6 +78,7 @@ public:
             {
                 shader->activate();
                 shader->setLightSpaceMatrix(lightSpaceMatrix);
+                shader->setCustomFloat("bias", bias);
             }
         }
     }
@@ -83,9 +91,12 @@ public:
 protected:
 
     const LightData* light = nullptr;
-    int width = 1024;
-    int height = 1024;
+    int width = 2048;
+    int height = 2048;
     float size = 15.0f;
+
+    float bias = 0.007f; // Can fix shadow acne
+    bool cullFrontFaces = false; // Can fix peter panning
 
     unsigned int depthMapFBO;
     unsigned int depthMap;
