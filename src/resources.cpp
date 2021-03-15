@@ -4,6 +4,7 @@ const float Resources::unitSize = 0.25f;
 Mesh Resources::unitCube;
 Mesh Resources::quad;
 Shader Resources::basicShader;
+Shader Resources::shadowMapShader;
 const glm::vec3 Resources::colorWhite = glm::vec3(1.0f, 1.0f, 1.0f);
 std::vector<const Shader*> Resources::shaders;
 
@@ -72,6 +73,28 @@ void main()
     basicShader.create(vertexSrc, fragmentSrc);
     basicShader.setColor(Resources::colorWhite);
     shaders.push_back(&basicShader);
+
+    // Shadowmap shader
+    const char* shadowMapVertexSrc = R"""(
+#version 330 core
+layout (location = 0) in vec3 aPos;
+uniform mat4 lightSpaceMatrix;
+uniform mat4 modelMatrix;
+void main()
+{
+    gl_Position = lightSpaceMatrix * modelMatrix * vec4(aPos, 1.0);
+}
+)""";
+
+const char* shadowMapFragmentSrc = R"""(
+#version 330 core
+void main()
+{
+    // gl_FragDepth = gl_FragCoord.z;
+}
+)""";
+
+    shadowMapShader.create(shadowMapVertexSrc, shadowMapFragmentSrc);
 }
 
 const std::vector<const Shader*>& Resources::getShaders()

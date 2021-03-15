@@ -95,8 +95,11 @@ public:
 
         for (auto shader : Resources::getShaders())
         {
-            shader->activate();
-            shader->setViewProjectionMatrix(view, projection);
+            if (shader->needsCamera)
+            {
+                shader->activate();
+                shader->setViewProjectionMatrix(view, projection);
+            }
         }
     }
 

@@ -5,6 +5,7 @@
 #include "modules/imgui_integration.h"
 #include "modules/rendering_mode.h"
 #include "modules/scene_graph.h"
+#include "modules/shadows.h"
 #include "shader.h"
 
 /**
@@ -42,6 +43,7 @@ public:
     RenderingMode* renderingMode;
     SceneGraph* sceneGraph;
     Camera* camera;
+    Shadows* shadows;
 
     int windowWidth;
     int windowHeight;

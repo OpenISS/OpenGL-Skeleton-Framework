@@ -22,6 +22,7 @@ World::World()
     imgui = new ImGuiIntegration(true);
     sceneGraph = new SceneGraph(true);
     renderingMode = new RenderingMode(true);
+    shadows = new Shadows(true);
 
     windowWidth = 1024;
     windowHeight = 768;
@@ -36,6 +37,7 @@ void World::AddModules()
     // Modules
     modules.push_back(imgui);
     modules.push_back(renderingMode);
+    modules.push_back(shadows);
     modules.push_back(new FPSCamera());
     modules.push_back(new WorldOrientation(true));
     modules.push_back(new GroundGrid(true));
@@ -99,6 +101,15 @@ void World::Update(float deltaSeconds)
 
 void World::Render()
 {
+    if (shadows->getEnabled())
+        shadows->PreRender(*this);
+
+    // Render to screen
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    // Setup screen dimensions
+    glViewport(0, 0, windowWidth, windowHeight);
+
     // Each frame, reset color of each pixel to glClearColor and clear depth
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

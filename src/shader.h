@@ -112,6 +112,12 @@ public:
         glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
     }
 
+    void setLightSpaceMatrix(const glm::mat4& mat) const
+    {
+        GLuint location = glGetUniformLocation(programID, "lightSpaceMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
+    }
+
     void setColor(const glm::vec3& color) const
     {
         GLuint location = glGetUniformLocation(programID, "color");
@@ -135,6 +141,9 @@ public:
         GLuint location = glGetUniformLocation(programID, name);
         glUniform1f(location, value);
     }
+
+    bool needsCamera = true;
+    bool receivesShadows = false;
 
 protected:
 
