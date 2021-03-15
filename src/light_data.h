@@ -25,5 +25,5 @@ public:
 
     glm::vec3 position = glm::vec3(0.0f);               // For point and spot lights
     glm::vec3 direction = glm::vec3(1.0f, 0.0f, 0.0f);  // For directional and spot lights
-    float angle = glm::pi<float>() / 4.0f;                       // For spot light, in radians, 45 degrees by default
+    float angle = 90.0f;                                // For spot light, in degrees
 };

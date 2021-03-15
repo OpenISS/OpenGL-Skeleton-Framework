@@ -6,8 +6,7 @@
 #include "../shader.h"
 
 // TODO:
-// * Bias to fix shadow acne
-// * Spot light support
+// * Bias + normals algorithm to better fix shadow acne
 class Shadows : public Module
 {
 public:
@@ -67,10 +66,19 @@ public:
         glActiveTexture(GL_TEXTURE8);
         glBindTexture(GL_TEXTURE_2D, depthMap);
 
-        // Directional only at the moment, TODO spotlight
-        glm::mat4 lightProjection = glm::ortho(-size, size, -size, size, 1.0f, size * 2.0f); // Cube with side = size
-        glm::mat4 lightView = glm::lookAt(light->direction * -size, glm::vec3(0.0f), glm::vec3( 0.0f, 1.0f, 0.0f));
-        glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+        glm::mat4 lightSpaceMatrix;
+        if (light->type == LightData::Type::Directional)
+        {
+            glm::mat4 lightProjection = glm::ortho(-range / 2.0f, range / 2.0f, -range / 2.0f, range / 2.0f, 1.0f, range); // Cube with side = size
+            glm::mat4 lightView = glm::lookAt(light->direction * -range * 0.75f, glm::vec3(0.0f), glm::vec3( 0.0f, 1.0f, 0.0f));
+            lightSpaceMatrix = lightProjection * lightView;
+        }
+        else
+        {
+            glm::mat4 lightProjection = glm::perspective(glm::radians(light->angle), (float)width/(float)height, 1.0f, range);
+            glm::mat4 lightView = glm::lookAt(light->position, light->position + light->direction, glm::vec3( 0.0f, 1.0f, 0.0f));
+            lightSpaceMatrix = lightProjection * lightView;
+        }
 
         for (auto shader : Resources::getShaders())
         {
@@ -88,15 +96,15 @@ public:
         this->light = &light;
     }
 
+    float range = 15.0f;
+    float bias = 0.007f; // Can fix shadow acne
+    bool cullFrontFaces = false; // Can fix peter panning
+
 protected:
 
     const LightData* light = nullptr;
     int width = 2048;
     int height = 2048;
-    float size = 15.0f;
-
-    float bias = 0.007f; // Can fix shadow acne
-    bool cullFrontFaces = false; // Can fix peter panning
 
     unsigned int depthMapFBO;
     unsigned int depthMap;

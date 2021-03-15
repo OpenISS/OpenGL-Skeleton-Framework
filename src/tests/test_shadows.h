@@ -15,14 +15,28 @@ public:
     void Startup(World& world) override
     {
         placeholderLight.type = LightData::Type::Point;
-        placeholderLight.angle = glm::pi<float>() / 4.0f;
-        placeholderLight.position = glm::vec3(0.0f, 10.0f, 0.0f);
-        placeholderLight.direction = glm::normalize(glm::vec3(-0.33f, -1.0f, 0.33f));
+        placeholderLight.angle = 90.0f;
+        placeholderLight.position = glm::vec3(0.0f, 8.0f, 0.0f);
+        placeholderLight.direction = glm::normalize(glm::vec3(-0.2f, -1.0f, 0.1f));
+
+        world.shadows->range = 15.0f;
+        world.shadows->bias = 0.007f;
     }
 
     void Update(World& world, float deltaSeconds) override
     {
         world.shadows->setLight(placeholderLight);
+
+        elapsed += deltaSeconds;
+        if (elapsed > 8.0f)
+        {
+            placeholderLight.type = LightData::Type::Directional;
+            elapsed = 0.0f;
+        }
+        else if (elapsed > 4.0f)
+        {
+            placeholderLight.type = LightData::Type::Point;
+        }
     }
 
     void Render(World& world, RenderPass pass) override
@@ -30,9 +44,9 @@ public:
         Module::Render(world, pass);
 
         std::vector<glm::mat4> cubes;
-        cubes.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 4.0f, -6.0f)));
-        cubes.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -6.0f)));
-        cubes.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, -4.0f, -6.0f)));
+        cubes.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 4.0f, 0.0f)));
+        cubes.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+        cubes.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, -2.0f, 0.0f)));
 
         if (pass == RenderPass::Color)
         {
@@ -57,4 +71,5 @@ public:
 protected:
 
     LightData placeholderLight;
+    float elapsed = 0.0f;
 };
