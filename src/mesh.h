@@ -10,6 +10,8 @@ struct Vertex
 {
     glm::vec3 position;
     glm::vec3 color;
+    glm::vec3 normal;
+    glm::vec2 uv;
 };
 
 /// Type of drawing to use to draw a mesh
@@ -94,6 +96,14 @@ public:
         // Set color attribute
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
         glEnableVertexAttribArray(1);
+
+        // Set normal attribute
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+        glEnableVertexAttribArray(2);
+
+        // Set uv attribute
+        glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
+        glEnableVertexAttribArray(3);
 
         // Clear state
         glBindBuffer(GL_ARRAY_BUFFER, 0); 
