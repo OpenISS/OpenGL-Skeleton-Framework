@@ -34,6 +34,7 @@ public:
             Resources::basicShader.activate();
             Resources::basicShader.setModelMatrix(modelMatrix);
             Resources::basicShader.setColor(Resources::colorWhite);
+            glDisable(GL_CULL_FACE);
         }
         else if (pass == RenderPass::Shadow)
         {
@@ -41,7 +42,6 @@ public:
             Resources::shadowCastShader.setModelMatrix(modelMatrix);
         }
 
-        glDisable(GL_CULL_FACE);
         mesh.draw();
     }
 

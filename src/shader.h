@@ -142,6 +142,12 @@ public:
         glUniform1f(location, value);
     }
 
+    void setCustomInt(const char* name, int value) const
+    {
+        GLuint location = glGetUniformLocation(programID, name);
+        glUniform1i(location, value);
+    }
+
     bool needsCamera = true;
     bool castsShadows = false;
     bool receivesShadows = false;

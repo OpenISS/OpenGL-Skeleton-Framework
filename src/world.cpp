@@ -110,10 +110,6 @@ void World::Render()
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
 
-    // Disable backface culling
-    glCullFace(GL_BACK);
-    glDisable(GL_CULL_FACE);
-
     if (shadows->getEnabled())
         shadows->PreRender(*this);
 

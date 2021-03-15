@@ -27,6 +27,8 @@ public:
     /// Simple unlit shader, supports vertex color and uniform tint color + model, view, projection matrices
     static Shader basicShader;
 
+    static Shader basicShadowedShader;
+
     static Shader shadowCastShader;
 
     static const glm::vec3 colorWhite;
