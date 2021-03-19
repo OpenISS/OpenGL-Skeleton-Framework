@@ -1,8 +1,11 @@
 #pragma once
+
+#include <string>
+#include <stdio.h>
+#include <fstream>
+#include <iostream>
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
-#include <iostream>
-#include <string>
 
 /**
  * Abstracts shader compilation, linking, and uniform updates.
@@ -13,146 +16,53 @@ class Shader
 {
 public:
 
-    void activate() const
-    {
-        glUseProgram(programID);
-    }
+    ~Shader() { clear(); }
 
-    bool create(const std::string vertexSrc, const std::string fragmentSrc)
-    {
-        return create(vertexSrc.c_str(), fragmentSrc.c_str());
-    }
+    void load(const std::string& name, const std::string& location = "shaders");
 
-    bool create(const char* vertexSrc, const char* fragmentSrc)
-    {
-        bool overallSuccess = true;
+    void loadFrom(const std::string& location);
 
-        // Vertex shader
-        int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        const char* vertexShaderSource = vertexSrc;
-        glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
-        glCompileShader(vertexShader);
+    void fromFiles(const std::string& vertexLocation, const std::string& fragmentLocation);
+    void fromFiles(const char* vertexLocation, const char* fragmentLocation);
 
-        // Check for shader compile errors
-        int success;
-        char infoLog[512];
-        glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-        if (!success)
-        {
-            glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-            std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-            overallSuccess = false;
-        }
+    static std::string readFile(const std::string& fileLocation);
+    static std::string readFile(const char* fileLocation);
 
-        // Fragment shader
-        int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        const char* fragmentShaderSource = fragmentSrc;
-        glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-        glCompileShader(fragmentShader);
+    bool create(const std::string& vertexSrc, const std::string& fragmentSrc);
+    bool create(const char* vertexSrc, const char* fragmentSrc);
 
-        // Check for shader compile errors
-        glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-        if (!success)
-        {
-            glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-            std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-            overallSuccess = false;
-        }
+    void clear();
 
-        // Link shaders
-        int shaderProgram = glCreateProgram();
-        glAttachShader(shaderProgram, vertexShader);
-        glAttachShader(shaderProgram, fragmentShader);
-        glLinkProgram(shaderProgram);
+    void activate() const;
 
-        // Check for linking errors
-        glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-        if (!success)
-        {
-            glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
-            std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-            overallSuccess = false;
-        }
+    int getUniform(const char* name) const;
 
-        glDeleteShader(vertexShader);
-        glDeleteShader(fragmentShader);
+    void setModelMatrix(const glm::mat4& mat) const;
 
-        programID = shaderProgram;
+    void setViewProjectionMatrix(const glm::mat4& view, const glm::mat4& projection) const;
 
-        return overallSuccess;
-    }
+    void setViewMatrix(const glm::mat4& mat) const;
 
-    int getProgramID() const
-    {
-        return programID;
-    }
+    void setProjectionMatrix(const glm::mat4& mat) const;
 
+    void setLightSpaceMatrix(const glm::mat4& mat) const;
 
-    void setModelMatrix(const glm::mat4& mat) const
-    {
-        GLuint location = glGetUniformLocation(programID, "modelMatrix");
-        glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
-    }
+    void setColor(const glm::vec3& color) const;
 
-    void setViewProjectionMatrix(const glm::mat4& view, const glm::mat4& projection) const
-    {
-        setViewMatrix(view);
-        setProjectionMatrix(projection);
-    }
+    void setTime(float time) const;
 
-    void setViewMatrix(const glm::mat4& mat) const
-    {
-        GLuint location = glGetUniformLocation(programID, "viewMatrix");
-        glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
-    }
+    void setCustomVector(const char* name, const glm::vec3& value) const;
 
-    void setProjectionMatrix(const glm::mat4& mat) const
-    {
-        GLuint location = glGetUniformLocation(programID, "projectionMatrix");
-        glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
-    }
+    void setCustomFloat(const char* name, float value) const;
 
-    void setLightSpaceMatrix(const glm::mat4& mat) const
-    {
-        GLuint location = glGetUniformLocation(programID, "lightSpaceMatrix");
-        glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
-    }
-
-    void setColor(const glm::vec3& color) const
-    {
-        GLuint location = glGetUniformLocation(programID, "color");
-        glUniform3fv(location, 1, glm::value_ptr(color));
-    }
-
-    void setTime(float time) const
-    {
-        GLuint location = glGetUniformLocation(programID, "time");
-        glUniform1f(location, time);
-    }
-
-    void setCustomVector(const char* name, const glm::vec3& value) const
-    {
-        GLuint location = glGetUniformLocation(programID, name);
-        glUniform3fv(location, 1, glm::value_ptr(value));
-    }
-
-    void setCustomFloat(const char* name, float value) const
-    {
-        GLuint location = glGetUniformLocation(programID, name);
-        glUniform1f(location, value);
-    }
-
-    void setCustomInt(const char* name, int value) const
-    {
-        GLuint location = glGetUniformLocation(programID, name);
-        glUniform1i(location, value);
-    }
+    void setCustomInt(const char* name, int value) const;
 
     bool needsCamera = true;
     bool castsShadows = false;
     bool receivesShadows = false;
 
 protected:
+    static int addShader(int program, const char* code, GLenum type);
 
     int programID = -1;
 };
