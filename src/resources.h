@@ -27,6 +27,8 @@ public:
     /// Simple unlit shader, supports vertex color and uniform tint color + model, view, projection matrices
     static Shader basicShader;
 
+    static Shader basicTexturedShader;
+
     static Shader basicShadowedShader;
 
     static Shader shadowCastShader;

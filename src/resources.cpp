@@ -4,6 +4,7 @@ const float Resources::unitSize = 0.25f;
 Mesh Resources::unitCube;
 Mesh Resources::quad;
 Shader Resources::basicShader;
+Shader Resources::basicTexturedShader;
 Shader Resources::basicShadowedShader;
 Shader Resources::shadowCastShader;
 const glm::vec3 Resources::colorWhite = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -68,6 +69,10 @@ void Resources::initialize()
     basicShader.load("shader");
     basicShader.setColor(Resources::colorWhite);
     shaders.push_back(&basicShader);
+
+    basicTexturedShader.load("textured");
+    basicTexturedShader.setColor(Resources::colorWhite);
+    shaders.push_back(&basicTexturedShader);
 
     basicShadowedShader.load("shadowed");
     basicShadowedShader.receivesShadows = true;

@@ -15,6 +15,7 @@
 #include "tests/test_loader_obj.h"
 #include "tests/test_scene_graph.h"
 #include "tests/test_shadows.h"
+#include "tests/test_texture.h"
 #include "tests/test_unit_cube.h"
 #include "tests/test_vertex_drawing.h"
 
@@ -52,8 +53,10 @@ void World::AddModules()
     modules.push_back(new TestVertexDrawing(false));
     modules.push_back(new TestSceneGraph(false));
     modules.push_back(new TestShadows(false));
+    modules.push_back(new TestTexture(false));
 
-    modules.push_back(new Assignment1(true));
+    // Assignments
+    modules.push_back(new Assignment1(false));
 
     // Should always be last
     modules.push_back(sceneGraph);
