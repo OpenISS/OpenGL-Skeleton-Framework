@@ -3,6 +3,8 @@
 #include "mesh.h"
 #include "shader.h"
 
+class Texture;
+
 /**
  * Commonly used constants and resources.
  */
@@ -34,6 +36,8 @@ public:
     static Shader shadowCastShader;
 
     static const glm::vec3 colorWhite;
+
+    static Texture whiteTexture;
 
 protected:
 

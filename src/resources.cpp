@@ -1,5 +1,7 @@
 #include "resources.h"
 
+#include "texture.h"
+
 const float Resources::unitSize = 0.25f;
 Mesh Resources::unitCube;
 Mesh Resources::quad;
@@ -8,6 +10,7 @@ Shader Resources::basicTexturedShader;
 Shader Resources::basicShadowedShader;
 Shader Resources::shadowCastShader;
 const glm::vec3 Resources::colorWhite = glm::vec3(1.0f, 1.0f, 1.0f);
+Texture Resources::whiteTexture = Texture("assets/white.png", GL_RGBA);
 std::vector<const Shader*> Resources::shaders;
 
 void Resources::initialize()
@@ -80,11 +83,12 @@ void Resources::initialize()
     basicShadowedShader.setCustomInt("shadowMap", 8);
     shaders.push_back(&basicShadowedShader);
 
-    // Shadowmap shader
     shadowCastShader.load("shadow_cast");
     shadowCastShader.needsCamera = false;
     shadowCastShader.castsShadows = true;
     shaders.push_back(&shadowCastShader);
+
+    whiteTexture.loadTexture();
 }
 
 const std::vector<const Shader*>& Resources::getShaders()
