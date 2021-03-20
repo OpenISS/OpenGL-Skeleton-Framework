@@ -2,8 +2,7 @@
 #include <vector>
 #include "mesh.h"
 #include "shader.h"
-
-class Texture;
+#include "texture.h"
 
 /**
  * Commonly used constants and resources.

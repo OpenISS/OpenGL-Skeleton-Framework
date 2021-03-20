@@ -3,6 +3,7 @@
 #include "node.h"
 #include "resources.h"
 #include "shader.h"
+#include "texture.h"
 
 /**
  * Member of the scene graph, rendered using its associated mesh and shader.
@@ -33,6 +34,10 @@ public:
                 shader->activate();
                 shader->setModelMatrix(matrixStack);
                 shader->setColor(color);
+                if (texture == nullptr)
+                    Resources::whiteTexture.useTexture();
+                else
+                    texture->useTexture();
             }
             else if (pass == RenderPass::Shadow)
             {
@@ -46,5 +51,6 @@ public:
 
     Shader* shader = nullptr;
     Mesh* mesh = nullptr;
+    Texture* texture = nullptr;
     glm::vec3 color = Resources::colorWhite;
 };

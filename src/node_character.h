@@ -6,6 +6,7 @@
 #include "resources.h"
 #include "resources_alphabet.h"
 #include "shader.h"
+#include "texture.h"
 #include "world.h"
 
 /**
@@ -39,6 +40,10 @@ public:
             {
                 shader->activate();
                 shader->setColor(color);
+                if (texture == nullptr)
+                    Resources::whiteTexture.useTexture();
+                else
+                    texture->useTexture();
             }
             else if (pass == RenderPass::Shadow)
             {
@@ -60,6 +65,7 @@ public:
 
     const std::vector<glm::mat4>* cubes = nullptr;
     Shader* shader = nullptr;
+    Texture* texture = nullptr;
     glm::vec3 color = Resources::colorWhite;
     float scale = 1.0f;
     RenderMode renderMode = RenderMode::Triangle;

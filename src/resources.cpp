@@ -1,7 +1,5 @@
 #include "resources.h"
 
-#include "texture.h"
-
 const float Resources::unitSize = 0.25f;
 Mesh Resources::unitCube;
 Mesh Resources::quad;

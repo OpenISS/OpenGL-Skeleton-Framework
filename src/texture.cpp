@@ -1,5 +1,8 @@
 #include "texture.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "thirdparty/stb/stb_image.h"
+
 void Texture::loadFile(const std::string& filepath) {
     if (pathToFile.empty()) {
         throw std::runtime_error("no file specified for texture!\n");
