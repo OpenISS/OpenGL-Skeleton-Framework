@@ -160,13 +160,16 @@ void Shader::setLightSpaceMatrix(const glm::mat4& mat) const
 
 void Shader::setColor(const glm::vec3& color) const
 {
-    GLuint location = glGetUniformLocation(programID, "color");
     glUniform3fv(getUniform("color"), 1, glm::value_ptr(color));
+}
+
+void Shader::setUVScale(const glm::vec2& uvScale) const
+{
+    glUniform2fv(getUniform("uvScale"), 1, glm::value_ptr(uvScale));
 }
 
 void Shader::setTime(float time) const
 {
-    GLuint location = glGetUniformLocation(programID, "time");
     glUniform1f(getUniform("time"), time);
 }
 
@@ -174,6 +177,12 @@ void Shader::setCustomVector(const char* name, const glm::vec3& value) const
 {
     GLuint location = glGetUniformLocation(programID, name);
     glUniform3fv(location, 1, glm::value_ptr(value));
+}
+
+void Shader::setCustomVector(const char* name, const glm::vec2& value) const
+{
+    GLuint location = glGetUniformLocation(programID, name);
+    glUniform2fv(location, 1, glm::value_ptr(value));
 }
 
 void Shader::setCustomFloat(const char* name, float value) const

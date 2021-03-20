@@ -8,7 +8,7 @@ Shader Resources::basicTexturedShader;
 Shader Resources::basicShadowedShader;
 Shader Resources::shadowCastShader;
 const glm::vec3 Resources::colorWhite = glm::vec3(1.0f, 1.0f, 1.0f);
-Texture Resources::whiteTexture = Texture("assets/white.png", GL_RGBA);
+Texture Resources::whiteTexture = Texture("assets/white.png");
 std::vector<const Shader*> Resources::shaders;
 
 void Resources::initialize()

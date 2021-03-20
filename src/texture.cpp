@@ -8,11 +8,16 @@ void Texture::loadFile(const std::string& filepath) {
         throw std::runtime_error("no file specified for texture!\n");
     }
 
-    data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
+    data = stbi_load(filepath.c_str(), &width, &height, &numChannels, 0);
 
     if (!data) {
         throw std::runtime_error("Failed to load texture from file: %s\n");
     }
+
+    if (numChannels == 3)
+        format = GL_RGB;
+    else if (numChannels == 4)
+        format = GL_RGBA;
 }
 
 void Texture::loadTexture() {
@@ -48,7 +53,7 @@ void Texture::clearTexture() {
     textureID = 0;
     width = 0;
     height = 0;
-    channels = 0;
+    numChannels = 0;
     pathToFile = "";
 }
 

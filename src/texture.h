@@ -7,15 +7,14 @@
 class Texture {
 
 public:
-    Texture(): width(0), height(0), channels(0), textureID(0) {}
+    Texture(): width(0), height(0), numChannels(0), textureID(0) {}
 
-    explicit Texture(std::string path, GLenum format = GL_RGBA): Texture() {
+    explicit Texture(std::string path): Texture() {
         this->pathToFile = path;
-        this->format = format;
     }
 
     Texture(unsigned char* data, const int width, const int height, const int depth)
-    : data(data), width(width), height(height), channels(depth), textureID(0)  {}
+    : data(data), width(width), height(height), numChannels(depth), textureID(0)  {}
 
     void loadTexture();
     void useTexture();
@@ -28,7 +27,7 @@ private:
     GLenum type = GL_TEXTURE_2D;
     GLenum format = GL_RGBA;
 
-    int width, height, channels;
+    int width, height, numChannels;
 
     std::string pathToFile;
     unsigned char* data = nullptr;

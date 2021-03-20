@@ -49,9 +49,13 @@ public:
 
     void setColor(const glm::vec3& color) const;
 
+    void setUVScale(const glm::vec2& uvScale) const;
+
     void setTime(float time) const;
 
     void setCustomVector(const char* name, const glm::vec3& value) const;
+
+    void setCustomVector(const char* name, const glm::vec2& value) const;
 
     void setCustomFloat(const char* name, float value) const;
 
