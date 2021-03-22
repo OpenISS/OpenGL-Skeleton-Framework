@@ -2,6 +2,7 @@
 #include <vector>
 #include "mesh.h"
 #include "shader.h"
+#include "material.h"
 #include "texture.h"
 
 /**
@@ -15,6 +16,8 @@ public:
 
     /// Returns the list of all shaders used in the application, can be used to set uniforms globally for example
     static const std::vector<const Shader*>& getShaders();
+
+    static void useTexture(Texture* texture, int slot = 0);
 
     /// Scales all meshes and layouts used in assignments
     static const float unitSize;
@@ -37,6 +40,8 @@ public:
     static const glm::vec3 colorWhite;
 
     static Texture whiteTexture;
+
+    static Material unshadedWhiteMaterial;
 
 protected:
 

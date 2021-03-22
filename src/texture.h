@@ -17,7 +17,7 @@ public:
     : data(data), width(width), height(height), numChannels(depth), textureID(0)  {}
 
     void loadTexture();
-    void useTexture();
+    void useTexture(int slot = 0);
     void clearTexture();
 
     ~Texture() { clearTexture(); }

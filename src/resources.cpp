@@ -9,6 +9,7 @@ Shader Resources::basicShadowedShader;
 Shader Resources::shadowCastShader;
 const glm::vec3 Resources::colorWhite = glm::vec3(1.0f, 1.0f, 1.0f);
 Texture Resources::whiteTexture = Texture("assets/white.png");
+Material Resources::unshadedWhiteMaterial;
 std::vector<const Shader*> Resources::shaders;
 
 void Resources::initialize()
@@ -91,9 +92,21 @@ void Resources::initialize()
     shaders.push_back(&shadowCastShader);
 
     whiteTexture.loadTexture();
+
+    unshadedWhiteMaterial.ambientIntensity = 1.0f;
+    unshadedWhiteMaterial.diffuseIntensity = 0.0f;
+    unshadedWhiteMaterial.specularIntensity = 0.0f;
 }
 
 const std::vector<const Shader*>& Resources::getShaders()
 {
     return shaders;
+}
+
+void Resources::useTexture(Texture* texture, int slot)
+{
+    if (texture == nullptr)
+        whiteTexture.useTexture(slot);
+    else
+        texture->useTexture(slot);
 }

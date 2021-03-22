@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../color.h"
+#include "../material.h"
 #include "../module.h"
 #include "../node_character.h"
 #include "../node_model.h"
@@ -25,6 +26,11 @@ public:
     {
         Module::Startup(world);
 
+        yellowMaterial = Resources::unshadedWhiteMaterial;
+        blueMaterial = Resources::unshadedWhiteMaterial;
+        yellowMaterial.ambientColor = hexToFloatRGB(0xfaf489);
+        blueMaterial.ambientColor = hexToFloatRGB(0xadebf7);
+
         // Hierarchy and movement:
         // * localRoot (rotates around itself)
         //     * cube1 (no local motion)
@@ -37,21 +43,14 @@ public:
 
         localRoot = new Node();
 
-        cube1 = new NodeModel(Resources::basicShader, Resources::unitCube);
-        cube2 = new NodeModel(Resources::basicShader, Resources::unitCube);
-        cube3 = new NodeModel(Resources::basicShader, Resources::unitCube);
-        cube4 = new NodeModel(Resources::basicShader, Resources::unitCube);
+        cube1 = new NodeModel(Resources::unitCube, yellowMaterial, Resources::basicShader);
+        cube2 = new NodeModel(Resources::unitCube, yellowMaterial, Resources::basicShader);
+        cube3 = new NodeModel(Resources::unitCube, blueMaterial, Resources::basicShader);
+        cube4 = new NodeModel(Resources::unitCube, blueMaterial, Resources::basicShader);
 
-        letter1 = new NodeCharacter('M', Resources::basicShader, 2.0f);
-        letter2 = new NodeCharacter('N', Resources::basicShader, 2.0f);
-        letter3 = new NodeCharacter('P', Resources::basicShader, 2.0f);
-
-        const glm::vec3 yellow = hexToFloatRGB(0xfaf489);
-        const glm::vec3 blue   = hexToFloatRGB(0xadebf7);
-        cube1->color = yellow;
-        cube2->color = yellow;
-        cube3->color = blue;
-        cube4->color = blue;
+        letter1 = new NodeCharacter('M', Resources::unshadedWhiteMaterial, Resources::basicShader, 2.0f);
+        letter2 = new NodeCharacter('N', Resources::unshadedWhiteMaterial, Resources::basicShader, 2.0f);
+        letter3 = new NodeCharacter('P', Resources::unshadedWhiteMaterial, Resources::basicShader, 2.0f);
 
         world.sceneGraph->addChild(*localRoot);
         localRoot->addChild(*cube1);
@@ -114,4 +113,7 @@ protected:
 
     float angle = 0.0f;
     float anglesPerSecond = 60.0f;
+
+    Material yellowMaterial;
+    Material blueMaterial;
 };

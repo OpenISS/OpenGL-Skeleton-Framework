@@ -1,4 +1,5 @@
 #pragma once
+#include "material.h"
 #include "mesh.h"
 #include "modules/rendering_mode.h"
 #include "node.h"
@@ -21,9 +22,10 @@ class NodeCharacter : public Node
 {
 public:
 
-    NodeCharacter(char character, Shader& shader, float scale = 1.0f)
+    NodeCharacter(char character, Material& material, Shader& shader, float scale = 1.0f)
     {
         this->scale = scale;
+        this->material = &material;
         this->shader = &shader;
         auto res = ResourcesAlphabet::getCubes(character);
         if (res != nullptr)
@@ -32,18 +34,16 @@ public:
 
     virtual void render(World& world, RenderPass pass, const glm::mat4& matrixStack) override
     {
-        if (shader != nullptr)
+        if (material != nullptr && shader != nullptr)
         {
             world.renderingMode->SetupPolygonMode(renderMode);
 
             if (pass == RenderPass::Color)
             {
                 shader->activate();
-                shader->setColor(color);
-                if (texture == nullptr)
-                    Resources::whiteTexture.useTexture();
-                else
-                    texture->useTexture();
+                shader->setMaterial(*material);
+                Resources::useTexture(material->diffuseTexture, 0);
+                Resources::useTexture(material->specularTexture, 1);
             }
             else if (pass == RenderPass::Shadow)
             {
@@ -64,9 +64,8 @@ public:
     }
 
     const std::vector<glm::mat4>* cubes = nullptr;
+    Material* material = nullptr;
     Shader* shader = nullptr;
-    Texture* texture = nullptr;
-    glm::vec3 color = Resources::colorWhite;
     float scale = 1.0f;
     RenderMode renderMode = RenderMode::Triangle;
 };

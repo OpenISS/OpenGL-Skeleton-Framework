@@ -43,8 +43,8 @@ void Texture::loadTexture() {
     stbi_image_free(data);
 }
 
-void Texture::useTexture() {
-    glActiveTexture(GL_TEXTURE0);
+void Texture::useTexture(int slot) {
+    glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(type, textureID);
 }
 
