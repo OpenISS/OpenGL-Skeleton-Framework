@@ -88,6 +88,7 @@ void Resources::initialize()
 
     litShader.load("lit");
     litShader.activate();
+    litShader.needsLight = true;
     litShader.setColor(Resources::colorWhite);
     litShader.setCustomInt("diffuseTexture", 0);
     litShader.setCustomInt("specularTexture", 1);

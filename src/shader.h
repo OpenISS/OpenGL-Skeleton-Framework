@@ -68,6 +68,7 @@ public:
     void setCustomInt(const char* name, int value) const;
 
     bool needsCamera = true;
+    bool needsLight = false;
     bool castsShadows = false;
     bool receivesShadows = false;
 
