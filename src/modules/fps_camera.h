@@ -99,6 +99,7 @@ public:
             {
                 shader->activate();
                 shader->setViewProjectionMatrix(view, projection);
+                shader->setViewPosition(camera->getPosition());
             }
         }
     }

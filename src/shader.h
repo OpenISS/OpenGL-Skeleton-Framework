@@ -49,6 +49,8 @@ public:
 
     void setLightSpaceMatrix(const glm::mat4& mat) const;
 
+    void setViewPosition(const glm::vec3& position) const;
+
     void setColor(const glm::vec3& color) const;
 
     void setUVScale(const glm::vec2& uvScale) const;

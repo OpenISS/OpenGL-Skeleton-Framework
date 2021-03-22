@@ -30,20 +30,30 @@ void main()
     vec3 normal = normalize(worldNormal);
     vec3 viewDir = normalize(viewPosition - worldPos);
 
-    vec4 diffuseSample = texture(diffuseTexture, texCoords);
-    vec4 specularSample = texture(specularTexture, texCoords);
+    float gamma = 2.2;
+    vec3 diffuseSample = pow(texture(diffuseTexture, texCoords).rgb, vec3(gamma)); // Gamma correction (to linear)
+    vec3 specularSample = texture(specularTexture, texCoords).rgb;
 
     vec3 lightDir = normalize(lightPosition - worldPos);
     float diffuse = max(dot(normal, lightDir), 0.0);
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float specular = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+
+    // Phong
+    // vec3 reflectDir = reflect(-lightDir, normal);
+    // float specular = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+
+    // Blinn-Phong
+    vec3 halfwayDir = normalize(lightDir + viewDir);  
+    float specular = pow(max(dot(normal, halfwayDir), 0.0), shininess);
 
     float distance = length(lightPosition - worldPos);
     float attenuation = 1.0 / (lightConstantAttenuation + lightLinearAttenuation * distance + lightQuadraticAttenuation * (distance * distance));    
 
     vec3 ambientColor = ambientColor + lightAmbient * attenuation;
-    vec3 diffuseColor = lightDiffuse * diffuse * vec3(diffuseSample) * diffuseColor * attenuation;
-    vec3 specularColor = lightSpecular * specular * vec3(specularSample) * specularColor * attenuation;
+    vec3 diffuseColor = lightDiffuse * diffuse * diffuseSample * diffuseColor * attenuation;
+    vec3 specularColor = lightSpecular * specular * specularSample * specularColor * attenuation;
 
     fragColor = vec4((ambientColor + diffuseColor + specularColor) * vertexColor, 1.0);
+
+    // Gamma correction (to sRGB)
+    fragColor.rgb = pow(fragColor.rgb, vec3(1.0 / gamma));
 }

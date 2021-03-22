@@ -23,5 +23,5 @@ void main()
 
     vertexColor = aColor;
     texCoords = aUV * uvScale;
-    worldNormal = mat3(transpose(inverse(modelMatrix))) * aNormal; 
+    worldNormal = normalize(mat3(transpose(inverse(modelMatrix))) * aNormal); 
 }

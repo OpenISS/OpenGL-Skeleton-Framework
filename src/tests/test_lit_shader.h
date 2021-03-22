@@ -23,7 +23,8 @@ public:
 
         unlitMaterial = Resources::unshadedWhiteMaterial;
 
-        untexturedSpecularMaterial.shininess = 2.0f;
+        untexturedSpecularMaterial.diffuseIntensity = 0.0f;
+        untexturedSpecularMaterial.shininess = 8.0f;
 
         crateTexture = Texture("assets/fragile.jpg");
         crateTexture.loadTexture();
