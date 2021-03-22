@@ -15,9 +15,13 @@ public:
 
     Type type = Type::Point;
 
-    glm::vec3 ambientColor = glm::vec3(0.0f);
+    glm::vec3 ambientColor = glm::vec3(1.0f);
     glm::vec3 diffuseColor = glm::vec3(1.0f);
     glm::vec3 specularColor = glm::vec3(1.0f);
+
+    float ambientIntensity = 0.0f;
+    float diffuseIntensity = 1.0f;
+    float specularIntensity = 1.0f;
 
     float constantAttenuation = 1.0f;
     float linearAttenuation = 0.09f;

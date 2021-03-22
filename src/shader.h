@@ -6,6 +6,8 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
+#include "light_data.h"
+#include "material.h"
 
 /**
  * Abstracts shader compilation, linking, and uniform updates.
@@ -52,6 +54,10 @@ public:
     void setUVScale(const glm::vec2& uvScale) const;
 
     void setTime(float time) const;
+
+    void setLight(const LightData& light) const;
+
+    void setMaterial(const Material& material) const;
 
     void setCustomVector(const char* name, const glm::vec3& value) const;
 

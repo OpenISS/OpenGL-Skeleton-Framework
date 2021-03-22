@@ -1,11 +1,15 @@
 #version 330 core
+
 in vec3 vertexColor;
 in vec4 posLightSpace;
+
 uniform sampler2D shadowMap;
-uniform vec3 color = vec3(1.0, 1.0, 1.0);
+uniform vec3 ambientColor = vec3(1.0, 1.0, 1.0);
 uniform mat4 lightSpaceMatrix = mat4(1.0);
 uniform float bias = 0.0;
-out vec4 FragColor;
+
+out vec4 fragColor;
+
 void main()
 {
     // Perform perspective divide
@@ -36,6 +40,6 @@ void main()
     if (projCoords.z > 1.0)
     shadow = 0.0;
 
-    FragColor = vec4(vertexColor.r * color.r, vertexColor.g * color.g, vertexColor.b * color.b, 1.0f);
-    FragColor *= (1.0 - shadow);
+    fragColor = vec4(vertexColor * ambientColor, 1.0);
+    fragColor *= (1.0 - shadow);
 }

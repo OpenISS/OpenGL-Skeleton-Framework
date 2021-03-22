@@ -1,8 +1,12 @@
 #version 330 core
+
 in vec3 vertexColor;
-uniform vec3 color = vec3(1.0, 1.0, 1.0);
-out vec4 FragColor;
+
+uniform vec3 ambientColor = vec3(1.0, 1.0, 1.0);
+
+out vec4 fragColor;
+
 void main()
 {
-    FragColor = vec4(vertexColor.r * color.r, vertexColor.g * color.g, vertexColor.b * color.b, 1.0f);
+    fragColor = vec4(vertexColor * ambientColor, 1.0);
 }

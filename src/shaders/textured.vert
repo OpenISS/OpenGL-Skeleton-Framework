@@ -1,6 +1,7 @@
 #version 330 core
-layout (location = 0) in vec3 pos;
-layout (location = 3) in vec2 uv;
+
+layout (location = 0) in vec3 aPos;
+layout (location = 3) in vec2 aUV;
 
 uniform mat4 modelMatrix = mat4(1.0);
 uniform mat4 viewMatrix = mat4(1.0);
@@ -12,6 +13,6 @@ out vec2 texCoords;
 
 void main()
 {
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(pos, 1.0);
-    texCoords = uv * uvScale;
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(aPos, 1.0);
+    texCoords = aUV * uvScale;
 }

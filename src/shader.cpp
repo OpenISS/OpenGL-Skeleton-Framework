@@ -160,7 +160,7 @@ void Shader::setLightSpaceMatrix(const glm::mat4& mat) const
 
 void Shader::setColor(const glm::vec3& color) const
 {
-    glUniform3fv(getUniform("color"), 1, glm::value_ptr(color));
+    glUniform3fv(getUniform("ambientColor"), 1, glm::value_ptr(color));
 }
 
 void Shader::setUVScale(const glm::vec2& uvScale) const
@@ -171,6 +171,25 @@ void Shader::setUVScale(const glm::vec2& uvScale) const
 void Shader::setTime(float time) const
 {
     glUniform1f(getUniform("time"), time);
+}
+
+void Shader::setLight(const LightData& light) const
+{
+    setCustomVector("lightPosition", light.position);
+    setCustomVector("lightAmbient", light.ambientColor * light.ambientIntensity);
+    setCustomVector("lightDiffuse", light.diffuseColor * light.diffuseIntensity);
+    setCustomVector("lightSpecular", light.specularColor * light.specularIntensity);
+    setCustomFloat("lightConstantAttenuation", light.constantAttenuation);
+    setCustomFloat("lightLinearAttenuation", light.linearAttenuation);
+    setCustomFloat("lightQuadraticAttenuation", light.quadraticAttenuation);
+}
+
+void Shader::setMaterial(const Material& material) const
+{
+    setCustomVector("ambientColor", material.ambientColor * material.ambientIntensity);
+    setCustomVector("diffuseColor", material.diffuseColor * material.diffuseIntensity);
+    setCustomVector("specularColor", material.specularColor * material.specularIntensity);
+    setCustomFloat("shininess", material.shininess);
 }
 
 void Shader::setCustomVector(const char* name, const glm::vec3& value) const
