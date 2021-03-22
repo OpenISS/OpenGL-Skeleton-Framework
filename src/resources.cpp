@@ -68,20 +68,24 @@ void Resources::initialize()
     });
 
     basicShader.load("shader");
+    basicShader.activate();
     basicShader.setColor(Resources::colorWhite);
     shaders.push_back(&basicShader);
 
     basicTexturedShader.load("textured");
+    basicTexturedShader.activate();
     basicTexturedShader.setColor(Resources::colorWhite);
     shaders.push_back(&basicTexturedShader);
 
     basicShadowedShader.load("shadowed");
+    basicShadowedShader.activate();
     basicShadowedShader.receivesShadows = true;
     basicShadowedShader.setColor(Resources::colorWhite);
     basicShadowedShader.setCustomInt("shadowMap", 8);
     shaders.push_back(&basicShadowedShader);
 
     shadowCastShader.load("shadow_cast");
+    shadowCastShader.activate();
     shadowCastShader.needsCamera = false;
     shadowCastShader.castsShadows = true;
     shaders.push_back(&shadowCastShader);
