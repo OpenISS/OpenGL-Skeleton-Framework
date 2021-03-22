@@ -18,4 +18,6 @@ public:
 
     Texture* diffuseTexture = nullptr;
     Texture* specularTexture = nullptr;
+
+    glm::vec2 uvScale = glm::vec2(1.0f);
 };

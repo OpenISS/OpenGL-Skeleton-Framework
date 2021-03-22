@@ -146,6 +146,8 @@ void Shader::setModelMatrix(const glm::mat4& mat) const
 void Shader::setViewMatrix(const glm::mat4& mat) const
 {
     glUniformMatrix4fv(getUniform("viewMatrix"), 1, GL_FALSE, &mat[0][0]);
+    glm::vec3 position = glm::vec3(mat[3][0], mat[3][1], mat[3][2]);
+    setCustomVector("viewPosition", position);
 }
 
 void Shader::setProjectionMatrix(const glm::mat4& mat) const
@@ -189,6 +191,7 @@ void Shader::setMaterial(const Material& material) const
     setCustomVector("ambientColor", material.ambientColor * material.ambientIntensity);
     setCustomVector("diffuseColor", material.diffuseColor * material.diffuseIntensity);
     setCustomVector("specularColor", material.specularColor * material.specularIntensity);
+    setCustomVector("uvScale", material.uvScale);
     setCustomFloat("shininess", material.shininess);
 }
 

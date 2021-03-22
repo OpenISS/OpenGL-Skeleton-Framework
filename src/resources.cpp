@@ -6,6 +6,7 @@ Mesh Resources::quad;
 Shader Resources::basicShader;
 Shader Resources::basicTexturedShader;
 Shader Resources::basicShadowedShader;
+Shader Resources::litShader;
 Shader Resources::shadowCastShader;
 const glm::vec3 Resources::colorWhite = glm::vec3(1.0f, 1.0f, 1.0f);
 Texture Resources::whiteTexture = Texture("assets/white.png");
@@ -84,6 +85,13 @@ void Resources::initialize()
     basicShadowedShader.setColor(Resources::colorWhite);
     basicShadowedShader.setCustomInt("shadowMap", 8);
     shaders.push_back(&basicShadowedShader);
+
+    litShader.load("lit");
+    litShader.activate();
+    litShader.setColor(Resources::colorWhite);
+    litShader.setCustomInt("diffuseTexture", 0);
+    litShader.setCustomInt("specularTexture", 1);
+    shaders.push_back(&litShader);
 
     shadowCastShader.load("shadow_cast");
     shadowCastShader.activate();

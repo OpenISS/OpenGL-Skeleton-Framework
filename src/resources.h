@@ -35,6 +35,8 @@ public:
 
     static Shader basicShadowedShader;
 
+    static Shader litShader;
+
     static Shader shadowCastShader;
 
     static const glm::vec3 colorWhite;
