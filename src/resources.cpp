@@ -89,9 +89,11 @@ void Resources::initialize()
     litShader.load("lit");
     litShader.activate();
     litShader.needsLight = true;
+    litShader.receivesShadows = true;
     litShader.setColor(Resources::colorWhite);
     litShader.setCustomInt("diffuseTexture", 0);
     litShader.setCustomInt("specularTexture", 1);
+    litShader.setCustomInt("shadowMap", 8);
     shaders.push_back(&litShader);
 
     shadowCastShader.load("shadow_cast");

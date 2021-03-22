@@ -17,7 +17,8 @@ public:
     {
         light.type = LightData::Type::Point;
         light.position = glm::vec3(0.0f, 8.0f, 0.0f);
-        light.direction = glm::normalize(glm::vec3(-0.2f, -1.0f, 0.1f));
+        light.direction = glm::normalize(glm::vec3(0.0f, -1.0f, 0.0f));
+        light.angle = 90.0f;
         light.linearAttenuation *= 0.25f;
         light.quadraticAttenuation *= 0.25f;
 
@@ -29,6 +30,15 @@ public:
         crateTexture = Texture("assets/fragile.jpg");
         crateTexture.loadTexture();
         texturedMaterial.diffuseTexture = &crateTexture;
+    }
+
+    void Update(World& world, float elapsed) override
+    {
+        Module::Update(world, elapsed);
+
+        world.shadows->setLight(light);
+        world.shadows->range = 15.0f;
+        world.shadows->bias = 0.007f;
     }
 
     void Render(World& world, RenderPass pass) override
@@ -46,12 +56,14 @@ public:
         cubes.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(-6.0f, 0.5f, 3.0f)));
         cubes.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.5f, 3.0f)));
         cubes.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(6.0f, 0.5f, 3.0f)));
+        cubes.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.5f, 3.0f, 0.0f)));
 
         std::vector<Material*> materials;
         materials.push_back(&unlitMaterial);
         materials.push_back(&untexturedSpecularMaterial);
         materials.push_back(&untexturedMaterial);
         materials.push_back(&untexturedMaterial);
+        materials.push_back(&texturedMaterial);
         materials.push_back(&texturedMaterial);
         materials.push_back(&texturedMaterial);
         materials.push_back(&texturedMaterial);
