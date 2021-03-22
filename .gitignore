@@ -35,6 +35,7 @@ bld/
 # CMake
 Makefile
 [Cc][Mm]ake*
+!cmake
 !CMakeLists.txt
 .cbp
 
@@ -385,6 +386,8 @@ FodyWeavers.xsd
 .AppleDouble
 .LSOverride
 ._*
+
+#docs
 /docs/sphinx/_api
 /docs/sphinx/_build
 /docs/doxygen

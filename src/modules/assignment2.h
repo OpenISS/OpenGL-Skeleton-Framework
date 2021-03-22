@@ -89,14 +89,14 @@ public:
 
 
         // adding stage pieces 
-        stagePiece1 = new NodeModel(Resources::basicShader, Resources::unitCube);
-        stagePiece2 = new NodeModel(Resources::basicShader, Resources::unitCube);
-        stagePiece3 = new NodeModel(Resources::basicShader, Resources::unitCube);
-        screen = new NodeModel(Resources::basicShader, Resources::unitCube);
-        pillar1Bottom = new NodeModel(Resources::basicShader, Resources::unitCube);
-        pillar1Top = new NodeModel(Resources::basicShader, Resources::unitCube);
-        pillar2Bottom = new NodeModel(Resources::basicShader, Resources::unitCube);
-        pillar2Top = new NodeModel(Resources::basicShader, Resources::unitCube);
+        stagePiece1 = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
+        stagePiece2 = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
+        stagePiece3 = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
+        screen = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
+        pillar1Bottom = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
+        pillar1Top = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
+        pillar2Bottom = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
+        pillar2Top = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
 
         localRoot->addChild(*stagePiece1);
         localRoot->addChild(*stagePiece2);
@@ -119,22 +119,22 @@ public:
         stagePiece3->transform = glm::scale(stagePiece3->transform, glm::vec3(12.0f * Resources::unitSize, 1.5f * Resources::unitSize, 12.0f * Resources::unitSize));
 
         screen->translate(glm::vec3(0.0f, 23.0f * Resources::unitSize, -53.5f * Resources::unitSize));
-        screen->color = glm::vec3(1.0f, 0.0f, 0.0f);
+        //screen->color = glm::vec3(1.0f, 0.0f, 0.0f);
         screen->transform = glm::scale(screen->transform, glm::vec3(58.0f * Resources::unitSize, 58.0f * Resources::unitSize * (float)world.windowHeight/(float)world.windowWidth, 0.5f * Resources::unitSize));
 
         pillar1Bottom->translate(glm::vec3(-30.5f * Resources::unitSize, 2.0f * Resources::unitSize, -53.5f * Resources::unitSize));
-        pillar1Bottom->color = glm::vec3(0.0f, 0.0f, 1.0f);
+        //pillar1Bottom->color = glm::vec3(0.0f, 0.0f, 1.0f);
         pillar1Bottom->transform = glm::scale(pillar1Bottom->transform, glm::vec3(3.0f * Resources::unitSize, 1.0f * Resources::unitSize, 5.0f * Resources::unitSize));
 
-        pillar1Top->color = glm::vec3(0.0f, 1.0f, 1.0f);
+        //pillar1Top->color = glm::vec3(0.0f, 1.0f, 1.0f);
         pillar1Top->translate(glm::vec3(-30.5f * Resources::unitSize, 21.5f * Resources::unitSize, -53.5f * Resources::unitSize));
         pillar1Top->transform = glm::scale(pillar1Top->transform, glm::vec3(3.0f * Resources::unitSize, 38.0f * Resources::unitSize, 3.0f * Resources::unitSize));
 
         pillar2Bottom->translate(glm::vec3(30.5f * Resources::unitSize, 2.0f * Resources::unitSize, -53.5f * Resources::unitSize));
-        pillar2Bottom->color = glm::vec3(0.0f, 0.0f, 1.0f);
+        //pillar2Bottom->color = glm::vec3(0.0f, 0.0f, 1.0f);
         pillar2Bottom->transform = glm::scale(pillar2Bottom->transform, glm::vec3(3.0f * Resources::unitSize, 1.0f * Resources::unitSize, 5.0f * Resources::unitSize));
 
-        pillar2Top->color = glm::vec3(0.0f, 1.0f, 1.0f);
+        //pillar2Top->color = glm::vec3(0.0f, 1.0f, 1.0f);
         pillar2Top->translate(glm::vec3(30.5f * Resources::unitSize, 21.5f * Resources::unitSize, -53.5f * Resources::unitSize));
         pillar2Top->transform = glm::scale(pillar2Top->transform, glm::vec3(3.0f * Resources::unitSize, 38.0f * Resources::unitSize, 3.0f * Resources::unitSize));
 
@@ -169,9 +169,9 @@ public:
 
 
         // ground 
-        NodeModel* ground = new NodeModel(Resources::basicShader, Resources::quad);
+        NodeModel* ground = new NodeModel(Resources::quad, Resources::unshadedWhiteMaterial, Resources::basicShader);
         world.sceneGraph->root.addChild(*ground);
-        ground->color = glm::vec3(0.0f, 1.0f, 0.0f);
+        //ground->color = glm::vec3(0.0f, 1.0f, 0.0f);
         ground->transform = glm::scale(glm::mat4(1.0f), glm::vec3(128.0f * Resources::unitSize));
         ground->transform = glm::rotate(ground->transform, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -183,7 +183,7 @@ public:
     {
         for (const char& c : word)
         {
-            root.addChild(*new NodeCharacter(c, Resources::basicShader, scale));
+            root.addChild(*new NodeCharacter(c, Resources::unshadedWhiteMaterial, Resources::basicShader, scale));
         }
     }
 

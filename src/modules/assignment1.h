@@ -109,7 +109,7 @@ public:
     {
         for (const char& c : word)
         {
-            root.addChild(*new NodeCharacter(c, Resources::basicShader, scale));
+            root.addChild(*new NodeCharacter(c, Resources::unshadedWhiteMaterial, Resources::basicShader, scale));
         }
     }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "camera.h"
+#include "light_data.h"
 #include "mesh.h"
 #include "modules/imgui_integration.h"
 #include "modules/rendering_mode.h"
@@ -50,6 +51,8 @@ public:
     SceneGraph* sceneGraph;
     Camera* camera;
     Shadows* shadows;
+
+    LightData light;
 
     int windowWidth;
     int windowHeight;

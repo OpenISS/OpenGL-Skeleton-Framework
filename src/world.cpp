@@ -13,9 +13,11 @@
 #include "resources_alphabet.h"
 #include "tests/test_alphabet.h"
 #include "tests/test_imgui_integration.h"
+#include "tests/test_lit_shader.h"
 #include "tests/test_loader_obj.h"
 #include "tests/test_scene_graph.h"
 #include "tests/test_shadows.h"
+#include "tests/test_texture.h"
 #include "tests/test_unit_cube.h"
 #include "tests/test_vertex_drawing.h"
 
@@ -48,11 +50,13 @@ void World::AddModules()
     // Tests
     modules.push_back(new TestAlphabet(false));
     modules.push_back(new TestImGuiIntegration(false));
+    modules.push_back(new TestLitShader(false));
     modules.push_back(new TestLoaderObj(false));
     modules.push_back(new TestUnitCube(false));
     modules.push_back(new TestVertexDrawing(false));
     modules.push_back(new TestSceneGraph(false));
     modules.push_back(new TestShadows(false));
+    modules.push_back(new TestTexture(false));
 
     modules.push_back(new Assignment1(false));
     modules.push_back(new Assignment2(true));

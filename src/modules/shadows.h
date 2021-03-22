@@ -66,17 +66,22 @@ public:
         glActiveTexture(GL_TEXTURE8);
         glBindTexture(GL_TEXTURE_2D, depthMap);
 
+        // glm::lookAt breaks if direction and up vector are too similar
+        glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+        if (glm::abs(glm::dot(up, light->direction)) >= 0.95f)
+            up = glm::vec3(1.0f, 0.0f, 0.0f);
+
         glm::mat4 lightSpaceMatrix;
         if (light->type == LightData::Type::Directional)
         {
             glm::mat4 lightProjection = glm::ortho(-range / 2.0f, range / 2.0f, -range / 2.0f, range / 2.0f, 1.0f, range); // Cube with side = size
-            glm::mat4 lightView = glm::lookAt(light->direction * -range * 0.75f, glm::vec3(0.0f), glm::vec3( 0.0f, 1.0f, 0.0f));
+            glm::mat4 lightView = glm::lookAt(light->direction * -range * 0.75f, glm::vec3(0.0f), up);
             lightSpaceMatrix = lightProjection * lightView;
         }
         else
         {
             glm::mat4 lightProjection = glm::perspective(glm::radians(light->angle), (float)width/(float)height, 1.0f, range);
-            glm::mat4 lightView = glm::lookAt(light->position, light->position + light->direction, glm::vec3( 0.0f, 1.0f, 0.0f));
+            glm::mat4 lightView = glm::lookAt(light->position, light->position + light->direction, up);
             lightSpaceMatrix = lightProjection * lightView;
         }
 

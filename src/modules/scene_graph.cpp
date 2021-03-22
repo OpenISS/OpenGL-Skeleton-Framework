@@ -1,10 +1,21 @@
 #include "scene_graph.h"
 
+#include "../resources.h"
+#include "../shader.h"
 #include "../world.h"
 
 void SceneGraph::Render(World& world, RenderPass pass)
 {
     Module::Render(world, pass);
+
+    for (auto shader : Resources::getShaders())
+    {
+        if (shader->needsLight)
+        {
+            shader->activate();
+            shader->setLight(world.light);
+        }
+    }
 
     world.renderingMode->SetupPolygonMode(RenderMode::Triangle); // Reset polygon mode before & after
     glm::mat4 stack = glm::mat4(1.0f);

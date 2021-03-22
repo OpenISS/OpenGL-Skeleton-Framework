@@ -50,12 +50,17 @@ include(BuildGLFW)
 include(BuildGLM)
 
 set(EXEC SunRay)
-set(ASSETS assets)
 file(GLOB_RECURSE SRC src/*.cpp)
 add_executable(${EXEC} ${SRC})
 target_link_libraries(${EXEC} OpenGL::GL glew_s glfw glm)
 list(APPEND BIN ${EXEC})
 
+add_custom_command(TARGET SunRay POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:SunRay>/assets
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders $<TARGET_FILE_DIR:SunRay>/shaders
+)
+
 # install files to install location
 install(TARGETS ${BIN} DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(DIRECTORY ${ASSETS} DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(DIRECTORY assets DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(DIRECTORY src/shaders DESTINATION ${CMAKE_INSTALL_PREFIX})

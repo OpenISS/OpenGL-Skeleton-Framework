@@ -14,10 +14,10 @@ public:
 
     void Startup(World& world) override
     {
-        placeholderLight.type = LightData::Type::Point;
+        placeholderLight.type = LightData::Type::Directional;
         placeholderLight.angle = 90.0f;
         placeholderLight.position = glm::vec3(0.0f, 8.0f, 0.0f);
-        placeholderLight.direction = glm::normalize(glm::vec3(-0.2f, -1.0f, 0.1f));
+        placeholderLight.direction = glm::normalize(glm::vec3(0.0f, -1.0f, 0.0f));
 
         world.shadows->range = 15.0f;
         world.shadows->bias = 0.007f;
