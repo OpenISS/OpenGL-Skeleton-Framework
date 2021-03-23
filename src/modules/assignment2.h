@@ -91,10 +91,14 @@ public:
         localRoot->addChild(*fifth);
 
 
-        // adding stage pieces 
-        stagePiece1 = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
-        stagePiece2 = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
-        stagePiece3 = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
+        // Stage and screen pieces
+        stageTexture.loadTexture();
+        stageMaterial.diffuseTexture = &stageTexture;
+        stageMaterial.specularIntensity = 0.0f;
+
+        stagePiece1 = new NodeModel(Resources::unitCube, stageMaterial, Resources::litShader);
+        stagePiece2 = new NodeModel(Resources::unitCube, stageMaterial, Resources::litShader);
+        stagePiece3 = new NodeModel(Resources::unitCube, stageMaterial, Resources::litShader);
         screen = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
         pillar1Bottom = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
         pillar1Top = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
@@ -110,34 +114,27 @@ public:
         localRoot->addChild(*pillar2Bottom);
         localRoot->addChild(*pillar2Top);
 
-        // stage, screen and pillars
         stagePiece1->translate(glm::vec3(0.0f, 0.75f * Resources::unitSize, -50.0f * Resources::unitSize));
         stagePiece1->transform = glm::scale(stagePiece1->transform, glm::vec3(64.0f * Resources::unitSize, 1.5f * Resources::unitSize, 12.0f * Resources::unitSize));
 
         stagePiece2->translate(glm::vec3(26.0f * Resources::unitSize, 0.75f * Resources::unitSize, -38.0f * Resources::unitSize));
         stagePiece2->transform = glm::scale(stagePiece2->transform, glm::vec3(12.0f * Resources::unitSize, 1.5f * Resources::unitSize, 12.0f * Resources::unitSize));
 
-
         stagePiece3->translate(glm::vec3(-26.0f * Resources::unitSize, 0.75f * Resources::unitSize, -38.0f * Resources::unitSize));
         stagePiece3->transform = glm::scale(stagePiece3->transform, glm::vec3(12.0f * Resources::unitSize, 1.5f * Resources::unitSize, 12.0f * Resources::unitSize));
 
         screen->translate(glm::vec3(0.0f, 23.0f * Resources::unitSize, -53.5f * Resources::unitSize));
-        //screen->color = glm::vec3(1.0f, 0.0f, 0.0f);
         screen->transform = glm::scale(screen->transform, glm::vec3(58.0f * Resources::unitSize, 58.0f * Resources::unitSize * (float)world.windowHeight/(float)world.windowWidth, 0.5f * Resources::unitSize));
 
         pillar1Bottom->translate(glm::vec3(-30.5f * Resources::unitSize, 2.0f * Resources::unitSize, -53.5f * Resources::unitSize));
-        //pillar1Bottom->color = glm::vec3(0.0f, 0.0f, 1.0f);
         pillar1Bottom->transform = glm::scale(pillar1Bottom->transform, glm::vec3(3.0f * Resources::unitSize, 1.0f * Resources::unitSize, 5.0f * Resources::unitSize));
 
-        //pillar1Top->color = glm::vec3(0.0f, 1.0f, 1.0f);
         pillar1Top->translate(glm::vec3(-30.5f * Resources::unitSize, 21.5f * Resources::unitSize, -53.5f * Resources::unitSize));
         pillar1Top->transform = glm::scale(pillar1Top->transform, glm::vec3(3.0f * Resources::unitSize, 38.0f * Resources::unitSize, 3.0f * Resources::unitSize));
 
         pillar2Bottom->translate(glm::vec3(30.5f * Resources::unitSize, 2.0f * Resources::unitSize, -53.5f * Resources::unitSize));
-        //pillar2Bottom->color = glm::vec3(0.0f, 0.0f, 1.0f);
         pillar2Bottom->transform = glm::scale(pillar2Bottom->transform, glm::vec3(3.0f * Resources::unitSize, 1.0f * Resources::unitSize, 5.0f * Resources::unitSize));
 
-        //pillar2Top->color = glm::vec3(0.0f, 1.0f, 1.0f);
         pillar2Top->translate(glm::vec3(30.5f * Resources::unitSize, 21.5f * Resources::unitSize, -53.5f * Resources::unitSize));
         pillar2Top->transform = glm::scale(pillar2Top->transform, glm::vec3(3.0f * Resources::unitSize, 38.0f * Resources::unitSize, 3.0f * Resources::unitSize));
 
@@ -238,7 +235,7 @@ public:
     void Update(World& world, float deltaSeconds) override
     {
         world.light.type = LightData::Type::Point;
-        world.light.position = glm::vec3(0.0f, 16.0f * Resources::unitSize, 0.0f);
+        world.light.position = glm::vec3(0.0f, 64.0f * Resources::unitSize, 0.0f);
         world.light.direction = glm::vec3(0.0f, -1.0f, 0.0f);
         world.light.angle = 90.0f;
         world.light.constantAttenuation = 1.0f;
@@ -246,7 +243,8 @@ public:
         world.light.quadraticAttenuation = 0.016f;
 
         world.shadows->setLight(world.light);
-        world.shadows->range = 20.0f * Resources::unitSize;
+        world.shadows->range = 64.0f * Resources::unitSize;
+        world.shadows->bias = 0.0001f;
 
         if (selected != nullptr)
         {
@@ -361,4 +359,7 @@ protected:
 
     Material groundMaterial;
     Texture groundTexture = Texture("assets/woodParquet.png");
+
+    Material stageMaterial;
+    Texture stageTexture = Texture("assets/cloth.jpg");
 };
