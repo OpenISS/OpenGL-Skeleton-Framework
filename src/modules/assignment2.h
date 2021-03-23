@@ -235,15 +235,15 @@ public:
     void Update(World& world, float deltaSeconds) override
     {
         world.light.type = LightData::Type::Point;
-        world.light.position = glm::vec3(0.0f, 64.0f * Resources::unitSize, 0.0f);
+        world.light.position = glm::vec3(0.0f, 50.0f * Resources::unitSize, 0.0f);
         world.light.direction = glm::vec3(0.0f, -1.0f, 0.0f);
-        world.light.angle = 90.0f;
+        world.light.angle = 110.0f;
         world.light.constantAttenuation = 1.0f;
         world.light.constantAttenuation = 0.09f;
         world.light.quadraticAttenuation = 0.016f;
 
         world.shadows->setLight(world.light);
-        world.shadows->range = 64.0f * Resources::unitSize;
+        world.shadows->range = 50.0f * Resources::unitSize;
         world.shadows->bias = 0.0001f;
 
         if (selected != nullptr)
