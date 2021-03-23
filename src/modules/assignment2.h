@@ -43,6 +43,31 @@ public:
     {
         Module::Startup(world);
 
+        // Materials and textures
+        stageTexture.loadTexture();
+        stageMaterial.diffuseTexture = &stageTexture;
+        stageMaterial.specularIntensity = 0.0f;
+
+        groundTexture.loadTexture();
+        groundMaterial.diffuseTexture = &groundTexture;
+        groundMaterial.specularIntensity = 0.25f;
+        groundMaterial.uvScale = glm::vec2(8.0f);
+
+        pillarTexture.loadTexture();
+        pillarMaterial.diffuseTexture = &pillarTexture;
+        pillarMaterial.specularIntensity = 0.0f;
+
+        boxTexture.loadTexture();
+        boxMaterial.diffuseTexture = &boxTexture;
+        boxMaterial.specularIntensity = 0.0f;
+
+        metalTexture.loadTexture();
+        metalMaterial.diffuseTexture = &metalTexture;
+        metalMaterial.diffuseIntensity = 0.5f;
+        metalMaterial.specularIntensity = 2.0f;
+        metalMaterial.shininess = 4.0f;
+
+
         const float scale = Resources::unitSize * 3.0f; // Character scale
         const float interval_degrees = 10.0f; // Character spacing along arc (in degrees)
         const float radius = Resources::unitSize * 64.0f; // Circle radius, matches grid size
@@ -92,18 +117,14 @@ public:
 
 
         // Stage and screen pieces
-        stageTexture.loadTexture();
-        stageMaterial.diffuseTexture = &stageTexture;
-        stageMaterial.specularIntensity = 0.0f;
-
         stagePiece1 = new NodeModel(Resources::unitCube, stageMaterial, Resources::litShader);
         stagePiece2 = new NodeModel(Resources::unitCube, stageMaterial, Resources::litShader);
         stagePiece3 = new NodeModel(Resources::unitCube, stageMaterial, Resources::litShader);
         screen = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
-        pillar1Bottom = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
-        pillar1Top = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
-        pillar2Bottom = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
-        pillar2Top = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
+        pillar1Bottom = new NodeModel(Resources::unitCube, pillarMaterial, Resources::litShader);
+        pillar1Top = new NodeModel(Resources::unitCube, pillarMaterial, Resources::litShader);
+        pillar2Bottom = new NodeModel(Resources::unitCube, pillarMaterial, Resources::litShader);
+        pillar2Top = new NodeModel(Resources::unitCube, pillarMaterial, Resources::litShader);
 
         localRoot->addChild(*stagePiece1);
         localRoot->addChild(*stagePiece2);
@@ -169,11 +190,6 @@ public:
 
 
         // Ground
-        groundTexture.loadTexture();
-        groundMaterial.diffuseTexture = &groundTexture;
-        groundMaterial.specularIntensity = 0.25f;
-        groundMaterial.uvScale = glm::vec2(8.0f);
-
         NodeModel* ground = new NodeModel(Resources::quad, groundMaterial, Resources::litShader);
         localRoot->addChild(*ground);
         ground->transform = glm::scale(glm::mat4(1.0f), glm::vec3(128.0f * Resources::unitSize));
@@ -183,11 +199,12 @@ public:
     }
 
     /// For every character in word, create a new NodeCharacter and add it to root
-    void setCharacters(Node& root, const std::string& word, float scale) const
+    void setCharacters(Node& root, const std::string& word, float scale)
     {
         for (const char& c : word)
         {
-            root.addChild(*new NodeCharacter(c, Resources::unshadedWhiteMaterial, Resources::basicShader, scale));
+            Material& mat = isdigit(c) ? metalMaterial : boxMaterial;
+            root.addChild(*new NodeCharacter(c, mat, Resources::litShader, scale));
         }
     }
 
@@ -244,7 +261,7 @@ public:
 
         world.shadows->setLight(world.light);
         world.shadows->range = 50.0f * Resources::unitSize;
-        world.shadows->bias = 0.0001f;
+        world.shadows->bias = 0.001f;
 
         if (selected != nullptr)
         {
@@ -362,4 +379,13 @@ protected:
 
     Material stageMaterial;
     Texture stageTexture = Texture("assets/cloth.jpg");
+
+    Material pillarMaterial;
+    Texture pillarTexture = Texture("assets/metal.jpg");
+
+    Material boxMaterial;
+    Texture boxTexture = Texture("assets/fragile.jpg");
+
+    Material metalMaterial;
+    Texture metalTexture = Texture("assets/metal.jpg");
 };
