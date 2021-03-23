@@ -187,13 +187,16 @@ public:
         fifth->transform = glm::rotate(fifth->transform, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 
-
-
         // Ground
         NodeModel* ground = new NodeModel(Resources::quad, groundMaterial, Resources::litShader);
         localRoot->addChild(*ground);
         ground->transform = glm::scale(glm::mat4(1.0f), glm::vec3(128.0f * Resources::unitSize));
         ground->transform = glm::rotate(ground->transform, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+
+        // Initial camera position
+        world.camera->setPosition(glm::vec3(0.0f, 12.0f * Resources::unitSize, 64.0f * Resources::unitSize));
+
 
         setEnabled(enabled);
     }
@@ -288,6 +291,10 @@ public:
 
     void OnKeyPressed(World& world, int key, int mods) override
     {
+        // Shadows toggle
+        if (key == GLFW_KEY_B)
+            world.shadows->setEnabled(!world.shadows->getEnabled());
+
         // Model selection
         if (key == GLFW_KEY_1)
             selected = andrew;
