@@ -2,10 +2,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../color.h"
+#include "../light_data.h"
+#include "../material.h"
 #include "../module.h"
 #include "../node_character.h"
 #include "../node_model.h"
 #include "../resources.h"
+#include "../texture.h"
 #include "../world.h"
 
 /**
@@ -168,10 +171,14 @@ public:
 
 
 
-        // ground 
-        NodeModel* ground = new NodeModel(Resources::quad, Resources::unshadedWhiteMaterial, Resources::basicShader);
-        world.sceneGraph->root.addChild(*ground);
-        //ground->color = glm::vec3(0.0f, 1.0f, 0.0f);
+        // Ground
+        groundTexture.loadTexture();
+        groundMaterial.diffuseTexture = &groundTexture;
+        groundMaterial.specularIntensity = 0.25f;
+        groundMaterial.uvScale = glm::vec2(8.0f);
+
+        NodeModel* ground = new NodeModel(Resources::quad, groundMaterial, Resources::litShader);
+        localRoot->addChild(*ground);
         ground->transform = glm::scale(glm::mat4(1.0f), glm::vec3(128.0f * Resources::unitSize));
         ground->transform = glm::rotate(ground->transform, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -230,6 +237,17 @@ public:
 
     void Update(World& world, float deltaSeconds) override
     {
+        world.light.type = LightData::Type::Point;
+        world.light.position = glm::vec3(0.0f, 16.0f * Resources::unitSize, 0.0f);
+        world.light.direction = glm::vec3(0.0f, -1.0f, 0.0f);
+        world.light.angle = 90.0f;
+        world.light.constantAttenuation = 1.0f;
+        world.light.constantAttenuation = 0.09f;
+        world.light.quadraticAttenuation = 0.016f;
+
+        world.shadows->setLight(world.light);
+        world.shadows->range = 20.0f * Resources::unitSize;
+
         if (selected != nullptr)
         {
             if (scaleUp)
@@ -341,5 +359,6 @@ protected:
     NodeModel* pillar2Top = nullptr;
     NodeModel* pillar2Bottom = nullptr;
 
-
+    Material groundMaterial;
+    Texture groundTexture = Texture("assets/woodParquet.png");
 };

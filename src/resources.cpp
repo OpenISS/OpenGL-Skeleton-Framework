@@ -64,7 +64,7 @@ void Resources::initialize()
         {glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)}, // Bot right
         {glm::vec3( 0.5f,  0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f)}, // Top right
 
-        {glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f)}, // Top right
+        {glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)}, // Top left
         {glm::vec3(-0.5f, -0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, // Bot left
         {glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)}  // Bot right
     });

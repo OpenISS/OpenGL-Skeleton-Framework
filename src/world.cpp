@@ -44,8 +44,8 @@ void World::AddModules()
     modules.push_back(shadows);
     modules.push_back(new FPSCamera());
     modules.push_back(new WorldOrientation(true));
-    modules.push_back(new GroundGrid(true));
-    modules.push_back(new OriginAxis(true));
+    modules.push_back(new GroundGrid(false));
+    modules.push_back(new OriginAxis(false));
 
     // Tests
     modules.push_back(new TestAlphabet(false));
