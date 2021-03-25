@@ -45,27 +45,25 @@ public:
 
         // Materials and textures
         stageTexture.loadTexture();
-        stageMaterial.diffuseTexture = &stageTexture;
+        groundTexture.loadTexture();
+        pillarTexture.loadTexture();
+        boxTexture.loadTexture();
+        metalTexture.loadTexture();
+
         stageMaterial.specularIntensity = 0.0f;
 
-        groundTexture.loadTexture();
-        groundMaterial.diffuseTexture = &groundTexture;
         groundMaterial.specularIntensity = 0.25f;
         groundMaterial.uvScale = glm::vec2(8.0f);
 
-        pillarTexture.loadTexture();
-        pillarMaterial.diffuseTexture = &pillarTexture;
         pillarMaterial.specularIntensity = 0.0f;
 
-        boxTexture.loadTexture();
-        boxMaterial.diffuseTexture = &boxTexture;
         boxMaterial.specularIntensity = 0.0f;
 
-        metalTexture.loadTexture();
-        metalMaterial.diffuseTexture = &metalTexture;
         metalMaterial.diffuseIntensity = 0.5f;
         metalMaterial.specularIntensity = 2.0f;
         metalMaterial.shininess = 4.0f;
+
+        UpdateTextures(true);
 
 
         const float scale = Resources::unitSize * 3.0f; // Character scale
@@ -239,6 +237,17 @@ public:
         return glm::vec3(glm::cos(radians) * radius, 0.0f, glm::sin(radians) * radius);
     }
 
+    void UpdateTextures(bool texturesEnabled)
+    {
+        this->texturesEnabled = texturesEnabled;
+
+        groundMaterial.diffuseTexture = texturesEnabled ? &groundTexture : &Resources::whiteTexture;
+        stageMaterial.diffuseTexture = texturesEnabled ? &stageTexture : &Resources::whiteTexture;
+        pillarMaterial.diffuseTexture = texturesEnabled ? &pillarTexture : &Resources::whiteTexture;
+        boxMaterial.diffuseTexture = texturesEnabled ? &boxTexture : &Resources::whiteTexture;
+        metalMaterial.diffuseTexture = texturesEnabled ? &metalTexture : &Resources::whiteTexture;
+    }
+
     void Shutdown(World& world) override
     {
         selected = nullptr;
@@ -294,6 +303,10 @@ public:
         // Shadows toggle
         if (key == GLFW_KEY_B)
             world.shadows->setEnabled(!world.shadows->getEnabled());
+
+        // Textures toggle
+        if (key == GLFW_KEY_X)
+            UpdateTextures(!texturesEnabled);
 
         // Model selection
         if (key == GLFW_KEY_1)
@@ -395,4 +408,6 @@ protected:
 
     Material metalMaterial;
     Texture metalTexture = Texture("assets/metal.jpg");
+
+    bool texturesEnabled = false;
 };
