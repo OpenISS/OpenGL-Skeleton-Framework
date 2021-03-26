@@ -340,6 +340,11 @@ public:
                 selected->transform = glm::mat4(1.0f);
                 x = rand() % 128 * Resources::unitSize + (-64 * Resources::unitSize);
                 z = rand() % 128 * Resources::unitSize + (-64 * Resources::unitSize);
+
+                if (z <= -15.0f * Resources::unitSize)
+                {
+                    return;
+                }
                 selected->translate(glm::vec3(x, 0.0f, z));
             }
         }
@@ -395,4 +400,10 @@ protected:
 
     Material metalMaterial;
     Texture metalTexture = Texture("assets/metal.jpg");
+
+    Material screenTexture1;
+    Material screenTexture2;
+    Material screenTexture3;
+    Material screenTexture4;
+    Material screenTexture5;
 };
