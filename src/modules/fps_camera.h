@@ -78,9 +78,6 @@ public:
     {
         deltaMouse.x = deltaX;
         deltaMouse.y = deltaY;
-
-        if (world.debug)
-            std::cout << "Cursor Change: " << deltaMouse.x << ", " << deltaMouse.y << std::endl;
     }
 
     void Startup(World& world) override

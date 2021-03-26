@@ -3,6 +3,7 @@
 const float Resources::unitSize = 0.25f;
 Mesh Resources::unitCube;
 Mesh Resources::quad;
+Mesh Resources::halfCylinder;
 Shader Resources::basicShader;
 Shader Resources::basicTexturedShader;
 Shader Resources::basicShadowedShader;
@@ -68,6 +69,55 @@ void Resources::initialize()
         {glm::vec3(-0.5f, -0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)}, // Bot left
         {glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)}  // Bot right
     });
+
+    // Cylinder
+    // Generation algo is original - one angular slice at a time
+    int circlePoints = 32; // Resolution of end-cap circles
+    for (int i = 1; i <= circlePoints; i++)
+    {
+        float angle0 = glm::radians(90.0f) + glm::pi<float>() * (float) (i - 1) / static_cast<float>(circlePoints); // From 90 to 270 degrees
+        float angle1 = glm::radians(90.0f) + glm::pi<float>() * (float) i / static_cast<float>(circlePoints);
+        float circleX0 = glm::cos(angle0) * 0.5f; // Multiplication by 0.5 for a radius of 0.5 instead of 1.0
+        float circleY0 = glm::sin(angle0) * 0.5f;
+        float circleX1 = glm::cos(angle1) * 0.5f;
+        float circleY1 = glm::sin(angle1) * 0.5f;
+
+        glm::vec2 uvCap0 = glm::vec2(-circleX0, circleY0 + 0.5f);
+        glm::vec2 uvCap1 = glm::vec2(-circleX1, circleY1 + 0.5f);
+        glm::vec3 normTube0 = glm::normalize(glm::vec3(0.0f, circleY0, circleX0));
+        glm::vec3 normTube1 = glm::normalize(glm::vec3(0.0f, circleY1, circleX1));
+        float progress0 = (i - 1) / static_cast<float>(circlePoints);
+        float progress1 = i / static_cast<float>(circlePoints);
+
+        // Left cap pizza slice
+        halfCylinder.vertices.push_back({glm::vec3(-0.5f, circleY0, circleX0), Resources::colorWhite, glm::vec3(-1.0f, 0.0f, 0.0f), uvCap0});
+        halfCylinder.vertices.push_back({glm::vec3(-0.5f, circleY1, circleX1), Resources::colorWhite, glm::vec3(-1.0f, 0.0f, 0.0f), uvCap1});
+        halfCylinder.vertices.push_back({glm::vec3(-0.5f, 0.0f, 0.0f), Resources::colorWhite, glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.5f)});
+
+        // Right cap pizza slice
+        halfCylinder.vertices.push_back({glm::vec3(0.5f, circleY0, circleX0), Resources::colorWhite, glm::vec3(1.0f, 0.0f, 0.0f), uvCap0});
+        halfCylinder.vertices.push_back({glm::vec3(0.5f, 0.0f, 0.0f), Resources::colorWhite, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.5f)});
+        halfCylinder.vertices.push_back({glm::vec3(0.5f, circleY1, circleX1), Resources::colorWhite, glm::vec3(1.0f, 0.0f, 0.0f), uvCap1});
+
+        // Tube quad
+        halfCylinder.vertices.push_back({glm::vec3(-0.5f, circleY0, circleX0), Resources::colorWhite, normTube0, glm::vec2(0.0f, progress0)});
+        halfCylinder.vertices.push_back({glm::vec3(0.5f, circleY0, circleX0), Resources::colorWhite, normTube0, glm::vec2(0.25f, progress0)});
+        halfCylinder.vertices.push_back({glm::vec3(-0.5f, circleY1, circleX1), Resources::colorWhite, normTube1, glm::vec2(0.0f, progress1)});
+        halfCylinder.vertices.push_back({glm::vec3(-0.5f, circleY1, circleX1), Resources::colorWhite, normTube1, glm::vec2(0.0f, progress1)});
+        halfCylinder.vertices.push_back({glm::vec3(0.5f, circleY0, circleX0), Resources::colorWhite, normTube0, glm::vec2(0.25f, progress0)});
+        halfCylinder.vertices.push_back({glm::vec3(0.5f, circleY1, circleX1), Resources::colorWhite, normTube1, glm::vec2(0.25f, progress1)});
+    }
+    // Quad
+    halfCylinder.vertices.push_back({glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)}); // Top left
+    halfCylinder.vertices.push_back({glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 0.0f)}); // Bot right
+    halfCylinder.vertices.push_back({glm::vec3( 0.5f,  0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 1.0f)}); // Top right
+    halfCylinder.vertices.push_back({glm::vec3(-0.5f,  0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)}); // Top left
+    halfCylinder.vertices.push_back({glm::vec3(-0.5f, -0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)}); // Bot left
+    halfCylinder.vertices.push_back({glm::vec3( 0.5f, -0.5f,  0.0f), Resources::colorWhite, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.25f, 0.0f)}); // Bot right
+
+    halfCylinder.setDrawingMode(DrawMode::VERTEX);
+    halfCylinder.setPolygonMode(GL_TRIANGLES);
+    halfCylinder.uploadBuffersToGPU();
 
     basicShader.load("shader");
     basicShader.activate();
