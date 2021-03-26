@@ -12,20 +12,22 @@
 #include "../world.h"
 
 /**
- * Implements Programming Assignment 1 together with modules:
+ * Implements Programming Assignment 2 together with modules and classes:
  * * FPSCamera
- * * GroundGrid
- * * OriginAxis
+ * * LightData
+ * * Material
  * * SceneGraph
- * * WorldOrientation
+ * * Shadows
+ * * Texture
  *
+ * @see LightData
+ * @see Material
  * @see Module
  * @see World
  * @see FPSCamera
- * @see GroundGrid
- * @see OriginAxis
  * @see SceneGraph
- * @see WorldOrientation
+ * @see Shadows
+ * @see Texture
  */
 class Assignment2 : public Module
 {
@@ -33,13 +35,13 @@ public:
 
     MODULE_CONSTRUCTOR(Assignment2)
 
-        /**
-         * Sets up model hierarchy
-         *
-         * @see Node
-         * @see NodeCharacter
-         */
-        void Startup(World& world) override
+    /**
+     * Sets up model hierarchy
+     *
+     * @see Node
+     * @see NodeCharacter
+     */
+    void Startup(World& world) override
     {
         Module::Startup(world);
 
@@ -66,9 +68,7 @@ public:
         UpdateTextures(true);
 
 
-        const float scale = Resources::unitSize * 3.0f; // Character scale
-        const float interval_degrees = 10.0f; // Character spacing along arc (in degrees)
-        const float radius = Resources::unitSize * 64.0f; // Circle radius, matches grid size
+        const float characterScale = Resources::unitSize * 3.0f;
 
         // Hierarchy:
         // * root (Node) (rotated by WorldOrientation module)
@@ -91,19 +91,19 @@ public:
         //             ...
 
         andrew = new Node();
-        setCharacters(*andrew, "AH41", scale);
+        setCharacters(*andrew, "AH41", characterScale);
 
         mark = new Node();
-        setCharacters(*mark, "MB47", scale);
+        setCharacters(*mark, "MB47", characterScale);
 
         nicholas = new Node();
-        setCharacters(*nicholas, "NA40", scale);
+        setCharacters(*nicholas, "NA40", characterScale);
 
         paul = new Node();
-        setCharacters(*paul, "PV41", scale);
+        setCharacters(*paul, "PV41", characterScale);
 
         fifth = new Node();
-        setCharacters(*fifth, "AP00", scale);
+        setCharacters(*fifth, "AP00", characterScale);
 
         localRoot = new Node();
         world.sceneGraph->addChild(*localRoot);
@@ -151,31 +151,22 @@ public:
         pillar2Top->transform = glm::scale(pillar2Top->transform, glm::vec3(3.0f * Resources::unitSize, 38.0f * Resources::unitSize, 3.0f * Resources::unitSize));
 
 
+        // Name tags
+        const float zOffset = -20.0f;
 
-        // Positions and orients characters on an arc
-        placeCharacters(*andrew, interval_degrees, radius);
-        placeCharacters(*mark, interval_degrees, radius);
-        placeCharacters(*nicholas, interval_degrees, radius);
-        placeCharacters(*paul, interval_degrees, radius);
-        placeCharacters(*fifth, interval_degrees, radius);
+        andrew->translate(glm::vec3(40.0f, 0.0f, -20.0f + zOffset) * Resources::unitSize);
+        andrew->transform = glm::rotate(andrew->transform, glm::radians(-55.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-        // letters 
-        andrew->translate(glm::vec3(12.0f, 0.0f, -5.0f));
-        andrew->transform = glm::rotate(andrew->transform, glm::radians(30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        mark->translate(glm::vec3(40.0f, 0.0f, 20.0f + zOffset) * Resources::unitSize);
+        mark->transform = glm::rotate(mark->transform, glm::radians(55.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-        mark->translate(glm::vec3(10.0f, 0.0f, 5.0f));
-        mark->transform = glm::rotate(mark->transform, glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        paul->translate(glm::vec3(-40.0f, 0.0f, 20.0f + zOffset) * Resources::unitSize);
+        paul->transform = glm::rotate(paul->transform, glm::radians(-55.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
+        nicholas->translate(glm::vec3(-40.0f, 0.0f, -20.0f + zOffset) * Resources::unitSize);
+        nicholas->transform = glm::rotate(nicholas->transform, glm::radians(55.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-        paul->translate(glm::vec3(-10.0f, 0.0f, 5.0f));
-        paul->transform = glm::rotate(paul->transform, glm::radians(-135.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-
-        nicholas->translate(glm::vec3(-12.0f, 0.0f, -5.0f));
-        nicholas->transform = glm::rotate(nicholas->transform, glm::radians(-210.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-        fifth->translate(glm::vec3(0.0f, 0.0f, 8.0f));
-        fifth->transform = glm::rotate(fifth->transform, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        fifth->translate(glm::vec3(0.0f, 0.0f, 32.0f + zOffset) * Resources::unitSize);
 
 
         // Ground
@@ -195,39 +186,20 @@ public:
     /// For every character in word, create a new NodeCharacter and add it to root
     void setCharacters(Node& root, const std::string& word, float scale)
     {
-        for (const char& c : word)
+        float x = -scale * (word.size() - 1);
+
+        for (size_t i = 0; i < word.size(); ++i)
         {
+            const char& c = word.at(i);
+
             Material& mat = isdigit(c) ? metalMaterial : boxMaterial;
-            root.addChild(*new NodeCharacter(c, mat, Resources::litShader, scale));
+            NodeCharacter* nodeChar = new NodeCharacter(c, mat, Resources::litShader, scale);
+
+            nodeChar->transform = glm::translate(glm::mat4(1.0f), glm::vec3(x, 0.0f, 0.0f));
+            x += 2.0f * scale;
+
+            root.addChild(*nodeChar);
         }
-    }
-
-    /**
-     * Places each child in root in an arc centered at (radius, 0, 0), evenly spaced out by interval_degrees.
-     *
-     * Children are rotated to face (0, 0, 0). Their positions are relative to (radius, 0, 0).
-     */
-    void placeCharacters(Node& root, float interval_degrees, float radius) const
-    {
-        // For symmetry around angle 0
-        float theta = interval_degrees * -(static_cast<float>(root.numChildren() - 1) / 2.0f);
-
-        for (auto child : root)
-        {
-            child->transform =
-                // Position on arc, relative to (radius, 0, 0)
-                glm::translate(glm::mat4(1.0f), getPosOnCircle(theta, radius) - glm::vec3(radius, 0.0f, 0.0f)) *
-                // Rotation to face (0, 0, 0)
-                glm::rotate(glm::mat4(1.0f), glm::radians(-theta - 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-            theta += interval_degrees;
-        }
-    }
-
-    /// Converts from polar to cartesian (x, 0, z) coordinates
-    glm::vec3 getPosOnCircle(float degrees, float radius) const
-    {
-        float radians = glm::radians(degrees);
-        return glm::vec3(glm::cos(radians) * radius, 0.0f, glm::sin(radians) * radius);
     }
 
     void UpdateTextures(bool texturesEnabled)
