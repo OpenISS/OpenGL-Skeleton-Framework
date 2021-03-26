@@ -343,15 +343,20 @@ public:
                 modelMovement.y = -1.0f;
             if (key == GLFW_KEY_SPACE)
             {
-                selected->transform = glm::mat4(1.0f);
-                x = rand() % 128 * Resources::unitSize + (-64 * Resources::unitSize);
-                z = rand() % 128 * Resources::unitSize + (-64 * Resources::unitSize);
+                bool isValid = false;
 
-                if (z <= -15.0f * Resources::unitSize)
+                selected->transform = glm::mat4(1.0f);
+                
+                while (!isValid)
                 {
-                    return;
+                   x = rand() % 128 * Resources::unitSize + (-64 * Resources::unitSize);
+                   z = rand() % 128 * Resources::unitSize + (-64 * Resources::unitSize);
+
+                   isValid = z >= -15.0f * Resources::unitSize;
+
                 }
                 selected->translate(glm::vec3(x, 0.0f, z));
+               
             }
         }
 
