@@ -1,3 +1,13 @@
+# New in Programming Assignment 2
+* ImGui UI library integration
+* A menu to turn modules on/off (press **M** to show/hide it)
+* `.obj` file loader
+* Procedurally generated half-cylinder mesh
+* Textures
+* Lighting
+* Materials
+* Shadows
+
 # Building & Running
 
 ## Building Dependencies
@@ -44,7 +54,12 @@ In VSCode with the `CMake` and `CMake Tools` extensions installed:
 2. Open `./cmake-xcode/SunRay.xcodeproj`
 3. Set target to `SunRay` and build
 
-# Controls
+# Controls (new in Programming Assignment 2)
+* **X** to toggle textures
+* **B** to toggle shadows
+* **Spacebar** to teleport model to a random position on the grid
+
+# Controls (Programming Assignment 1 & 2)
 * **W/A/S/D** to move camera, **mouse movement** to rotate camera
 * **Left mouse button + mouse movement** to zoom camera in/out
 * **Middle mouse button + mouse movement** to tilt camera
@@ -67,28 +82,49 @@ API docs also available.
 
 ## Wrappers
 * **Camera:** Abstracts camera transform and projection math.
+* **LightData:** Contains light source properties (for Phong lighting).
+* **Material:** Contains material properties (for Phong lighting).
 * **Mesh:** Abstracts mesh GPU buffer construction, uploading, and rendering.
 * **Shader:** Abstracts shader compilation, linking, and uniform updates.
+* **Texture:** Abstracts texture loading from file and uploading to GPU.
 
 ## Modules
 * **Assignment1:** Implements programming assignment 1 specifications.
+* **Assignment2:** Implements programming assignment 2 specifications.
 * **FPSCamera:** FPS game camera movement and orientation.
 * **GroundGrid:** Constructs and renders the 128x128 grid.
+* **ImGuiIntegration:** Integrates the ImGui UI library.
+* **ModuleManagerUI:** ImGui UI window that lets the user toggle modules and tests on/off.
 * **OriginAxis:** Constructs and renders the 3 axis lines.
 * **RenderingMode:** Sets OpenGL to point/line/triangle polygon mode.
 * **SceneGraph:** This is our hiearchical modelling system.
+* **Shadows:** Implements the two-pass shadow algorithm.
 * **WorldOrientation:** Rotates the hierarchy's root node in response to input.
 
 ## Misc
 * **color.h:** Utility functions for dealing with colors.
+* **LoaderOBJ:** Loads meshes from the .obj file format.
 * **Node:** Invisible member of the scene graph.
 * **NodeCharacter:** Member of the scene graph, renders cubes that compose a character (from ResourcesAlphabet).
-* **NodeModel:** Member of the scene graph, rendered using its associated mesh and shader.
+* **NodeModel:** Member of the scene graph, rendered using its associated mesh, shader, and material.
 * **Resources:** For common constants (ex `unitSize` and `colorWhite`) and resources (ex `unitCube` and `quad`).
 * **ResourcesAlphabet:** For loading letter/digit cube transforms from an embedded text file.
 
+## Shaders
+* **lit:** Blinn-Phong lighting with texturing and shadow reception.
+* **shader:** Displays vertex color.
+* **shadow_cast:** Outputs depth only.
+* **shadowed:** Displays vertex color with shadow reception.
+* **textured:** Displays vertex color with texturing.
+
 ## Tests
 * **TestAlphabet:** The user can display any character model by pressing its key. Verifies that they load and render correctly.
+* **TestHalfCylinder:** Displays the procedurally generated half-cylinder mesh that is used for the stage in Programming Assignment 2.
+* **TestImGuiIntegration:** Displays ImGui's demo window.
+* **TestLitShader:** A scene for testing Phong lighting.
+* **TestLoaderOBJ:** Loads and displays a Utah teapot.
 * **TestSceneGraph:** Displays a nested hierarchy which generates complex movement. Verifies the hierarchical modelling system.
+* **TestShadows:** A scene for testing the Shadows module.
+* **TestTexture:** Tests the Texture wrapper class, as well as tiling textures.
 * **TestUnitCube:** Displays a simple rotating unit cube. This is the "hello world" of this framework.
 * **TestVertexDrawing:** Displays a simple rotating quad. Verifies the `glDrawArrays` code path (as opposed to the indexed `glDrawElements` code path).
