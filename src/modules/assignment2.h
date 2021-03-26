@@ -45,27 +45,25 @@ public:
 
         // Materials and textures
         stageTexture.loadTexture();
-        stageMaterial.diffuseTexture = &stageTexture;
+        groundTexture.loadTexture();
+        pillarTexture.loadTexture();
+        boxTexture.loadTexture();
+        metalTexture.loadTexture();
+
         stageMaterial.specularIntensity = 0.0f;
 
-        groundTexture.loadTexture();
-        groundMaterial.diffuseTexture = &groundTexture;
         groundMaterial.specularIntensity = 0.25f;
         groundMaterial.uvScale = glm::vec2(8.0f);
 
-        pillarTexture.loadTexture();
-        pillarMaterial.diffuseTexture = &pillarTexture;
         pillarMaterial.specularIntensity = 0.0f;
 
-        boxTexture.loadTexture();
-        boxMaterial.diffuseTexture = &boxTexture;
         boxMaterial.specularIntensity = 0.0f;
 
-        metalTexture.loadTexture();
-        metalMaterial.diffuseTexture = &metalTexture;
         metalMaterial.diffuseIntensity = 0.5f;
         metalMaterial.specularIntensity = 2.0f;
         metalMaterial.shininess = 4.0f;
+
+        UpdateTextures(true);
 
 
         const float scale = Resources::unitSize * 3.0f; // Character scale
@@ -117,46 +115,39 @@ public:
 
 
         // Stage and screen pieces
-        stagePiece1 = new NodeModel(Resources::unitCube, stageMaterial, Resources::litShader);
-        stagePiece2 = new NodeModel(Resources::unitCube, stageMaterial, Resources::litShader);
-        stagePiece3 = new NodeModel(Resources::unitCube, stageMaterial, Resources::litShader);
+        stage = new NodeModel(Resources::halfCylinder, stageMaterial, Resources::litShader);
         screen = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
         pillar1Bottom = new NodeModel(Resources::unitCube, pillarMaterial, Resources::litShader);
         pillar1Top = new NodeModel(Resources::unitCube, pillarMaterial, Resources::litShader);
         pillar2Bottom = new NodeModel(Resources::unitCube, pillarMaterial, Resources::litShader);
         pillar2Top = new NodeModel(Resources::unitCube, pillarMaterial, Resources::litShader);
 
-        localRoot->addChild(*stagePiece1);
-        localRoot->addChild(*stagePiece2);
-        localRoot->addChild(*stagePiece3);
+        localRoot->addChild(*stage);
         localRoot->addChild(*screen);
         localRoot->addChild(*pillar1Bottom);
         localRoot->addChild(*pillar1Top);
         localRoot->addChild(*pillar2Bottom);
         localRoot->addChild(*pillar2Top);
 
-        stagePiece1->translate(glm::vec3(0.0f, 0.75f * Resources::unitSize, -50.0f * Resources::unitSize));
-        stagePiece1->transform = glm::scale(stagePiece1->transform, glm::vec3(64.0f * Resources::unitSize, 1.5f * Resources::unitSize, 12.0f * Resources::unitSize));
+        stage->transform = glm::mat4(1.0f);
+        stage->transform = glm::translate(stage->transform, glm::vec3(0.0f, 1.5f * 0.5f, -58.0f) * Resources::unitSize);
+        stage->transform = glm::rotate(stage->transform, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        stage->transform = glm::rotate(stage->transform, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        stage->transform = glm::scale(stage->transform, glm::vec3(1.5f, 64.0f, 64.0f) * Resources::unitSize);
 
-        stagePiece2->translate(glm::vec3(26.0f * Resources::unitSize, 0.75f * Resources::unitSize, -38.0f * Resources::unitSize));
-        stagePiece2->transform = glm::scale(stagePiece2->transform, glm::vec3(12.0f * Resources::unitSize, 1.5f * Resources::unitSize, 12.0f * Resources::unitSize));
+        screen->translate(glm::vec3(0.0f, 20.25f * Resources::unitSize, -53.5f * Resources::unitSize));
+        screen->transform = glm::scale(screen->transform, glm::vec3(50.0f * Resources::unitSize, 50.0f * Resources::unitSize * (float)world.windowHeight/(float)world.windowWidth, 0.5f * Resources::unitSize));
 
-        stagePiece3->translate(glm::vec3(-26.0f * Resources::unitSize, 0.75f * Resources::unitSize, -38.0f * Resources::unitSize));
-        stagePiece3->transform = glm::scale(stagePiece3->transform, glm::vec3(12.0f * Resources::unitSize, 1.5f * Resources::unitSize, 12.0f * Resources::unitSize));
-
-        screen->translate(glm::vec3(0.0f, 23.0f * Resources::unitSize, -53.5f * Resources::unitSize));
-        screen->transform = glm::scale(screen->transform, glm::vec3(58.0f * Resources::unitSize, 58.0f * Resources::unitSize * (float)world.windowHeight/(float)world.windowWidth, 0.5f * Resources::unitSize));
-
-        pillar1Bottom->translate(glm::vec3(-30.5f * Resources::unitSize, 2.0f * Resources::unitSize, -53.5f * Resources::unitSize));
+        pillar1Bottom->translate(glm::vec3(-26.5f * Resources::unitSize, 2.0f * Resources::unitSize, -53.5f * Resources::unitSize));
         pillar1Bottom->transform = glm::scale(pillar1Bottom->transform, glm::vec3(3.0f * Resources::unitSize, 1.0f * Resources::unitSize, 5.0f * Resources::unitSize));
 
-        pillar1Top->translate(glm::vec3(-30.5f * Resources::unitSize, 21.5f * Resources::unitSize, -53.5f * Resources::unitSize));
+        pillar1Top->translate(glm::vec3(-26.5f * Resources::unitSize, 21.5f * Resources::unitSize, -53.5f * Resources::unitSize));
         pillar1Top->transform = glm::scale(pillar1Top->transform, glm::vec3(3.0f * Resources::unitSize, 38.0f * Resources::unitSize, 3.0f * Resources::unitSize));
 
-        pillar2Bottom->translate(glm::vec3(30.5f * Resources::unitSize, 2.0f * Resources::unitSize, -53.5f * Resources::unitSize));
+        pillar2Bottom->translate(glm::vec3(26.5f * Resources::unitSize, 2.0f * Resources::unitSize, -53.5f * Resources::unitSize));
         pillar2Bottom->transform = glm::scale(pillar2Bottom->transform, glm::vec3(3.0f * Resources::unitSize, 1.0f * Resources::unitSize, 5.0f * Resources::unitSize));
 
-        pillar2Top->translate(glm::vec3(30.5f * Resources::unitSize, 21.5f * Resources::unitSize, -53.5f * Resources::unitSize));
+        pillar2Top->translate(glm::vec3(26.5f * Resources::unitSize, 21.5f * Resources::unitSize, -53.5f * Resources::unitSize));
         pillar2Top->transform = glm::scale(pillar2Top->transform, glm::vec3(3.0f * Resources::unitSize, 38.0f * Resources::unitSize, 3.0f * Resources::unitSize));
 
 
@@ -239,6 +230,17 @@ public:
         return glm::vec3(glm::cos(radians) * radius, 0.0f, glm::sin(radians) * radius);
     }
 
+    void UpdateTextures(bool texturesEnabled)
+    {
+        this->texturesEnabled = texturesEnabled;
+
+        groundMaterial.diffuseTexture = texturesEnabled ? &groundTexture : &Resources::whiteTexture;
+        stageMaterial.diffuseTexture = texturesEnabled ? &stageTexture : &Resources::whiteTexture;
+        pillarMaterial.diffuseTexture = texturesEnabled ? &pillarTexture : &Resources::whiteTexture;
+        boxMaterial.diffuseTexture = texturesEnabled ? &boxTexture : &Resources::whiteTexture;
+        metalMaterial.diffuseTexture = texturesEnabled ? &metalTexture : &Resources::whiteTexture;
+    }
+
     void Shutdown(World& world) override
     {
         selected = nullptr;
@@ -294,6 +296,10 @@ public:
         // Shadows toggle
         if (key == GLFW_KEY_B)
             world.shadows->setEnabled(!world.shadows->getEnabled());
+
+        // Textures toggle
+        if (key == GLFW_KEY_X)
+            UpdateTextures(!texturesEnabled);
 
         // Model selection
         if (key == GLFW_KEY_1)
@@ -377,9 +383,7 @@ protected:
 
     Node* localRoot = nullptr;
     Node* andrew = nullptr, * mark = nullptr, * nicholas = nullptr, * paul = nullptr, * fifth = nullptr;
-    NodeModel* stagePiece1 = nullptr;
-    NodeModel* stagePiece2 = nullptr;
-    NodeModel* stagePiece3 = nullptr;
+    NodeModel* stage = nullptr;
     NodeModel* screen = nullptr;
     NodeModel* pillar1Top = nullptr;
     NodeModel* pillar1Bottom = nullptr;
@@ -406,4 +410,6 @@ protected:
     Material screenTexture3;
     Material screenTexture4;
     Material screenTexture5;
+
+    bool texturesEnabled = false;
 };

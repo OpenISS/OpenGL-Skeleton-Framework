@@ -12,6 +12,7 @@
 #include "resources.h"
 #include "resources_alphabet.h"
 #include "tests/test_alphabet.h"
+#include "tests/test_half_cylinder.h"
 #include "tests/test_imgui_integration.h"
 #include "tests/test_lit_shader.h"
 #include "tests/test_loader_obj.h"
@@ -49,6 +50,7 @@ void World::AddModules()
 
     // Tests
     modules.push_back(new TestAlphabet(false));
+    modules.push_back(new TestHalfCylinder(false));
     modules.push_back(new TestImGuiIntegration(false));
     modules.push_back(new TestLitShader(false));
     modules.push_back(new TestLoaderObj(false));
