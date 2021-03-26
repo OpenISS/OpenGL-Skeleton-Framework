@@ -51,6 +51,11 @@ public:
         pillarTexture.loadTexture();
         boxTexture.loadTexture();
         metalTexture.loadTexture();
+       
+        for (auto &texture : screenTextures)
+        {
+            texture.loadTexture();
+        }
 
         stageMaterial.specularIntensity = 0.0f;
 
@@ -64,6 +69,10 @@ public:
         metalMaterial.diffuseIntensity = 0.5f;
         metalMaterial.specularIntensity = 2.0f;
         metalMaterial.shininess = 4.0f;
+
+        screenMaterial.diffuseIntensity = 1.0f;
+        screenMaterial.specularIntensity = 0.0f;
+        screenMaterial.uvScale = glm::vec2(1.0f, -1.0f); // Flip y axis 
 
         UpdateTextures(true);
 
@@ -116,7 +125,7 @@ public:
 
         // Stage and screen pieces
         stage = new NodeModel(Resources::halfCylinder, stageMaterial, Resources::litShader);
-        screen = new NodeModel(Resources::unitCube, Resources::unshadedWhiteMaterial, Resources::basicShader);
+        screen = new NodeModel(Resources::unitCube, screenMaterial, Resources::litShader);
         pillar1Bottom = new NodeModel(Resources::unitCube, pillarMaterial, Resources::litShader);
         pillar1Top = new NodeModel(Resources::unitCube, pillarMaterial, Resources::litShader);
         pillar2Bottom = new NodeModel(Resources::unitCube, pillarMaterial, Resources::litShader);
@@ -249,6 +258,8 @@ public:
             if (modelMovement != glm::vec2())
                 selected->translate(deltaSeconds * glm::vec3(0.0f, modelMovement.y, modelMovement.x));
         }
+
+        screenMaterial.diffuseTexture = &screenTextures[((int)glm::floor(world.getTime() / 10.0f)) % 5];
     }
 
     void OnKeyReleased(World& world, int key, int mods) override
@@ -382,11 +393,10 @@ protected:
     Material metalMaterial;
     Texture metalTexture = Texture("assets/metal.jpg");
 
-    Material screenTexture1;
-    Material screenTexture2;
-    Material screenTexture3;
-    Material screenTexture4;
-    Material screenTexture5;
+    Material screenMaterial;
+
+    Texture screenTextures[5] = { Texture("assets/name_andrew.png"), Texture("assets/name_fifth.png"), Texture("assets/name_mark.png"), Texture("assets/name_nick.png"), Texture("assets/name_paul.png")};
+    int currentScreenTexture = 0;
 
     bool texturesEnabled = false;
 };
