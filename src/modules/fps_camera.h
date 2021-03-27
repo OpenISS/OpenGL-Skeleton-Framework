@@ -167,6 +167,6 @@ protected:
     glm::vec3 position = glm::vec3(0.0f),
               direction = glm::vec3(0.00001f, 0.0f, -1.0f),
               up = glm::vec3(0.0f, 1.0f, 0.0f);
-    float movementSpeed = 5.0f, turnSpeed = 0.1f;
+    float movementSpeed = 10.0f, turnSpeed = 0.1f;
     bool reset = false;
 };
