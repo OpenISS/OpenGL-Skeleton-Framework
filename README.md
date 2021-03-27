@@ -89,6 +89,8 @@ API docs also available.
 * **LightData:** Contains light source properties (for Phong lighting).
 * **Material:** Contains material properties (for Phong lighting).
 * **Mesh:** Abstracts mesh GPU buffer construction, uploading, and rendering.
+* **VertexBuffer:** Abstracts VBO OpenGL implementation away from mesh.
+* **IndexBuffer:** Abstracts IBO (EBO) OpenGL implementation away from mesh.
 * **Shader:** Abstracts shader compilation, linking, and uniform updates.
 * **Texture:** Abstracts texture loading from file and uploading to GPU.
 
