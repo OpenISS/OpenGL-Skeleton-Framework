@@ -6,6 +6,7 @@
 * Textures
 * Lighting
 * Materials
+* Color/depth render pass distinction
 * Shadows
 
 # Building & Running
