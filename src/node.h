@@ -134,6 +134,15 @@ public:
         translate(glm::vec3(x, y, 0.0f));
     }
 
+    void shear(float x, float z)
+    {
+        glm::mat4 mat = glm::mat4(1.0f);
+        mat[1][0] = x;
+        mat[1][2] = z;
+
+        transform *= mat;
+    }
+
     /// Transformation matrix, relative to the parent node
     glm::mat4 transform = glm::mat4(1.0f);
 

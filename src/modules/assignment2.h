@@ -256,7 +256,9 @@ public:
             if (scaleDown)
                 selected->scaleStep(-deltaSeconds);
             if (modelMovement != glm::vec2())
-                selected->translate(deltaSeconds * glm::vec3(0.0f, modelMovement.y, modelMovement.x));
+                selected->translate(deltaSeconds * glm::vec3(modelMovement.x, modelMovement.y, 0.0f));
+            if (modelShear != glm::vec2())
+                selected->shear(0.25f * modelShear.x * deltaSeconds, 0.25f * modelShear.y * deltaSeconds);
         }
 
         screenMaterial.diffuseTexture = &screenTextures[((int)glm::floor(world.getTime() / 10.0f)) % 5];
@@ -272,6 +274,10 @@ public:
             modelMovement.x = 0;
         if (key == GLFW_KEY_U || key == GLFW_KEY_J)
             modelMovement.y = 0;
+        if (key == GLFW_KEY_F || GLFW_KEY_G)
+            modelShear.x = 0;
+        if (key == GLFW_KEY_C || GLFW_KEY_V)
+            modelShear.y = 0;
     }
 
     void OnKeyPressed(World& world, int key, int mods) override
@@ -339,7 +345,29 @@ public:
 
                 }
                 selected->translate(glm::vec3(x, 0.0f, z));
-               
+            }
+
+            if (caps)
+            {
+                if (key == GLFW_KEY_G)
+                    selected->shear(0.1f, 0.0f);
+                else if (key == GLFW_KEY_F)
+                    selected->shear(-0.1f, 0.0f);
+                else if (key == GLFW_KEY_V)
+                    selected->shear(0.0f, 0.1f);
+                else if (key == GLFW_KEY_C)
+                    selected->shear(0.0f, -0.1f);
+            }
+            else
+            {
+                if (key == GLFW_KEY_G)
+                    modelShear.x = 1.0f;
+                if (key == GLFW_KEY_F)
+                    modelShear.x = -1.0f;
+                if (key == GLFW_KEY_V)
+                    modelShear.y = 1.0f;
+                if (key == GLFW_KEY_C)
+                    modelShear.y = -1.0f;
             }
         }
 
@@ -367,6 +395,7 @@ protected:
 
     bool scaleUp = false, scaleDown = false, rotate = false, caps = false;
     glm::vec2 modelMovement = glm::vec2(0.0f);
+    glm::vec2 modelShear = glm::vec2(0.0f);
     Node* selected = nullptr;
 
     Node* localRoot = nullptr;
