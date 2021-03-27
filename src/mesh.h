@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "shader.h"
+#include "buffer.h"
 
 // Inspired by https://learnopengl.com/Model-Loading/Mesh
 
@@ -33,14 +34,15 @@ public:
 
     Mesh()
     {
-        VAO = 0, VBO = 0, EBO = 0;
+        VAO = 0;
+        VBO = 0;
+        EBO = 0;
+        vbo = nullptr;
+        ebo = nullptr;
     }
 
     /// Automatically destroys GPU buffers
-    ~Mesh()
-    {
-        deleteGPUBuffers();
-    }
+    ~Mesh() { deleteGPUBuffers(); }
 
     /**
      * Convenient setup function. Automatically deduces drawing mode (DrawMode::INDEXED if indices is empty).
@@ -71,23 +73,13 @@ public:
     {
         // Create buffers
         glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-        if (this->drawingMode == DrawMode::INDEXED)
-            glGenBuffers(1, &EBO);
-
-        // Set VAO
         glBindVertexArray(VAO);
 
-        // Upload vertices
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+        vbo = new VertexBuffer(&vertices[0], vertices.size() * sizeof(Vertex));
+
 
         if (this->drawingMode == DrawMode::INDEXED)
-        {
-            // Upload indices
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-        }
+            ebo = new IndexBuffer(&indices[0], indices.size());
 
         // Set position attribute
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)nullptr);
@@ -106,8 +98,9 @@ public:
         glEnableVertexAttribArray(3);
 
         // Clear state
-        glBindBuffer(GL_ARRAY_BUFFER, 0); 
+        vbo->unbind();
         glBindVertexArray(0);
+        //ebo->unbind(); unbinding ebo causes explosions???
     }
 
     void draw()
@@ -124,6 +117,8 @@ public:
 
     void deleteGPUBuffers()
     {
+        delete vbo;
+        delete ebo;
         if (EBO != 0)
         {
             glDeleteBuffers(1, &EBO);
@@ -170,6 +165,8 @@ public:
 protected:
 
     GLuint VAO, VBO, EBO;
+    VertexBuffer* vbo;
+    IndexBuffer* ebo;
     GLenum polygonMode = GL_TRIANGLES;
     DrawMode drawingMode = DrawMode::VERTEX;
 };
