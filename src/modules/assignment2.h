@@ -261,7 +261,7 @@ public:
                 selected->shear(0.25f * modelShear.x * deltaSeconds, 0.25f * modelShear.y * deltaSeconds);
         }
 
-        screenMaterial.diffuseTexture = &screenTextures[((int)glm::floor(world.getTime() / 10.0f)) % 5];
+        screenMaterial.diffuseTexture = texturesEnabled ? &screenTextures[((int)glm::floor(world.getTime() / 10.0f)) % 5] : &Resources::whiteTexture;
     }
 
     void OnKeyReleased(World& world, int key, int mods) override
