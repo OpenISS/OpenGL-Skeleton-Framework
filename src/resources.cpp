@@ -119,7 +119,7 @@ void Resources::initialize()
     halfCylinder.setPolygonMode(GL_TRIANGLES);
     halfCylinder.uploadBuffersToGPU();
 
-    basicShader.load("shader");
+    basicShader.load("color");
     basicShader.activate();
     basicShader.setColor(Resources::colorWhite);
     shaders.push_back(&basicShader);

@@ -72,7 +72,7 @@ public:
 
         screenMaterial.diffuseIntensity = 1.0f;
         screenMaterial.specularIntensity = 0.0f;
-        screenMaterial.uvScale = glm::vec2(1.0f, -1.0f); // Flip y axis 
+        screenMaterial.uvScale = glm::vec2(1.0f, 1.0f);
 
         UpdateTextures(true);
 
