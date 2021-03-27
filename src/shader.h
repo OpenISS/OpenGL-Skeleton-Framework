@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include <stdio.h>
 #include <fstream>
 #include <iostream>
+#include <unordered_map>
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 #include "light_data.h"
@@ -37,7 +37,7 @@ public:
 
     void activate() const;
 
-    int getUniform(const char* name) const;
+    int getUniformLocation(const char* name) const;
 
     void setModelMatrix(const glm::mat4& mat) const;
 
@@ -75,7 +75,7 @@ public:
     bool receivesShadows = false;
 
 protected:
-    static int addShader(int program, const char* code, GLenum type);
+    static int compileShader(const char* code, unsigned int type);
 
     int programID = -1;
 };
