@@ -59,6 +59,9 @@ In VSCode with the `CMake` and `CMake Tools` extensions installed:
 * **X** to toggle textures
 * **B** to toggle shadows
 * **Spacebar** to teleport model to a random position on the grid
+* **N** to cycle through the shear direction, starts at `Y`
+* **F/G/C/V** (uppercase) control small step model shear in the direction selected by **N**
+* **F/G/C/V** (lowercase) control continuous model shear in the direction selected by **N**
 
 # Controls (Programming Assignment 1 & 2)
 * **W/A/S/D** to move camera, **mouse movement** to rotate camera

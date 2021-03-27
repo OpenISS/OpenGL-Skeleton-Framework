@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform2.hpp>
 #include <algorithm>
 #include <vector>
 
@@ -16,6 +17,8 @@
 class Node
 {
 public:
+
+    enum class ShearDirection { X, Y, Z };
 
     /// Recursively deletes all children as well
     ~Node()
@@ -134,13 +137,32 @@ public:
         translate(glm::vec3(x, y, 0.0f));
     }
 
-    void shear(float x, float z)
+    void shearX(float y = 0.0f, float z = 0.0f)
     {
-        glm::mat4 mat = glm::mat4(1.0f);
-        mat[1][0] = x;
-        mat[1][2] = z;
+        transform = glm::shearX3D(transform, y, z);
+    }
 
-        transform *= mat;
+    void shearY(float x = 0.0f, float z = 0.0f)
+    {
+        transform = glm::shearY3D(transform, x, z);
+    }
+
+    void shearZ(float x = 0.0f, float y = 0.0f)
+    {
+        transform = glm::shearZ3D(transform, x, y);
+    }
+
+    void shear(float x = 0.0f, float y = 0.0f, ShearDirection direction = ShearDirection::X) {
+        if (direction == ShearDirection::X)
+            shearX(x, y);
+        else if (direction == ShearDirection::Y)
+            shearY(x, y);
+        else if (direction == ShearDirection::Z)
+            shearZ(x, y);
+    }
+
+    void shear(glm::mat4& shear) {
+        transform *= shear;
     }
 
     /// Transformation matrix, relative to the parent node

@@ -258,7 +258,7 @@ public:
             if (modelMovement != glm::vec2())
                 selected->translate(deltaSeconds * glm::vec3(modelMovement.x, modelMovement.y, 0.0f));
             if (modelShear != glm::vec2())
-                selected->shear(0.25f * modelShear.x * deltaSeconds, 0.25f * modelShear.y * deltaSeconds);
+                selected->shear(modelShear.x * deltaSeconds/4, modelShear.y * deltaSeconds/4, modelShearDirection);
         }
 
         screenMaterial.diffuseTexture = texturesEnabled ? &screenTextures[((int)glm::floor(world.getTime() / 10.0f)) % 5] : &Resources::whiteTexture;
@@ -308,6 +308,17 @@ public:
         if (key == GLFW_KEY_I)
             scaleDown = true;
 
+        // Cycle through different shear options
+        if (key == GLFW_KEY_N) {
+            if (modelShearDirection == Node::ShearDirection::X)
+                modelShearDirection = Node::ShearDirection::Y;
+            else if (modelShearDirection == Node::ShearDirection::Y)
+                modelShearDirection = Node::ShearDirection::Z;
+            else if (modelShearDirection == Node::ShearDirection::Z)
+                modelShearDirection = Node::ShearDirection::X;
+        }
+
+
         // Setup model manipulation mode: move vs rotate
         caps = !(mods & GLFW_MOD_SHIFT) != !(mods & GLFW_MOD_CAPS_LOCK); // Bitwise xor didn't work here
 
@@ -335,7 +346,7 @@ public:
                 bool isValid = false;
 
                 selected->transform = glm::mat4(1.0f);
-                
+
                 while (!isValid)
                 {
                    x = rand() % 128 * Resources::unitSize + (-64 * Resources::unitSize);
@@ -350,13 +361,13 @@ public:
             if (caps)
             {
                 if (key == GLFW_KEY_G)
-                    selected->shear(0.1f, 0.0f);
+                    selected->shear(0.1f, 0.0f, modelShearDirection);
                 else if (key == GLFW_KEY_F)
-                    selected->shear(-0.1f, 0.0f);
+                    selected->shear(-0.1f, 0.0f, modelShearDirection);
                 else if (key == GLFW_KEY_V)
-                    selected->shear(0.0f, 0.1f);
+                    selected->shear(0.0f, 0.1f, modelShearDirection);
                 else if (key == GLFW_KEY_C)
-                    selected->shear(0.0f, -0.1f);
+                    selected->shear(0.0f, -0.1f, modelShearDirection);
             }
             else
             {
@@ -384,7 +395,7 @@ public:
 
             for (auto child : *selected)
             {
-                NodeCharacter* character = dynamic_cast<NodeCharacter*>(child);
+                auto* character = dynamic_cast<NodeCharacter*>(child);
                 if (character != nullptr)
                     character->renderMode = polygonMode;
             }
@@ -396,6 +407,7 @@ protected:
     bool scaleUp = false, scaleDown = false, rotate = false, caps = false;
     glm::vec2 modelMovement = glm::vec2(0.0f);
     glm::vec2 modelShear = glm::vec2(0.0f);
+    Node::ShearDirection modelShearDirection = Node::ShearDirection::Y;
     Node* selected = nullptr;
 
     Node* localRoot = nullptr;
