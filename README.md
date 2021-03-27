@@ -112,11 +112,11 @@ API docs also available.
 * **ResourcesAlphabet:** For loading letter/digit cube transforms from an embedded text file.
 
 ## Shaders
+* **color:** Displays vertex color.
 * **lit:** Blinn-Phong lighting with texturing and shadow reception.
-* **shader:** Displays vertex color.
 * **shadow_cast:** Outputs depth only.
 * **shadowed:** Displays vertex color with shadow reception.
-* **textured:** Displays vertex color with texturing.
+* **textured:** Displays textured surface.
 
 ## Tests
 * **TestAlphabet:** The user can display any character model by pressing its key. Verifies that they load and render correctly.
