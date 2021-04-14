@@ -15,6 +15,8 @@ public:
 
     void Startup(World& world) override
     {
+        world.lights.push_back(&light);
+
         light.type = LightData::Type::Point;
         light.position = glm::vec3(0.0f, 8.0f, 0.0f);
         light.direction = glm::normalize(glm::vec3(0.0f, -1.0f, 0.0f));
@@ -30,6 +32,14 @@ public:
         crateTexture = Texture("assets/fragile.jpg");
         crateTexture.loadTexture();
         texturedMaterial.diffuseTexture = &crateTexture;
+
+        setEnabled(enabled);
+    }
+
+    void setEnabled(bool enabled) override
+    {
+        this->enabled = enabled;
+        light.enabled = enabled;
     }
 
     void Update(World& world, float elapsed) override
@@ -74,7 +84,6 @@ public:
         if (pass == RenderPass::Color)
         {
             Resources::litShader.activate();
-            Resources::litShader.setLight(light);
         }
         else if (pass == RenderPass::Shadow)
         {

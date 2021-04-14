@@ -13,6 +13,8 @@ public:
         Spot            // Flashlight
     };
 
+    bool enabled = true;
+
     Type type = Type::Point;
 
     glm::vec3 ambientColor = glm::vec3(1.0f);

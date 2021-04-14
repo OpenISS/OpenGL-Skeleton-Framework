@@ -101,6 +101,11 @@ public:
         this->light = &light;
     }
 
+    const LightData* getLight() const
+    {
+        return light;
+    }
+
     float range = 15.0f;
     float bias = 0.007f; // Can fix shadow acne
     bool cullFrontFaces = false; // Can fix peter panning

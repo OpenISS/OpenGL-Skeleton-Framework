@@ -57,7 +57,7 @@ public:
 
     void setTime(float time) const;
 
-    void setLight(const LightData& light) const;
+    void setLight(int index, const LightData& light) const;
 
     void setMaterial(const Material& material) const;
 

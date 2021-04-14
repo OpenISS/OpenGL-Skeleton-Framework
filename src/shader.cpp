@@ -193,15 +193,24 @@ void Shader::setTime(float time) const
     glUniform1f(getUniformLocation("time"), time);
 }
 
-void Shader::setLight(const LightData& light) const
+std::string setLightIndex(int index, std::string id)
 {
-    setCustomVector("lightPosition", light.position);
-    setCustomVector("lightAmbient", light.ambientColor * light.ambientIntensity);
-    setCustomVector("lightDiffuse", light.diffuseColor * light.diffuseIntensity);
-    setCustomVector("lightSpecular", light.specularColor * light.specularIntensity);
-    setCustomFloat("lightConstantAttenuation", light.constantAttenuation);
-    setCustomFloat("lightLinearAttenuation", light.linearAttenuation);
-    setCustomFloat("lightQuadraticAttenuation", light.quadraticAttenuation);
+    id[7] = '0' + index;
+    return id;
+}
+
+void Shader::setLight(int index, const LightData& light) const
+{
+    setCustomVector(setLightIndex(index, "lights[X].position").c_str(), light.position);
+    setCustomVector(setLightIndex(index, "lights[X].direction").c_str(), glm::normalize(light.direction));
+    setCustomVector(setLightIndex(index, "lights[X].ambient").c_str(), light.ambientColor * light.ambientIntensity);
+    setCustomVector(setLightIndex(index, "lights[X].diffuse").c_str(), light.diffuseColor * light.diffuseIntensity);
+    setCustomVector(setLightIndex(index, "lights[X].specular").c_str(), light.specularColor * light.specularIntensity);
+    setCustomFloat(setLightIndex(index, "lights[X].cutOff").c_str(), glm::cos(glm::radians(light.angle * 0.5f * 0.8f)));
+    setCustomFloat(setLightIndex(index, "lights[X].outerCutOff").c_str(), glm::cos(glm::radians(light.angle * 0.5f)));
+    setCustomFloat(setLightIndex(index, "lights[X].constantAttenuation").c_str(), light.constantAttenuation);
+    setCustomFloat(setLightIndex(index, "lights[X].linearAttenuation").c_str(), light.linearAttenuation);
+    setCustomFloat(setLightIndex(index, "lights[X].quadraticAttenuation").c_str(), light.quadraticAttenuation);
 }
 
 void Shader::setMaterial(const Material& material) const

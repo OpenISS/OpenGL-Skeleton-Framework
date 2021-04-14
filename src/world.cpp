@@ -16,8 +16,10 @@
 #include "tests/test_imgui_integration.h"
 #include "tests/test_lit_shader.h"
 #include "tests/test_loader_obj.h"
+#include "tests/test_multi_lights.h"
 #include "tests/test_scene_graph.h"
 #include "tests/test_shadows.h"
+#include "tests/test_shape_meshes.h"
 #include "tests/test_texture.h"
 #include "tests/test_unit_cube.h"
 #include "tests/test_vertex_drawing.h"
@@ -44,7 +46,7 @@ void World::AddModules()
     modules.push_back(renderingMode);
     modules.push_back(shadows);
     modules.push_back(new FPSCamera());
-    modules.push_back(new WorldOrientation(true));
+    modules.push_back(new WorldOrientation(false));
     modules.push_back(new GroundGrid(false));
     modules.push_back(new OriginAxis(false));
 
@@ -58,10 +60,12 @@ void World::AddModules()
     modules.push_back(new TestVertexDrawing(false));
     modules.push_back(new TestSceneGraph(false));
     modules.push_back(new TestShadows(false));
+    modules.push_back(new TestShapeMeshes(false));
     modules.push_back(new TestTexture(false));
+    modules.push_back(new TestMultiLights(true));
 
     modules.push_back(new Assignment1(false));
-    modules.push_back(new Assignment2(true));
+    modules.push_back(new Assignment2(false));
 
     // Should always be last
     modules.push_back(sceneGraph);
@@ -80,9 +84,6 @@ void World::Startup(void* window)
     {
         m->Startup(*this);
     }
-
-    // Black background
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 // Shuts down modules in reverse order
@@ -111,6 +112,22 @@ void World::Update(float deltaSeconds)
 
 void World::Render()
 {
+    glm::mat4 view = camera->view();
+    glm::mat4 projection = camera->projection();
+    for (auto shader : Resources::getShaders())
+    {
+        if (shader->needsCamera)
+        {
+            shader->activate();
+            shader->setViewProjectionMatrix(view, projection);
+            shader->setViewPosition(camera->getPosition());
+        }
+    }
+
+
+    // Black background
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
     // Enable MSAA
     if (windowSamples > 0)
         glEnable(GL_MULTISAMPLE);
@@ -143,11 +160,49 @@ void World::Render()
     glEnable(GL_CULL_FACE);
 
     imgui->PreRender(*this);
+
+    LightData emptyLight;
+    emptyLight.ambientIntensity = 0.0f;
+    emptyLight.diffuseIntensity = 0.0f;
+    emptyLight.specularIntensity = 0.0f;
+
+    for (auto shader : Resources::getShaders())
+    {
+        if (shader->needsLight)
+        {
+            shader->activate();
+            shader->setCustomInt("shadowLightIndex", 7);
+
+            int lightIndex = 0;
+            for (size_t i = 0; i < lights.size(); ++i)
+            {
+                auto light = lights.at(i);
+                if (light->enabled)
+                {
+                    shader->setLight(lightIndex, *light);
+
+                    if (light == shadows->getLight())
+                        shader->setCustomInt("shadowLightIndex", lightIndex);
+
+                    lightIndex++;
+
+                    if (lightIndex >= 8)
+                        std::cerr << "Exceeding 8 active lights in the scene" << std::endl;
+                }
+            }
+            for (; lightIndex < 8; ++lightIndex)
+            {
+                shader->setLight(lightIndex, emptyLight);
+            }
+        }
+    }
+
     for (Module* m : modules)
     {
         if (m->getEnabled())
             m->Render(*this, RenderPass::Color);
     }
+
     imgui->PostRender(*this);
 }
 

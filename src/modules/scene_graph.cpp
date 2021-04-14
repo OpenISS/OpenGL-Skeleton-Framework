@@ -8,15 +8,6 @@ void SceneGraph::Render(World& world, RenderPass pass)
 {
     Module::Render(world, pass);
 
-    for (auto shader : Resources::getShaders())
-    {
-        if (shader->needsLight)
-        {
-            shader->activate();
-            shader->setLight(world.light);
-        }
-    }
-
     world.renderingMode->SetupPolygonMode(RenderMode::Triangle); // Reset polygon mode before & after
     glm::mat4 stack = glm::mat4(1.0f);
     walkNode(world, pass, root, stack);

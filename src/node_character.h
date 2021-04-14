@@ -34,7 +34,7 @@ public:
 
     virtual void render(World& world, RenderPass pass, const glm::mat4& matrixStack) override
     {
-        if (material != nullptr && shader != nullptr)
+        if (material != nullptr && shader != nullptr && cubes != nullptr)
         {
             world.renderingMode->SetupPolygonMode(renderMode);
 

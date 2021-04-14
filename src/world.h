@@ -33,6 +33,7 @@ public:
     void Render();
 
     void OnKey(int key, int action, int mods);
+    int GetKey(int key) { return glfwGetKey(static_cast<GLFWwindow*>(window), key); };
 
     void OnMouseMoved(float x, float y);
     void OnMousePressed(int button, int mods);
@@ -52,7 +53,7 @@ public:
     Camera* camera;
     Shadows* shadows;
 
-    LightData light;
+    std::vector<LightData*> lights;
 
     int windowWidth;
     int windowHeight;

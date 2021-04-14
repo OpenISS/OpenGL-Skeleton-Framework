@@ -109,6 +109,16 @@ public:
         transform = glm::scale(transform, glm::vec3(scalar));
     }
 
+    void scale(float x, float y, float z)
+    {
+        transform = glm::scale(transform, glm::vec3(x, y, z));
+    }
+
+    void scale(const glm::vec3& scale)
+    {
+        transform = glm::scale(transform, scale);
+    }
+
     /// Scales the transform equally in all dimensions, by 1 + step (0.2 => 1.2 and -0.2 => 0.8)
     void scaleStep(float step)
     {
@@ -132,9 +142,9 @@ public:
         translate(glm::vec3(v, 0.0f));
     }
 
-    void translate(float x = 0.0f, float y = 0.0f)
+    void translate(float x = 0.0f, float y = 0.0f, float z = 0.0f)
     {
-        translate(glm::vec3(x, y, 0.0f));
+        translate(glm::vec3(x, y, z));
     }
 
     void shearX(float y = 0.0f, float z = 0.0f)
