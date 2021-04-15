@@ -6,6 +6,7 @@
 #include "../light_data.h"
 #include "../material.h"
 #include "../module.h"
+#include "../node_bone.h"
 #include "../node_character.h"
 #include "../node_model.h"
 #include "../resources.h"
@@ -13,6 +14,7 @@
 #include "../world.h"
 #include "../thirdparty/imgui/imgui.h"
 #include "../modules/imgui_integration.h"
+
 
 class TestMultiLights : public Module
 {
@@ -113,6 +115,11 @@ public:
             ground->transform = glm::rotate(ground->transform, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         }
 
+        
+        NodeBone* Bone1 = new NodeBone(stageMaterial, Resources::litShader);
+        Bone1->setPoints(glm::vec3(-3.0f, 0.0f, 0.0f) * Resources::unitSize, glm::vec3(3.0f, 0.0f, 0.0f) * Resources::unitSize);
+        localRoot->addChild(*Bone1);
+     
 
         setEnabled(enabled);
     }
