@@ -1,4 +1,5 @@
 #pragma once
+#include <glm/gtx/quaternion.hpp>
 #include "material.h"
 #include "mesh.h"
 #include "node.h"
@@ -26,25 +27,19 @@ public:
         this->shader = &shader;
     }
 
-    void setPoints(const glm::vec3& pointA, const glm::vec3& pointB)
+    void setPoints(const glm::vec3& pointA, const glm::vec3& pointB, float radius)
     {
-
-
         glm::vec3 position = (pointA + pointB) / 2.0f;
-        float distance = (pointA - pointB).length();
+        glm::vec3 dir = pointB - pointA;
+        float distance = glm::length(dir);
+        dir = glm::normalize(dir);
+        glm::quat rotation = glm::rotation(glm::vec3(1.0f, 0.0f, 0.0f), dir);
 
         transform = glm::mat4(1.0f);
-        transform = glm::scale(transform, glm::vec3(distance/2.0f, radius/2.0f, radius/2.0f));
         transform = glm::translate(transform, position);
-        //transform = glm::rotate(transform, )
-      
-
-
-
+        transform *= glm::toMat4(rotation);
+        transform = glm::scale(transform, glm::vec3(distance, radius / 2.0f, radius / 2.0f));
     }
-
-
-   
 
     virtual void render(World& world, RenderPass pass, const glm::mat4& matrixStack) override
     {
@@ -70,5 +65,4 @@ public:
 
     Material* material = nullptr;
     Shader* shader = nullptr;
-    float radius = 1.0f;
 };

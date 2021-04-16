@@ -115,11 +115,21 @@ public:
             ground->transform = glm::rotate(ground->transform, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         }
 
-        
-        NodeBone* Bone1 = new NodeBone(stageMaterial, Resources::litShader);
-        Bone1->setPoints(glm::vec3(-3.0f, 0.0f, 0.0f) * Resources::unitSize, glm::vec3(3.0f, 0.0f, 0.0f) * Resources::unitSize);
-        localRoot->addChild(*Bone1);
-     
+        // Testing
+        {
+            NodeBone* testBone1 = new NodeBone(stageMaterial, Resources::litShader);
+            glm::vec3 pointA1 = glm::vec3(0.0f, 0.0f, 0.0f) * Resources::unitSize;
+            glm::vec3 pointB1 = glm::vec3(6.0f, 2.0f, 0.0f) * Resources::unitSize;
+            testBone1->setPoints(pointA1, pointB1, 1.0f);
+            localRoot->addChild(*testBone1);
+
+            NodeBone* testBone2 = new NodeBone(stageMaterial, Resources::litShader);
+            glm::vec3 pointA2 = glm::vec3(-6.0f, 2.0f, 0.0f) * Resources::unitSize;
+            glm::vec3 pointB2 = glm::vec3(-20.0f, 8.0f, 8.0f) * Resources::unitSize;
+            testBone2->setPoints(pointA2, pointB2, 1.0f);
+            localRoot->addChild(*testBone2);
+        }
+
 
         setEnabled(enabled);
     }
