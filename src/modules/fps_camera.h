@@ -103,7 +103,8 @@ public:
             if (mouseInputMode == MouseInputMode::Zoom)
             {
                 float fov = camera->getFov();
-                camera->setFov(fov - pitch);
+                float newFov = glm::clamp(fov - pitch * 10.0f, 2.0f, 178.0f);
+                camera->setFov(newFov);
 
                 if (world.debug)
                     std::cout << "Update FOV: " << fov << " - " << pitch << std::endl;
