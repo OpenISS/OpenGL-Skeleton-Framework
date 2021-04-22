@@ -23,6 +23,7 @@
 #include "tests/test_texture.h"
 #include "tests/test_unit_cube.h"
 #include "tests/test_vertex_drawing.h"
+#include "tests/test_openiss.h"
 
 World::World()
 {
@@ -63,6 +64,7 @@ void World::AddModules()
     modules.push_back(new TestShapeMeshes(false));
     modules.push_back(new TestTexture(false));
     modules.push_back(new TestMultiLights(true));
+    modules.push_back(new TestOpenISS(true));
 
     modules.push_back(new Assignment1(false));
     modules.push_back(new Assignment2(false));
