@@ -1,12 +1,13 @@
 #pragma once
+#include <iostream>
+#include <OpenISS.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../module.h"
+#include "../node_joint.h"
+#include "../node_bone.h"
+#include "../resources.h"
 #include "../world.h"
-
-#include "OpenISS.hpp"
-
-#include <iostream>
 
 using namespace openiss;
 
@@ -46,25 +47,17 @@ public:
 
         OIFrame* l_opFrame = g_oDevice->readFrame(DEPTH_STREAM);
 
-        if(l_opFrame == nullptr)
-        {
-            // ...
+        if(l_opFrame == nullptr) {
             std::cerr << "OpenISS: null depth frame..." << std::endl;
-        }
-        else
-        {
+        } else {
             std::cout << "OpenISS: acquired depth frame..." << std::endl;
         }
 
         l_opFrame = g_oDevice->readFrame(COLOR_STREAM);
 
-        if(l_opFrame == nullptr)
-        {
-            // ...
+        if(l_opFrame == nullptr) {
             std::cerr << "OpenISS: null color frame..." << std::endl;
-        }
-        else
-        {
+        } else {
             std::cout << "OpenISS: acquired color frame..." << std::endl;
         }
 
@@ -73,16 +66,31 @@ public:
         // ...
         // TODO
 
+        localRoot = new Node;
+        world.sceneGraph->addChild(*localRoot);
+
+        setEnabled(enabled);
     }
 
     void Shutdown(World &world) override
     {
-        delete g_oOpenISS;
+        world.sceneGraph->removeChild(*localRoot);
+        delete localRoot; // Recursively deletes all its children
 
         std::cout << "OpenISS example terminating..." << std::endl;
+        delete g_oOpenISS;
+    }
+
+
+    void setEnabled(bool enabled) override
+    {
+        this->enabled = enabled;
+        localRoot->visible = enabled;
     }
 
 protected:
+
+    Node* localRoot = nullptr;
 
 // Context
     OpenISS* g_oOpenISS = nullptr;

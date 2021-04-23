@@ -99,8 +99,8 @@ protected:
 
     glm::vec3 position;
     glm::vec3 direction;
-    float fov;
-    float aspect;
-    float near;
-    float far;
+    float fov = 58.f;
+    float aspect = 1.3337f;
+    float near = 0.01f;
+    float far = 100.f;
 };

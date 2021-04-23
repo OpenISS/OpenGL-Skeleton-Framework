@@ -6,6 +6,7 @@
 #include "../light_data.h"
 #include "../material.h"
 #include "../module.h"
+#include "../node_joint.h"
 #include "../node_bone.h"
 #include "../node_character.h"
 #include "../node_model.h"
@@ -128,6 +129,11 @@ public:
             glm::vec3 pointB2 = glm::vec3(-20.0f, 8.0f, 8.0f) * Resources::unitSize;
             testBone2->setPoints(pointA2, pointB2, 1.0f);
             localRoot->addChild(*testBone2);
+
+            auto joint1 = new NodeJoint(groundMaterial, Resources::litShader, pointA2, 1.f);
+            auto joint2 = new NodeJoint(groundMaterial, Resources::litShader, pointB2, 1.f);
+            localRoot->addChild(*joint1);
+            localRoot->addChild(*joint2);
         }
 
 
