@@ -31,7 +31,7 @@ if(NOT ${THIRDPARTY}_POPULATED)
         EXCLUDE_FROM_ALL
     )
 
-    target_include_directories(openiss INTERFACE $<BUILD_INTERFACE:${${THIRDPARTY}_BINARY_DIR}/include>)
-    target_include_directories(openiss INTERFACE $<BUILD_INTERFACE:${${THIRDPARTY}_SOURCE_DIR}/include>)
+    target_include_directories(openiss-static INTERFACE $<BUILD_INTERFACE:${${THIRDPARTY}_BINARY_DIR}/include>)
+    target_include_directories(openiss-static INTERFACE $<BUILD_INTERFACE:${${THIRDPARTY}_SOURCE_DIR}/include>)
 endif()
 
