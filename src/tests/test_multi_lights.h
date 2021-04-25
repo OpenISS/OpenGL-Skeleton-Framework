@@ -8,6 +8,7 @@
 #include "../module.h"
 #include "../node_joint.h"
 #include "../node_bone.h"
+#include "../node_skeleton.h"
 #include "../node_character.h"
 #include "../node_model.h"
 #include "../resources.h"
@@ -118,7 +119,10 @@ public:
 
         // Testing
         {
-            NodeBone* testBone1 = new NodeBone(stageMaterial, Resources::litShader);
+            auto model = new NodeSkeleton(stageMaterial, groundMaterial, Resources::litShader);
+            localRoot->addChild(*model);
+
+/*            NodeBone* testBone1 = new NodeBone(stageMaterial, Resources::litShader);
             glm::vec3 pointA1 = glm::vec3(0.0f, 0.0f, 0.0f) * Resources::unitSize;
             glm::vec3 pointB1 = glm::vec3(6.0f, 2.0f, 0.0f) * Resources::unitSize;
             testBone1->setPoints(pointA1, pointB1, 1.0f);
@@ -133,7 +137,7 @@ public:
             auto joint1 = new NodeJoint(groundMaterial, Resources::litShader, pointA2, 1.f);
             auto joint2 = new NodeJoint(groundMaterial, Resources::litShader, pointB2, 1.f);
             localRoot->addChild(*joint1);
-            localRoot->addChild(*joint2);
+            localRoot->addChild(*joint2);*/
         }
 
 

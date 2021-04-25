@@ -16,10 +16,10 @@ class NodeJoint : public NodeModel
 {
 public:
 
-    NodeJoint(Material& material, Shader& shader, const glm::vec3& point, float radius = 2.f)
+    NodeJoint(Material& material, Shader& shader, const glm::vec3& point, float radius = 1.f)
         : NodeJoint(Resources::sphere, material, shader, point, radius) {}
 
-    NodeJoint(Mesh& mesh, Material& material, Shader& shader, const glm::vec3& point, float radius = 2.f)
+    NodeJoint(Mesh& mesh, Material& material, Shader& shader, const glm::vec3& point, float radius = 1.f)
         : NodeJoint(mesh, material, shader)
     {
         setPoint(point, radius);

@@ -27,6 +27,13 @@ public:
         this->shader = &shader;
     }
 
+    NodeBone(Material& material, Shader& shader, const glm::vec3& pointA, const glm::vec3& pointB, float radius)
+    {
+        this->material = &material;
+        this->shader = &shader;
+        setPoints(pointA, pointB, radius);
+    }
+
     void setPoints(const glm::vec3& pointA, const glm::vec3& pointB, float radius)
     {
         glm::vec3 position = (pointA + pointB) / 2.0f;

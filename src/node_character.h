@@ -18,7 +18,7 @@
  * @see ResourcesAlphabet
  * @see SceneGraph
  */
-class NodeCharacter : public Node
+class NodeCharacter : public NodeModel
 {
 public:
 
@@ -27,6 +27,7 @@ public:
         this->scale = scale;
         this->material = &material;
         this->shader = &shader;
+        this->mesh = &Resources::unitCube;
         auto res = ResourcesAlphabet::getCubes(character);
         if (res != nullptr)
             cubes = res;
@@ -58,14 +59,11 @@ public:
                     shader->setModelMatrix(cubeMatrix);
                 else if (pass == RenderPass::Shadow)
                     Resources::shadowCastShader.setModelMatrix(cubeMatrix);
-                Resources::unitCube.draw();
+                mesh->draw();
             }
         }
     }
 
-    const std::vector<glm::mat4>* cubes = nullptr;
-    Material* material = nullptr;
-    Shader* shader = nullptr;
     float scale = 1.0f;
-    RenderMode renderMode = RenderMode::Triangle;
+    const std::vector<glm::mat4>* cubes = nullptr;
 };
