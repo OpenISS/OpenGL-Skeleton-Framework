@@ -51,4 +51,9 @@ public:
     {
         scale(radius / 2.f);
     }
+    
+    glm::vec3 getPosition() const
+    {
+        return glm::vec3(transform[3][0], transform[3][1], transform[3][2]);
+    }
 };

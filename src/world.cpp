@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include "modules/assignment1.h"
 #include "modules/assignment2.h"
+#include "modules/assignment3.h"
 #include "modules/fps_camera.h"
 #include "modules/ground_grid.h"
 #include "modules/module_manager_ui.h"
@@ -63,11 +64,12 @@ void World::AddModules()
     modules.push_back(new TestShadows(false));
     modules.push_back(new TestShapeMeshes(false));
     modules.push_back(new TestTexture(false));
-    modules.push_back(new TestMultiLights(true));
-    modules.push_back(new TestOpenISS(true));
+    modules.push_back(new TestMultiLights(false));
+    modules.push_back(new TestOpenISS(false));
 
     modules.push_back(new Assignment1(false));
     modules.push_back(new Assignment2(false));
+    modules.push_back(new Assignment3(true));
 
     // Should always be last
     modules.push_back(sceneGraph);
