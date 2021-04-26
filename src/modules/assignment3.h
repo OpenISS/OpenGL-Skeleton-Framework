@@ -17,6 +17,7 @@
 #include "../world.h"
 #include "../thirdparty/imgui/imgui.h"
 #include "../modules/imgui_integration.h"
+#include "../adapters/OISkeletonTrackerAdapter.h"
 
 using namespace openiss;
 
@@ -57,6 +58,18 @@ public:
 #endif
             tracker->init();
             tracker->startTracking();
+        }
+
+
+        // Skeleton
+        {
+            skeleton = new NodeSkeleton(stageMaterial, groundMaterial, Resources::litShader);
+            localRoot->addChild(*skeleton);
+
+            skeletonAdapter.Setup(*skeleton, *tracker.get(), *trackerFrame.get());
+
+            skeleton->translate(0.0f, 13.0f * Resources::unitSize, 10.0f * Resources::unitSize);
+            skeleton->scale(8.0f * Resources::unitSize);
         }
 
 
@@ -133,15 +146,6 @@ public:
         }
 
 
-        // Skeleton
-        {
-            skeleton = new NodeSkeleton(stageMaterial, groundMaterial, Resources::litShader);
-            localRoot->addChild(*skeleton);
-            skeleton->translate(0.0f, 13.0f * Resources::unitSize, 10.0f * Resources::unitSize);
-            skeleton->scale(8.0f * Resources::unitSize);
-        }
-
-
         setEnabled(enabled);
     }
 
@@ -168,43 +172,9 @@ public:
         orbitLight.enabled = enabled;
     }
 
-    glm::vec3 getAdapterJointPosition(OISkeleton& skeleton, JointType jointType) const 
-    {
-        std::shared_ptr<OISkeletonJoint> joint = skeleton.getJointByType(jointType);
-        return glm::vec3(joint->x, joint->y, joint->z);
-    }
-
     void Update(World& world, float deltaSeconds) override
     {
-        // OpenISS
-        {
-            tracker->readFrame(trackerFrame.get());
-            std::vector<std::shared_ptr<OIUserData>> users = trackerFrame->getUsers();
-
-            for (const auto& user : users)
-            {
-                OISkeleton* oiSkeleton = user->getSkeleton();
-
-                skeleton->head->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_HEAD));
-                skeleton->neck->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_NECK));
-                skeleton->RShoulder->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_SHOULDER));
-                skeleton->LShoulder->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_SHOULDER));
-                skeleton->RElbow->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_ELBOW));
-                skeleton->LElbow->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_ELBOW));
-                skeleton->RHand->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_HAND));
-                skeleton->LHand->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_HAND));
-                skeleton->torso->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_TORSO));
-                skeleton->RHip->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_HIP));
-                skeleton->LHip->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_HIP));
-                skeleton->RKnee->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_KNEE));
-                skeleton->LKnee->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_KNEE));
-                skeleton->RFoot->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_FOOT));
-                skeleton->LFoot->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_FOOT));
-            }
-
-            skeleton->UpdatePositions();
-        }
-
+        skeletonAdapter.Update(deltaSeconds);
 
         glm::vec3 orbitCamPos = glm::vec3(40.0f * glm::sin(orbitCamAngle), 20.0f, 40.0f * glm::cos(orbitCamAngle)) * Resources::unitSize;
         orbitCam->setPosition(orbitCamPos);
@@ -328,7 +298,7 @@ protected:
     float orbitCamAngle = 0.0f;
 
     NodeSkeleton* skeleton = nullptr;
-
+    OISkeletonTrackerAdapter skeletonAdapter;
     shared_ptr<OISkeletonTracker> tracker;
     shared_ptr<OITrackerFrame> trackerFrame;
 };
