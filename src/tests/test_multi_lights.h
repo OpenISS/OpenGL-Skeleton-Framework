@@ -121,23 +121,6 @@ public:
         {
             auto model = new NodeSkeleton(stageMaterial, groundMaterial, Resources::litShader);
             localRoot->addChild(*model);
-
-/*            NodeBone* testBone1 = new NodeBone(stageMaterial, Resources::litShader);
-            glm::vec3 pointA1 = glm::vec3(0.0f, 0.0f, 0.0f) * Resources::unitSize;
-            glm::vec3 pointB1 = glm::vec3(6.0f, 2.0f, 0.0f) * Resources::unitSize;
-            testBone1->setPoints(pointA1, pointB1, 1.0f);
-            localRoot->addChild(*testBone1);
-
-            NodeBone* testBone2 = new NodeBone(stageMaterial, Resources::litShader);
-            glm::vec3 pointA2 = glm::vec3(-6.0f, 2.0f, 0.0f) * Resources::unitSize;
-            glm::vec3 pointB2 = glm::vec3(-20.0f, 8.0f, 8.0f) * Resources::unitSize;
-            testBone2->setPoints(pointA2, pointB2, 1.0f);
-            localRoot->addChild(*testBone2);
-
-            auto joint1 = new NodeJoint(groundMaterial, Resources::litShader, pointA2, 1.f);
-            auto joint2 = new NodeJoint(groundMaterial, Resources::litShader, pointB2, 1.f);
-            localRoot->addChild(*joint1);
-            localRoot->addChild(*joint2);*/
         }
 
 

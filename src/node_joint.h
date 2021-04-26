@@ -37,23 +37,23 @@ public:
 
     void setPoint(const glm::vec3& point, float radius)
     {
+        this->radius = radius;
         setPoint(point);
-        setRadius(radius);
     }
 
     void setPoint(const glm::vec3& point)
     {
         transform = glm::mat4(1.0f);
         translate(point);
-    }
-
-    void setRadius(float radius)
-    {
-        scale(radius / 2.f);
+        scale(radius / 2.0f);
     }
     
     glm::vec3 getPosition() const
     {
         return glm::vec3(transform[3][0], transform[3][1], transform[3][2]);
     }
+
+protected:
+
+    float radius = 1.0f;
 };

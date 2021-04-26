@@ -30,24 +30,35 @@ public:
     {
         Module::Startup(world);
 
-        // Create an OpenISS device, enable all features
-        OIDeviceFactory devFactory;
-    #ifdef OPENISS_NITE2_SUPPORT
-        device = devFactory.create("kinect");
-    #else
-        device = devFactory.create("null");
-    #endif
-        device->open();
-        device->enable();
+        localRoot = new Node();
+        world.sceneGraph->addChild(*localRoot);
 
-        // Create tracker
-    #ifdef OPENISS_NITE2_SUPPORT
-        tracker = trackerFactory.createTracker("nite", device.get());
-        trackerFrame = trackerFactory.createTrackerFrame("nite");
-    #else
-        tracker = trackerFactory.createTracker("nullDynamic", device.get());
-        trackerFrame = trackerFactory.createTrackerFrame("nullDynamic");
-    #endif
+
+        // OpenISS
+        {
+            // Create an OpenISS device, enable all features
+            OIDeviceFactory devFactory;
+#ifdef OPENISS_NITE2_SUPPORT
+            shared_ptr<OIDevice> device = devFactory.create("kinect");
+#else
+            shared_ptr<OIDevice> device = devFactory.create("null");
+#endif
+            device->open();
+            device->enable();
+
+            // Create tracker
+            OITrackerFactory trackerFactory;
+#ifdef OPENISS_NITE2_SUPPORT
+            tracker = trackerFactory.createTracker("nite", device.get());
+            trackerFrame = trackerFactory.createTrackerFrame("nite");
+#else
+            tracker = trackerFactory.createTracker("nullDynamic", device.get());
+            trackerFrame = trackerFactory.createTrackerFrame("nullDynamic");
+#endif
+            tracker->init();
+            tracker->startTracking();
+        }
+
 
         // Lights and cameras
         {
@@ -57,7 +68,7 @@ public:
             world.shadows->setLight(mainLight);
 
             ambientLight.type = LightData::Type::Spot;
-            ambientLight.ambientIntensity = 0.016f;
+            ambientLight.ambientIntensity = 0.024f;
             ambientLight.diffuseIntensity = 0.0f;
             ambientLight.specularIntensity = 0.0f;
 
@@ -76,8 +87,6 @@ public:
             orbitLight.linearAttenuation = 0.09f;
             orbitLight.quadraticAttenuation = 0.004f;
 
-            frontCam = new Camera(world.windowAspectRatio, glm::vec3(0.0f, 20.0f, -5.0f) * Resources::unitSize, glm::vec3(0.0f, -0.75f, 0.5f));
-            backCam = new Camera(world.windowAspectRatio, glm::vec3(0.0f, 20.0f, -5.0f) * Resources::unitSize, glm::vec3(0.0f, -0.75f, -0.5f));
             lightCam = new Camera(world.windowAspectRatio, mainLight.position, glm::normalize(-mainLight.position));
             orbitCam = new Camera(world.windowAspectRatio);
             fpsCam = world.camera;
@@ -92,41 +101,26 @@ public:
         {
             stageTexture.loadTexture();
             groundTexture.loadTexture();
-            boxTexture.loadTexture();
 
             stageMaterial.specularIntensity = 0.0f;
 
             groundMaterial.specularIntensity = 0.25f;
             groundMaterial.uvScale = glm::vec2(8.0f);
 
-            boxMaterial.specularIntensity = 0.0f;
-
             UpdateTextures(true);
         }
 
 
-        // Name
-        {
-            nameGroup = new Node();
-            setCharacters(*nameGroup, "AMPN47", Resources::unitSize * 3.0f);
-            nameGroup->translate(glm::vec3(0.0f, 0.0f, -5.0f) * Resources::unitSize);
-
-            localRoot = new Node();
-            world.sceneGraph->addChild(*localRoot);
-            localRoot->addChild(*nameGroup);
-        }
-
-
-        // Stage and screen pieces
+        // Stage pieces
         {
             stage = new NodeModel(Resources::halfCylinder, stageMaterial, Resources::litShader);
             localRoot->addChild(*stage);
 
             stage->transform = glm::mat4(1.0f);
-            stage->transform = glm::translate(stage->transform, glm::vec3(0.0f, 1.5f * 0.5f, -58.0f) * Resources::unitSize);
+            stage->transform = glm::translate(stage->transform, glm::vec3(0.0f, 5.0f * 0.5f, -58.0f) * Resources::unitSize);
             stage->transform = glm::rotate(stage->transform, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             stage->transform = glm::rotate(stage->transform, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            stage->transform = glm::scale(stage->transform, glm::vec3(1.5f, 64.0f, 64.0f) * Resources::unitSize);
+            stage->transform = glm::scale(stage->transform, glm::vec3(5.0f, 64.0f, 64.0f) * Resources::unitSize);
         }
 
 
@@ -138,32 +132,17 @@ public:
             ground->transform = glm::rotate(ground->transform, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         }
 
+
         // Skeleton
         {
             skeleton = new NodeSkeleton(stageMaterial, groundMaterial, Resources::litShader);
             localRoot->addChild(*skeleton);
-           // skeleton->radius /= 10.0f;
+            skeleton->translate(0.0f, 13.0f * Resources::unitSize, 10.0f * Resources::unitSize);
+            skeleton->scale(8.0f * Resources::unitSize);
         }
 
 
         setEnabled(enabled);
-    }
-
-    /// For every character in word, create a new NodeCharacter and add it to root
-    void setCharacters(Node& root, const std::string& word, float scale)
-    {
-        float y = 0.0f;
-
-        for (size_t i = 0; i < word.size(); ++i)
-        {
-            const char& c = word.at(i);
-            NodeCharacter* nodeChar = new NodeCharacter(c, boxMaterial, Resources::litShader, scale);
-
-            nodeChar->transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, y, 0.0f));
-            y += 2.5f * scale;
-
-            root.addChild(*nodeChar);
-        }
     }
 
     void UpdateTextures(bool texturesEnabled)
@@ -172,7 +151,6 @@ public:
 
         groundMaterial.diffuseTexture = texturesEnabled ? &groundTexture : &Resources::whiteTexture;
         stageMaterial.diffuseTexture = texturesEnabled ? &stageTexture : &Resources::whiteTexture;
-        boxMaterial.diffuseTexture = texturesEnabled ? &boxTexture : &Resources::whiteTexture;
     }
 
     void Shutdown(World& world) override
@@ -198,33 +176,35 @@ public:
 
     void Update(World& world, float deltaSeconds) override
     {
-        // get the registered color frame
-        OIFrame* displayFrame = device->readFrame(COLOR_STREAM);
-        tracker->readFrame(trackerFrame.get());
-        std::vector<std::shared_ptr<OIUserData>> users = trackerFrame->getUsers();
-
-        for (const auto& user : users)
+        // OpenISS
         {
-            OISkeleton* oiSkeleton = user->getSkeleton();
+            tracker->readFrame(trackerFrame.get());
+            std::vector<std::shared_ptr<OIUserData>> users = trackerFrame->getUsers();
 
-            skeleton->head->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_HEAD));
-            skeleton->neck->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_NECK));
-            skeleton->RShoulder->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_SHOULDER));
-            skeleton->LShoulder->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_SHOULDER));
-            skeleton->RElbow->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_ELBOW));
-            skeleton->LElbow->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_ELBOW));
-            skeleton->RHand->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_HAND));
-            skeleton->LHand->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_HAND));
-            skeleton->torso->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_TORSO));
-            skeleton->RHip->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_HIP));
-            skeleton->LHip->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_HIP));
-            skeleton->RKnee->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_KNEE));
-            skeleton->LKnee->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_KNEE));
-            skeleton->RFoot->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_FOOT));
-            skeleton->LFoot->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_FOOT));
+            for (const auto& user : users)
+            {
+                OISkeleton* oiSkeleton = user->getSkeleton();
+
+                skeleton->head->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_HEAD));
+                skeleton->neck->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_NECK));
+                skeleton->RShoulder->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_SHOULDER));
+                skeleton->LShoulder->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_SHOULDER));
+                skeleton->RElbow->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_ELBOW));
+                skeleton->LElbow->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_ELBOW));
+                skeleton->RHand->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_HAND));
+                skeleton->LHand->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_HAND));
+                skeleton->torso->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_TORSO));
+                skeleton->RHip->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_HIP));
+                skeleton->LHip->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_HIP));
+                skeleton->RKnee->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_KNEE));
+                skeleton->LKnee->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_KNEE));
+                skeleton->RFoot->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_RIGHT_FOOT));
+                skeleton->LFoot->setPoint(getAdapterJointPosition(*oiSkeleton, JointType::JOINT_LEFT_FOOT));
+            }
+
+            skeleton->UpdatePositions();
         }
-        
-        skeleton->UpdatePositions();
+
 
         glm::vec3 orbitCamPos = glm::vec3(40.0f * glm::sin(orbitCamAngle), 20.0f, 40.0f * glm::cos(orbitCamAngle)) * Resources::unitSize;
         orbitCam->setPosition(orbitCamPos);
@@ -246,12 +226,8 @@ public:
         if (camControlIdx == 0)
             world.camera = fpsCam;
         else if (camControlIdx == 1)
-            world.camera = frontCam;
-        else if (camControlIdx == 2)
-            world.camera = backCam;
-        else if (camControlIdx == 3)
             world.camera = lightCam;
-        else if (camControlIdx == 4)
+        else if (camControlIdx == 2)
             world.camera = orbitCam;
     }
 
@@ -290,10 +266,8 @@ public:
             ImGui::PushID("Cameras");
             ImGui::Text("Cameras:"); ImGui::SameLine();
             ImGui::RadioButton("FPS", &camControlIdx, 0); ImGui::SameLine();
-            ImGui::RadioButton("Front", &camControlIdx, 1); ImGui::SameLine();
-            ImGui::RadioButton("Back", &camControlIdx, 2); ImGui::SameLine();
-            ImGui::RadioButton("Main Light", &camControlIdx, 3); ImGui::SameLine();
-            ImGui::RadioButton("Orbit", &camControlIdx, 4);
+            ImGui::RadioButton("Main Light", &camControlIdx, 1); ImGui::SameLine();
+            ImGui::RadioButton("Orbit", &camControlIdx, 2);
             ImGui::PopID();
 
             ImGui::SliderAngle("Orbit Cam Angle", &orbitCamAngle);
@@ -331,7 +305,6 @@ public:
 protected:
 
     Node* localRoot = nullptr;
-    Node* nameGroup = nullptr;
     NodeModel* stage = nullptr;
 
     Material groundMaterial;
@@ -339,9 +312,6 @@ protected:
 
     Material stageMaterial;
     Texture stageTexture = Texture("assets/cloth.jpg");
-
-    Material boxMaterial;
-    Texture boxTexture = Texture("assets/fragile.jpg");
 
     bool texturesEnabled = false;
     int shadowControlIdx = 0;
@@ -351,8 +321,6 @@ protected:
     LightData mainLight;
     LightData orbitLight;
 
-    Camera* frontCam = nullptr;
-    Camera* backCam = nullptr;
     Camera* lightCam = nullptr;
     Camera* orbitCam = nullptr;
     Camera* fpsCam = nullptr;
@@ -361,8 +329,6 @@ protected:
 
     NodeSkeleton* skeleton = nullptr;
 
-    shared_ptr<OIDevice> device;
-    OITrackerFactory trackerFactory;
     shared_ptr<OISkeletonTracker> tracker;
     shared_ptr<OITrackerFrame> trackerFrame;
 };
