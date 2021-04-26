@@ -205,6 +205,7 @@ public:
 
             Material& mat = isdigit(c) ? metalMaterial : boxMaterial;
             NodeCharacter* nodeChar = new NodeCharacter(c, mat, Resources::litShader, scale);
+            nodeChar->useSpheres = true;
 
             nodeChar->transform = glm::translate(glm::mat4(1.0f), glm::vec3(x, 0.0f, 0.0f));
             x += 2.0f * scale;

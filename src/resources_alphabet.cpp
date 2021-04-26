@@ -22,6 +22,7 @@ void ResourcesAlphabet::initialize()
         {
             currentCharacter = line.at(0);
             cubesMap.emplace(currentCharacter, std::vector<glm::mat4>());
+            spheresMap.emplace(currentCharacter, std::vector<glm::mat4>());
         }
         else // Add a new cube transform to the current character
         {
@@ -37,7 +38,11 @@ void ResourcesAlphabet::initialize()
             transform *= glm::eulerAngleXZ(glm::radians(rx), glm::radians(rz)); // Y angle is always 0, therefore unused
             transform = glm::scale(transform, glm::vec3(sx, sy, sz));
 
-            cubesMap.find(currentCharacter)->second.push_back(transform);
+            // Is a sphere if has no rotation and Y scale exceeds X scale
+            if (rx == 0.0f && rz == 0.0f && sy > sx)
+                spheresMap.find(currentCharacter)->second.push_back(transform);
+            else
+                cubesMap.find(currentCharacter)->second.push_back(transform);
         }
     }
 }
@@ -52,7 +57,18 @@ const std::vector<glm::mat4>* ResourcesAlphabet::getCubes(char character)
         return nullptr;
 }
 
+const std::vector<glm::mat4>* ResourcesAlphabet::getSpheres(char character)
+{
+    std::unordered_map<char, std::vector<glm::mat4>>::const_iterator iter = spheresMap.find(character);
+
+    if (iter != spheresMap.end())
+        return &(iter->second);
+    else
+        return nullptr;
+}
+
 std::unordered_map<char, std::vector<glm::mat4>> ResourcesAlphabet::cubesMap;
+std::unordered_map<char, std::vector<glm::mat4>> ResourcesAlphabet::spheresMap;
 
 // Externally generated file, format:
 // position (x, y, z), scale (x y z), rotate (x, y, z) 

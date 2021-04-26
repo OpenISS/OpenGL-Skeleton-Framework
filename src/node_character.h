@@ -3,7 +3,6 @@
 #include "mesh.h"
 #include "modules/rendering_mode.h"
 #include "node.h"
-#include "node_model.h"
 #include "resources.h"
 #include "resources_alphabet.h"
 #include "shader.h"
@@ -18,7 +17,7 @@
  * @see ResourcesAlphabet
  * @see SceneGraph
  */
-class NodeCharacter : public NodeModel
+class NodeCharacter : public Node
 {
 public:
 
@@ -27,15 +26,19 @@ public:
         this->scale = scale;
         this->material = &material;
         this->shader = &shader;
-        this->mesh = &Resources::unitCube;
-        auto res = ResourcesAlphabet::getCubes(character);
-        if (res != nullptr)
-            cubes = res;
+
+        auto cubes = ResourcesAlphabet::getCubes(character);
+        if (cubes != nullptr)
+            this->cubes = cubes;
+
+        auto spheres = ResourcesAlphabet::getSpheres(character);
+        if (spheres != nullptr)
+            this->spheres = spheres;
     }
 
     virtual void render(World& world, RenderPass pass, const glm::mat4& matrixStack) override
     {
-        if (material != nullptr && shader != nullptr && cubes != nullptr)
+        if (material != nullptr && shader != nullptr && cubes != nullptr && spheres != nullptr)
         {
             world.renderingMode->SetupPolygonMode(renderMode);
 
@@ -51,7 +54,7 @@ public:
                 Resources::shadowCastShader.activate();
             }
 
-            // Render the transformed unit cubes that compose the current character
+            // Render the transformed models that compose the current character
             for (auto transform : *cubes)
             {
                 glm::mat4 cubeMatrix = glm::scale(matrixStack, glm::vec3(scale)) * transform;
@@ -59,11 +62,32 @@ public:
                     shader->setModelMatrix(cubeMatrix);
                 else if (pass == RenderPass::Shadow)
                     Resources::shadowCastShader.setModelMatrix(cubeMatrix);
-                mesh->draw();
+                Resources::unitCube.draw();
+            }
+            for (auto transform : *spheres)
+            {
+                glm::mat4 sphereMatrix = glm::scale(matrixStack, glm::vec3(scale)) * transform;
+                if (pass == RenderPass::Color)
+                    shader->setModelMatrix(sphereMatrix);
+                else if (pass == RenderPass::Shadow)
+                    Resources::shadowCastShader.setModelMatrix(sphereMatrix);
+
+                if (useSpheres)
+                    Resources::sphere.draw();
+                else
+                    Resources::unitCube.draw();
             }
         }
     }
 
+    Material* material = nullptr;
+    Shader* shader = nullptr;
     float scale = 1.0f;
+    RenderMode renderMode = RenderMode::Triangle;
+    bool useSpheres = false;
+
+protected:
+
     const std::vector<glm::mat4>* cubes = nullptr;
+    const std::vector<glm::mat4>* spheres = nullptr;
 };
