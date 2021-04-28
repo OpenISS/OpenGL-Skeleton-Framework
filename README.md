@@ -1,5 +1,6 @@
 # New in Programming Assignment 3
 * OpenISS skeleton tracker integration
+* Multi-light shadows
 
 # Building & Running
 
@@ -128,7 +129,6 @@ API docs also available.
 * **TestLoaderOBJ:** Loads and displays a Utah teapot.
 * **TestMultiLights:** A scene for testing multiple active lights at the same time.
 * **TestSceneGraph:** Displays a nested hierarchy which generates complex movement. Verifies the hierarchical modelling system.
-* **TestShadows:** A scene for testing the Shadows module.
 * **TestShapeMeshes:** Displays all procedurally generated meshes, textured.
 * **TestTexture:** Tests the Texture wrapper class, as well as tiling textures.
 * **TestUnitCube:** Displays a simple rotating unit cube. This is the "hello world" of this framework.

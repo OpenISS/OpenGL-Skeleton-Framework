@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "light_data.h"
 #include "mesh.h"
 #include "shader.h"
 #include "material.h"
@@ -17,7 +18,7 @@ public:
     /// Returns the list of all shaders used in the application, can be used to set uniforms globally for example
     static const std::vector<const Shader*>& getShaders();
 
-    static void useTexture(Texture* texture, int slot = 0);
+    static void useTexture(Texture* texture, int slot = TEXTURE_SLOT_DIFFUSE);
 
     /// Scales all meshes and layouts used in assignments
     static const float unitSize;

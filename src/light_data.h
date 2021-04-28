@@ -1,7 +1,21 @@
 #pragma once
 #include <glm/glm.hpp>
 
-// Imspired by https://learnopengl.com/Lighting/Light-casters
+
+// Lighting constants
+
+// Make sure to keep this constant up to date in .glsl files
+#define MAX_ACTIVE_LIGHTS 8
+
+#define TEXTURE_SLOT_DIFFUSE 0
+
+#define TEXTURE_SLOT_SPECULAR 1
+
+// TEXTURE_SLOT_SHADOWMAPS_START through TEXTURE_SLOT_SHADOWMAPS_START + MAX_ACTIVE_LIGHTS will be occupied by shadow map textures
+#define TEXTURE_SLOT_SHADOWMAPS_START 8
+
+
+// Inspired by https://learnopengl.com/Lighting/Light-casters
 class LightData
 {
 public:
@@ -14,6 +28,11 @@ public:
     };
 
     bool enabled = true;
+
+    bool shadowsEnabled = true;
+    float shadowsRange = 15.0f;
+    float shadowsBias = 0.007f; // Can fix shadow acne
+    glm::mat4 shadowsMatrix = glm::mat4(1.0f);
 
     Type type = Type::Point;
 

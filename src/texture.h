@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <stdexcept>
 #include <string>
+#include "light_data.h"
 
 class Texture {
 
@@ -20,7 +21,7 @@ public:
 
     void loadTexture(bool mipmaps = true);
 
-    void useTexture(int slot = 0) const;
+    void useTexture(int slot = TEXTURE_SLOT_DIFFUSE) const;
 
     void clearTexture();
 

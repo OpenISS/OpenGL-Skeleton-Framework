@@ -23,6 +23,8 @@ public:
         light.angle = 90.0f;
         light.linearAttenuation *= 0.25f;
         light.quadraticAttenuation *= 0.25f;
+        light.shadowsRange = 15.0f;
+        light.shadowsBias = 0.007f;
 
         unlitMaterial = Resources::unshadedWhiteMaterial;
 
@@ -40,15 +42,6 @@ public:
     {
         this->enabled = enabled;
         light.enabled = enabled;
-    }
-
-    void Update(World& world, float elapsed) override
-    {
-        Module::Update(world, elapsed);
-
-        world.shadows->setLight(light);
-        world.shadows->range = 15.0f;
-        world.shadows->bias = 0.007f;
     }
 
     void Render(World& world, RenderPass pass) override
@@ -99,8 +92,8 @@ public:
             {
                 Resources::litShader.setModelMatrix(transform);
                 Resources::litShader.setMaterial(material);
-                Resources::useTexture(material.diffuseTexture, 0);
-                Resources::useTexture(material.specularTexture, 1);
+                Resources::useTexture(material.diffuseTexture, TEXTURE_SLOT_DIFFUSE);
+                Resources::useTexture(material.specularTexture, TEXTURE_SLOT_SPECULAR);
             }
             else if (pass == RenderPass::Shadow)
             {

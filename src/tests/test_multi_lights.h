@@ -6,9 +6,6 @@
 #include "../light_data.h"
 #include "../material.h"
 #include "../module.h"
-#include "../node_joint.h"
-#include "../node_bone.h"
-#include "../node_skeleton.h"
 #include "../node_character.h"
 #include "../node_model.h"
 #include "../resources.h"
@@ -33,12 +30,12 @@ public:
             world.lights.push_back(&ambientLight);
             world.lights.push_back(&mainLight);
             world.lights.push_back(&orbitLight);
-            world.shadows->setLight(mainLight);
 
             ambientLight.type = LightData::Type::Spot;
             ambientLight.ambientIntensity = 0.016f;
             ambientLight.diffuseIntensity = 0.0f;
             ambientLight.specularIntensity = 0.0f;
+            ambientLight.shadowsEnabled = false;
 
             mainLight.type = LightData::Type::Spot;
             mainLight.position = glm::vec3(0.0f, 30.0, 30.0f) * Resources::unitSize;
@@ -47,6 +44,8 @@ public:
             mainLight.constantAttenuation = 1.0f;
             mainLight.linearAttenuation = 0.09f;
             mainLight.quadraticAttenuation = 0.016f;
+            mainLight.shadowsRange = 128.0f * Resources::unitSize;
+            mainLight.shadowsBias = 0.0005f;
 
             orbitLight.type = LightData::Type::Spot;
             orbitLight.angle = 25.0f;
@@ -54,6 +53,8 @@ public:
             orbitLight.constantAttenuation = 1.0f;
             orbitLight.linearAttenuation = 0.09f;
             orbitLight.quadraticAttenuation = 0.004f;
+            orbitLight.shadowsRange = 128.0f * Resources::unitSize;
+            orbitLight.shadowsBias = 0.0005f;
 
             frontCam = new Camera(world.windowAspectRatio, glm::vec3(0.0f, 20.0f, -5.0f) * Resources::unitSize, glm::vec3(0.0f, -0.75f, 0.5f));
             backCam = new Camera(world.windowAspectRatio, glm::vec3(0.0f, 20.0f, -5.0f) * Resources::unitSize, glm::vec3(0.0f, -0.75f, -0.5f));
@@ -117,12 +118,6 @@ public:
             ground->transform = glm::rotate(ground->transform, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         }
 
-        // Testing
-        {
-            auto model = new NodeSkeleton(stageMaterial, groundMaterial, Resources::litShader);
-            localRoot->addChild(*model);
-        }
-
 
         setEnabled(enabled);
     }
@@ -177,15 +172,6 @@ public:
         orbitLight.position = orbitCam->getPosition();
         orbitLight.direction = orbitCam->getDirection();
 
-        // Set shadows for chosen light (disable if none)
-        world.shadows->setEnabled(shadowControlIdx != 2);
-        if (shadowControlIdx == 0)
-            world.shadows->setLight(mainLight);
-        else if (shadowControlIdx == 1)
-            world.shadows->setLight(orbitLight);
-        world.shadows->range = 128.0f * Resources::unitSize;
-        world.shadows->bias = 0.0005f;
-
         // Cameras
         if (camControlIdx == 0)
             world.camera = fpsCam;
@@ -226,9 +212,8 @@ public:
 
             ImGui::PushID("Shadows");
             ImGui::Text("Shadows:"); ImGui::SameLine();
-            ImGui::RadioButton("Main", &shadowControlIdx, 0); ImGui::SameLine();
-            ImGui::RadioButton("Orbit", &shadowControlIdx, 1); ImGui::SameLine();
-            ImGui::RadioButton("Disabled", &shadowControlIdx, 2);
+            ImGui::Checkbox("Main", &mainLight.shadowsEnabled); ImGui::SameLine();
+            ImGui::Checkbox("Orbit", &orbitLight.shadowsEnabled);
             ImGui::PopID();
 
             ImGui::PushID("Cameras");
@@ -264,12 +249,15 @@ public:
         world.camera = fpsCam;
         world.camera->setPosition(glm::vec3(0.0f, 12.0f * Resources::unitSize, 64.0f * Resources::unitSize));
         world.camera->setDirection(glm::vec3(0.0f, 0.0f, -1.0f));
-        orbitCamAngle = 0.0f;
+        world.camera->setFov(58.0f);
+        orbitCamAngle = glm::pi<float>();
 
-        shadowControlIdx = 0;
         ambientLight.enabled = true;
         mainLight.enabled = true;
         orbitLight.enabled = true;
+
+        mainLight.shadowsEnabled = true;
+        orbitLight.shadowsEnabled = true;
     }
 
 protected:
@@ -288,7 +276,6 @@ protected:
     Texture boxTexture = Texture("assets/fragile.jpg");
 
     bool texturesEnabled = false;
-    int shadowControlIdx = 0;
     int camControlIdx = 0;
 
     LightData ambientLight;
@@ -301,5 +288,5 @@ protected:
     Camera* orbitCam = nullptr;
     Camera* fpsCam = nullptr;
 
-    float orbitCamAngle = 0.0f;
+    float orbitCamAngle = glm::pi<float>();
 };

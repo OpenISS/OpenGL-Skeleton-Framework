@@ -47,6 +47,16 @@ public:
 
         world.lights.push_back(&light);
 
+        light.type = LightData::Type::Point;
+        light.position = glm::vec3(0.0f, 50.0f * Resources::unitSize, 0.0f);
+        light.direction = glm::vec3(0.0f, -1.0f, 0.0f);
+        light.angle = 110.0f;
+        light.constantAttenuation = 1.0f;
+        light.constantAttenuation = 0.09f;
+        light.quadraticAttenuation = 0.016f;
+        light.shadowsRange = 50.0f * Resources::unitSize;
+        light.shadowsBias = 0.001f;
+
         // Materials and textures
         stageTexture.loadTexture();
         groundTexture.loadTexture();
@@ -241,18 +251,6 @@ public:
 
     void Update(World& world, float deltaSeconds) override
     {
-        light.type = LightData::Type::Point;
-        light.position = glm::vec3(0.0f, 50.0f * Resources::unitSize, 0.0f);
-        light.direction = glm::vec3(0.0f, -1.0f, 0.0f);
-        light.angle = 110.0f;
-        light.constantAttenuation = 1.0f;
-        light.constantAttenuation = 0.09f;
-        light.quadraticAttenuation = 0.016f;
-
-        world.shadows->setLight(light);
-        world.shadows->range = 50.0f * Resources::unitSize;
-        world.shadows->bias = 0.001f;
-
         if (selected != nullptr)
         {
             if (scaleUp)

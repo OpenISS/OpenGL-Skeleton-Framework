@@ -19,7 +19,6 @@
 #include "tests/test_loader_obj.h"
 #include "tests/test_multi_lights.h"
 #include "tests/test_scene_graph.h"
-#include "tests/test_shadows.h"
 #include "tests/test_shape_meshes.h"
 #include "tests/test_texture.h"
 #include "tests/test_unit_cube.h"
@@ -61,7 +60,6 @@ void World::AddModules()
     modules.push_back(new TestUnitCube(false));
     modules.push_back(new TestVertexDrawing(false));
     modules.push_back(new TestSceneGraph(false));
-    modules.push_back(new TestShadows(false));
     modules.push_back(new TestShapeMeshes(false));
     modules.push_back(new TestTexture(false));
     modules.push_back(new TestMultiLights(false));
@@ -139,15 +137,37 @@ void World::Render()
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
 
-    shadows->PreRender(*this);
     if (shadows->getEnabled())
+        shadows->PreRender();
+
+    int lightIndex = 0;
+    for (size_t i = 0; i < lights.size(); ++i)
     {
-        for (Module* m : modules)
+        auto light = lights.at(i);
+
+        if (light->enabled)
         {
-            if (m->getEnabled())
-                m->Render(*this, RenderPass::Shadow);
+            shadows->clearShadowmap(lightIndex);
+
+            if (shadows->getEnabled() && light->shadowsEnabled)
+            {
+                shadows->computeShadowsMatrix(*this, *light);
+
+                for (Module* m : modules)
+                {
+                    if (m->getEnabled())
+                        m->Render(*this, RenderPass::Shadow);
+                }
+            }
+
+            lightIndex++;
+            if (lightIndex >= MAX_ACTIVE_LIGHTS)
+                        std::cerr << "Exceeding " << MAX_ACTIVE_LIGHTS << " active lights in the scene" << std::endl;
         }
     }
+
+    if (shadows->getEnabled())
+        shadows->bindShadowMaps();
 
 
     // Render to screen
@@ -175,7 +195,6 @@ void World::Render()
         if (shader->needsLight)
         {
             shader->activate();
-            shader->setCustomInt("shadowLightIndex", 7);
 
             int lightIndex = 0;
             for (size_t i = 0; i < lights.size(); ++i)
@@ -185,16 +204,12 @@ void World::Render()
                 {
                     shader->setLight(lightIndex, *light);
 
-                    if (light == shadows->getLight())
-                        shader->setCustomInt("shadowLightIndex", lightIndex);
-
                     lightIndex++;
-
-                    if (lightIndex >= 8)
-                        std::cerr << "Exceeding 8 active lights in the scene" << std::endl;
+                    if (lightIndex >= MAX_ACTIVE_LIGHTS)
+                        std::cerr << "Exceeding " << MAX_ACTIVE_LIGHTS << " active lights in the scene" << std::endl;
                 }
             }
-            for (; lightIndex < 8; ++lightIndex)
+            for (; lightIndex < MAX_ACTIVE_LIGHTS; ++lightIndex)
             {
                 shader->setLight(lightIndex, emptyLight);
             }

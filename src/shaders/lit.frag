@@ -12,21 +12,21 @@ struct Light
     float constantAttenuation;
     float linearAttenuation;
     float quadraticAttenuation;
+    int shadowMapParams;
+    float shadowsBias;
+    mat4 shadowsMatrix;
 };
 
 #define NR_LIGHTS 8
 uniform Light lights[NR_LIGHTS];
+uniform sampler2D shadowMaps[NR_LIGHTS];
 
 in vec3 worldPos;
-in vec4 lightSpacePos;
 in vec3 vertexColor;
 in vec3 worldNormal;
 in vec2 texCoords;
 
 uniform vec3 viewPosition = vec3(0.0, 0.0, 0.0);
-uniform mat4 lightSpaceMatrix = mat4(1.0);
-uniform float bias = 0.0;
-uniform int shadowLightIndex = 0;
 
 uniform vec3 ambientColor = vec3(1.0, 1.0, 1.0);
 uniform vec3 diffuseColor = vec3(1.0, 1.0, 1.0);
@@ -35,7 +35,6 @@ uniform float shininess = 32.0;
 
 uniform sampler2D diffuseTexture;
 uniform sampler2D specularTexture;
-uniform sampler2D shadowMap;
 
 out vec4 fragColor;
 
@@ -65,61 +64,61 @@ vec3 calcLight(Light light, vec3 normal, vec3 viewDir, vec3 diffuseSample, vec3 
 void main()
 {
     float gamma = 2.2;
+    vec3 normal = normalize(worldNormal);
+    vec3 viewDir = normalize(viewPosition - worldPos);
 
-    // Shadows
-    float shadowAttenuation = 1.0;
+    vec3 diffuseSample = pow(texture(diffuseTexture, texCoords).rgb, vec3(gamma)); // Gamma correction (to linear)
+    vec3 specularSample = texture(specularTexture, texCoords).rgb;
+
+    fragColor = vec4(0.0, 0.0, 0.0, 1.0);
+
+    for (int i = 0; i < NR_LIGHTS; i++)
     {
-        // Perform perspective divide
-        vec3 projCoords = lightSpacePos.xyz / lightSpacePos.w;
-        // Transform to [0,1] range
-        projCoords = projCoords * 0.5 + 0.5;
-        // Get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-        float closestDepth = texture(shadowMap, projCoords.xy).r;
-        // Get depth of current fragment from light's perspective
-        float currentDepth = projCoords.z;
-        // Check whether current frag pos is in shadow
-        // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+        Light light = lights[i];
 
-        // PCF
-        float shadow = 0.0;
-        vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
-        for (int x = -1; x <= 1; ++x)
+        // Shadows
+        float shadowAttenuation = 1.0;
+        if (light.shadowMapParams > 0)
         {
-            for (int y = -1; y <= 1; ++y)
+            vec4 lightSpacePos = light.shadowsMatrix * vec4(worldPos, 1.0);
+
+            // Perform perspective divide
+            vec3 projCoords = lightSpacePos.xyz / lightSpacePos.w;
+            // Transform to [0,1] range
+            projCoords = projCoords * 0.5 + 0.5;
+            // Get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+            float closestDepth = texture(shadowMaps[i], projCoords.xy).r;
+            // Get depth of current fragment from light's perspective
+            float currentDepth = projCoords.z;
+            // Check whether current frag pos is in shadow
+            // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+
+            // PCF
+            float shadow = 0.0;
+            vec2 texelSize = 1.0 / textureSize(shadowMaps[i], 0);
+            for (int x = -1; x <= 1; ++x)
             {
-                float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
-                shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;
+                for (int y = -1; y <= 1; ++y)
+                {
+                    float pcfDepth = texture(shadowMaps[i], projCoords.xy + vec2(x, y) * texelSize).r;
+                    shadow += currentDepth - light.shadowsBias > pcfDepth  ? 1.0 : 0.0;
+                }
             }
-        }
-        shadow /= 9.0;
+            shadow /= 9.0;
 
-        // Keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
-        if (projCoords.z > 1.0)
-            shadow = 0.0;
+            // Keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+            if (projCoords.z > 1.0)
+                shadow = 0.0;
 
-        shadowAttenuation = 1.0 - shadow;
-    }
-
-    // Lighting
-    {
-        vec3 normal = normalize(worldNormal);
-        vec3 viewDir = normalize(viewPosition - worldPos);
-
-        vec3 diffuseSample = pow(texture(diffuseTexture, texCoords).rgb, vec3(gamma)); // Gamma correction (to linear)
-        vec3 specularSample = texture(specularTexture, texCoords).rgb;
-
-        fragColor = vec4(0.0, 0.0, 0.0, 1.0);
-
-        for (int i = 0; i < NR_LIGHTS; i++)
-        {
-            vec3 lightContribution = calcLight(lights[i], normal, viewDir, diffuseSample, specularSample);
-            if (i == shadowLightIndex)
-                lightContribution *= shadowAttenuation;
-            fragColor.rgb += lightContribution;
+            shadowAttenuation = 1.0 - shadow;
         }
 
-        fragColor.rgb *= vertexColor;
+        // Lighting
+        vec3 lightContribution = calcLight(light, normal, viewDir, diffuseSample, specularSample) * shadowAttenuation;
+        fragColor.rgb += lightContribution;
     }
+
+    fragColor.rgb *= vertexColor;
 
     // Gamma correction (to sRGB)
     fragColor.rgb = pow(fragColor.rgb, vec3(1.0 / gamma));
