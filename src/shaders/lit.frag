@@ -19,7 +19,7 @@ struct Light
 
 #define NR_LIGHTS 8
 uniform Light lights[NR_LIGHTS];
-uniform sampler2D shadowMaps[NR_LIGHTS];
+uniform sampler2DArray shadowMapsArray;
 
 in vec3 worldPos;
 in vec3 vertexColor;
@@ -87,7 +87,7 @@ void main()
             // Transform to [0,1] range
             projCoords = projCoords * 0.5 + 0.5;
             // Get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-            float closestDepth = texture(shadowMaps[i], projCoords.xy).r;
+            float closestDepth = texture(shadowMapsArray, vec3(projCoords.xy, i)).r;
             // Get depth of current fragment from light's perspective
             float currentDepth = projCoords.z;
             // Check whether current frag pos is in shadow
@@ -95,12 +95,12 @@ void main()
 
             // PCF
             float shadow = 0.0;
-            vec2 texelSize = 1.0 / textureSize(shadowMaps[i], 0);
+            vec2 texelSize = 1.0 / textureSize(shadowMapsArray, 0).xy;
             for (int x = -1; x <= 1; ++x)
             {
                 for (int y = -1; y <= 1; ++y)
                 {
-                    float pcfDepth = texture(shadowMaps[i], projCoords.xy + vec2(x, y) * texelSize).r;
+                    float pcfDepth = texture(shadowMapsArray, vec3(projCoords.xy + vec2(x, y) * texelSize, i)).r;
                     shadow += currentDepth - light.shadowsBias > pcfDepth  ? 1.0 : 0.0;
                 }
             }

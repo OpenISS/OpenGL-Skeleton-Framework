@@ -11,8 +11,7 @@
 
 #define TEXTURE_SLOT_SPECULAR 1
 
-// TEXTURE_SLOT_SHADOWMAPS_START through TEXTURE_SLOT_SHADOWMAPS_START + MAX_ACTIVE_LIGHTS will be occupied by shadow map textures
-#define TEXTURE_SLOT_SHADOWMAPS_START 8
+#define TEXTURE_SLOT_SHADOWMAPS 8
 
 
 // Inspired by https://learnopengl.com/Lighting/Light-casters
