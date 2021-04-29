@@ -17,27 +17,32 @@ public:
     {
         // Create and setup FBO + depth texture
 
+        glGenTextures(1, &shadowMapsArray);
+        glBindTexture(GL_TEXTURE_2D_ARRAY, shadowMapsArray);
+
+        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_DEPTH_COMPONENT, width, height, MAX_ACTIVE_LIGHTS, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+        glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_LEVEL, 0);
+
+        // Clamp to max depth outside shadow map
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
         for (int i = 0; i < MAX_ACTIVE_LIGHTS; ++i)
         {
             glGenFramebuffers(1, &depthMapFBO[i]);
-            glGenTextures(1, &depthMap[i]);
-            glBindTexture(GL_TEXTURE_2D, depthMap[i]);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-            // Clamp to max depth outside shadow map
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-            float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-            glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);  
-
             glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO[i]);
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap[i], 0);
-            glDrawBuffer(GL_NONE);
-            glReadBuffer(GL_NONE);
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glFramebufferTextureLayer(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, shadowMapsArray, 0, i);
         }
+
+        glDrawBuffer(GL_NONE);
+        glReadBuffer(GL_NONE);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
     void Shutdown(World& world) override
@@ -45,8 +50,8 @@ public:
         for (int i = 0; i < MAX_ACTIVE_LIGHTS; ++i)
         {
             glDeleteFramebuffers(1, &depthMapFBO[i]);
-            glDeleteTextures(1, &depthMap[i]);
         }
+        glDeleteTextures(1, &shadowMapsArray);
     }
 
     void PreRender()
@@ -105,11 +110,8 @@ public:
 
     void bindShadowMaps()
     {
-        for (int i = 0; i < MAX_ACTIVE_LIGHTS; ++i)
-        {
-            glActiveTexture(GL_TEXTURE0 + TEXTURE_SLOT_SHADOWMAPS_START + i);
-            glBindTexture(GL_TEXTURE_2D, depthMap[i]);
-        }
+        glActiveTexture(GL_TEXTURE0 + TEXTURE_SLOT_SHADOWMAPS);
+        glBindTexture(GL_TEXTURE_2D_ARRAY, shadowMapsArray);
     }
 
     bool cullFrontFaces = false; // Can fix peter panning
@@ -120,5 +122,5 @@ protected:
     int height = 2048;
 
     unsigned int depthMapFBO[MAX_ACTIVE_LIGHTS];
-    unsigned int depthMap[MAX_ACTIVE_LIGHTS];
+    unsigned int shadowMapsArray;
 };

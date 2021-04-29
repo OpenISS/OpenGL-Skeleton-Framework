@@ -305,10 +305,7 @@ void Resources::initialize()
     basicShadowedShader.activate();
     basicShadowedShader.receivesShadows = true;
     basicShadowedShader.setColor(Resources::colorWhite);
-    for (int i = 0; i < MAX_ACTIVE_LIGHTS; ++i)
-    {
-        litShader.setCustomInt(litShader.getIndexedName(i, "shadowMaps").c_str(), TEXTURE_SLOT_SHADOWMAPS_START + i);
-    }
+    basicShadowedShader.setCustomInt("shadowMapsArray", TEXTURE_SLOT_SHADOWMAPS);
     shaders.push_back(&basicShadowedShader);
 
     litShader.load("lit");
@@ -318,10 +315,7 @@ void Resources::initialize()
     litShader.setColor(Resources::colorWhite);
     litShader.setCustomInt("diffuseTexture", TEXTURE_SLOT_DIFFUSE);
     litShader.setCustomInt("specularTexture", TEXTURE_SLOT_SPECULAR);
-    for (int i = 0; i < MAX_ACTIVE_LIGHTS; ++i)
-    {
-        litShader.setCustomInt(litShader.getIndexedName(i, "shadowMaps").c_str(), TEXTURE_SLOT_SHADOWMAPS_START + i);
-    }
+    litShader.setCustomInt("shadowMapsArray", TEXTURE_SLOT_SHADOWMAPS);
     shaders.push_back(&litShader);
 
     shadowCastShader.load("shadow_cast");
