@@ -16,7 +16,7 @@ public:
         const glm::vec3& position = glm::vec3(),
         const glm::vec3& direction = glm::vec3(0.00001f, 0.0f, -1.0f),
         const glm::vec3& upAxis = glm::vec3(0.0f, 1.0f, 0.0f),
-        const float fov = 45.0f,
+        const float fov = 58.0f,
         const float near = 0.01f,
         const float far = 100.0f):
         position(position),
@@ -99,8 +99,8 @@ protected:
 
     glm::vec3 position;
     glm::vec3 direction;
-    float fov;
-    float aspect;
-    float near;
-    float far;
+    float fov = 58.f;
+    float aspect = 1.3337f;
+    float near = 0.01f;
+    float far = 100.f;
 };

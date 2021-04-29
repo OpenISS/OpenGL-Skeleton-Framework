@@ -36,8 +36,8 @@ public:
                 shader->activate();
                 shader->setModelMatrix(matrixStack);
                 shader->setMaterial(*material);
-                Resources::useTexture(material->diffuseTexture, 0);
-                Resources::useTexture(material->specularTexture, 1);
+                Resources::useTexture(material->diffuseTexture, TEXTURE_SLOT_DIFFUSE);
+                Resources::useTexture(material->specularTexture, TEXTURE_SLOT_SPECULAR);
             }
             else if (pass == RenderPass::Shadow)
             {
@@ -52,4 +52,5 @@ public:
     Mesh* mesh = nullptr;
     Material* material = nullptr;
     Shader* shader = nullptr;
+    RenderMode renderMode = RenderMode::Triangle;
 };

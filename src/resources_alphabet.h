@@ -20,8 +20,15 @@ public:
      */
     static const std::vector<glm::mat4>* getCubes(char character);
 
+    /**
+     * Returns the transformation matrices of the spheres composing the specified character.
+     * Returns nullptr if the character isn't supported.
+     */
+    static const std::vector<glm::mat4>* getSpheres(char character);
+
 protected:
 
     static std::unordered_map<char, std::vector<glm::mat4>> cubesMap;
+    static std::unordered_map<char, std::vector<glm::mat4>> spheresMap;
     static const char* exported;
 };

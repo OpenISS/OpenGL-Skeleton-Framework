@@ -193,15 +193,24 @@ void Shader::setTime(float time) const
     glUniform1f(getUniformLocation("time"), time);
 }
 
-void Shader::setLight(const LightData& light) const
+void Shader::setLight(int index, const LightData& light) const
 {
-    setCustomVector("lightPosition", light.position);
-    setCustomVector("lightAmbient", light.ambientColor * light.ambientIntensity);
-    setCustomVector("lightDiffuse", light.diffuseColor * light.diffuseIntensity);
-    setCustomVector("lightSpecular", light.specularColor * light.specularIntensity);
-    setCustomFloat("lightConstantAttenuation", light.constantAttenuation);
-    setCustomFloat("lightLinearAttenuation", light.linearAttenuation);
-    setCustomFloat("lightQuadraticAttenuation", light.quadraticAttenuation);
+    const char* base = "lights";
+    setCustomVector(getIndexedName(index, base, "position").c_str(), light.position);
+    setCustomVector(getIndexedName(index, base, "direction").c_str(), glm::normalize(light.direction));
+    setCustomVector(getIndexedName(index, base, "ambient").c_str(), light.ambientColor * light.ambientIntensity);
+    setCustomVector(getIndexedName(index, base, "diffuse").c_str(), light.diffuseColor * light.diffuseIntensity);
+    setCustomVector(getIndexedName(index, base, "specular").c_str(), light.specularColor * light.specularIntensity);
+    setCustomFloat(getIndexedName(index, base, "cutOff").c_str(), glm::cos(glm::radians(light.angle * 0.5f * 0.8f)));
+    setCustomFloat(getIndexedName(index, base, "outerCutOff").c_str(), glm::cos(glm::radians(light.angle * 0.5f)));
+    setCustomFloat(getIndexedName(index, base, "constantAttenuation").c_str(), light.constantAttenuation);
+    setCustomFloat(getIndexedName(index, base, "linearAttenuation").c_str(), light.linearAttenuation);
+    setCustomFloat(getIndexedName(index, base, "quadraticAttenuation").c_str(), light.quadraticAttenuation);
+
+    int shadowParams = light.shadowsEnabled ? 1 : 0;
+    setCustomInt(getIndexedName(index, base, "shadowMapParams").c_str(), shadowParams);
+    setCustomFloat(getIndexedName(index, base, "shadowsBias").c_str(), light.shadowsBias);
+    setCustomMatrix(getIndexedName(index, base, "shadowsMatrix").c_str(), light.shadowsMatrix);
 }
 
 void Shader::setMaterial(const Material& material) const
@@ -211,6 +220,11 @@ void Shader::setMaterial(const Material& material) const
     setCustomVector("specularColor", material.specularColor * material.specularIntensity);
     setCustomVector("uvScale", material.uvScale);
     setCustomFloat("shininess", material.shininess);
+}
+
+void Shader::setCustomMatrix(const char* name, const glm::mat4& value) const
+{
+    glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &value[0][0]);
 }
 
 void Shader::setCustomVector(const char* name, const glm::vec3& value) const
@@ -231,5 +245,13 @@ void Shader::setCustomFloat(const char* name, float value) const
 void Shader::setCustomInt(const char* name, int value) const
 {
     glUniform1i(getUniformLocation(name), value);
+}
+
+std::string Shader::getIndexedName(int index, const char* base, const char* property) const
+{
+    if (property == nullptr)
+        return std::string(base) + "[" + std::to_string(index) + "]";
+    else
+        return std::string(base) + "[" + std::to_string(index) + "]." + std::string(property);
 }
 

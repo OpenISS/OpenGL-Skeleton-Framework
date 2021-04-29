@@ -17,21 +17,29 @@ public:
     {
         // Create and setup FBO + depth texture
 
-        glGenFramebuffers(1, &depthMapFBO);
-        glGenTextures(1, &depthMap);
-        glBindTexture(GL_TEXTURE_2D, depthMap);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glGenTextures(1, &shadowMapsArray);
+        glBindTexture(GL_TEXTURE_2D_ARRAY, shadowMapsArray);
+
+        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_DEPTH_COMPONENT, width, height, MAX_ACTIVE_LIGHTS, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+        glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_LEVEL, 0);
 
         // Clamp to max depth outside shadow map
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-        glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);  
+        glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
-        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+        for (int i = 0; i < MAX_ACTIVE_LIGHTS; ++i)
+        {
+            glGenFramebuffers(1, &depthMapFBO[i]);
+            glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO[i]);
+            glFramebufferTextureLayer(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, shadowMapsArray, 0, i);
+        }
+
         glDrawBuffer(GL_NONE);
         glReadBuffer(GL_NONE);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -39,19 +47,15 @@ public:
 
     void Shutdown(World& world) override
     {
-        glDeleteFramebuffers(1, &depthMapFBO);
-        glDeleteTextures(1, &depthMap);
+        for (int i = 0; i < MAX_ACTIVE_LIGHTS; ++i)
+        {
+            glDeleteFramebuffers(1, &depthMapFBO[i]);
+        }
+        glDeleteTextures(1, &shadowMapsArray);
     }
 
-    void PreRender(World& world)
+    void PreRender()
     {
-        if (light == nullptr)
-            return;
-
-        glViewport(0, 0, width, height);
-        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-        glClear(GL_DEPTH_BUFFER_BIT);
-
         if (cullFrontFaces)
         {
             glCullFace(GL_FRONT);
@@ -62,55 +66,61 @@ public:
             glCullFace(GL_BACK);
             glDisable(GL_CULL_FACE);
         }
+    }
 
-        glActiveTexture(GL_TEXTURE8);
-        glBindTexture(GL_TEXTURE_2D, depthMap);
+    void clearShadowmap(int lightIndex)
+    {
+        glViewport(0, 0, width, height);
+        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO[lightIndex]);
+        glClear(GL_DEPTH_BUFFER_BIT);
+    }
 
+    void computeShadowsMatrix(World& world, LightData& light)
+    {
         // glm::lookAt breaks if direction and up vector are too similar
         glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-        if (glm::abs(glm::dot(up, light->direction)) >= 0.95f)
+        if (glm::abs(glm::dot(up, light.direction)) >= 0.95f)
             up = glm::vec3(1.0f, 0.0f, 0.0f);
 
         glm::mat4 lightSpaceMatrix;
-        if (light->type == LightData::Type::Directional)
+        if (light.type == LightData::Type::Directional)
         {
-            glm::mat4 lightProjection = glm::ortho(-range / 2.0f, range / 2.0f, -range / 2.0f, range / 2.0f, 1.0f, range); // Cube with side = size
-            glm::mat4 lightView = glm::lookAt(light->direction * -range * 0.75f, glm::vec3(0.0f), up);
+            glm::mat4 lightProjection = glm::ortho(-light.shadowsRange / 2.0f, light.shadowsRange / 2.0f, -light.shadowsRange / 2.0f, light.shadowsRange / 2.0f, 1.0f, light.shadowsRange); // Cube with side = size
+            glm::mat4 lightView = glm::lookAt(light.direction * -light.shadowsRange * 0.75f, glm::vec3(0.0f), up);
             lightSpaceMatrix = lightProjection * lightView;
         }
         else
         {
-            glm::mat4 lightProjection = glm::perspective(glm::radians(light->angle), (float)width/(float)height, 1.0f, range);
-            glm::mat4 lightView = glm::lookAt(light->position, light->position + light->direction, up);
+            glm::mat4 lightProjection = glm::perspective(glm::radians(light.angle), (float)width/(float)height, 1.0f, light.shadowsRange);
+            glm::mat4 lightView = glm::lookAt(light.position, light.position + light.direction, up);
             lightSpaceMatrix = lightProjection * lightView;
         }
 
+        light.shadowsMatrix = lightSpaceMatrix;
+
         for (auto shader : Resources::getShaders())
         {
-            if (shader->castsShadows || shader->receivesShadows)
+            if (shader->castsShadows)
             {
                 shader->activate();
                 shader->setLightSpaceMatrix(lightSpaceMatrix);
-                shader->setCustomFloat("bias", bias);
             }
         }
     }
 
-    void setLight(const LightData& light)
+    void bindShadowMaps()
     {
-        this->light = &light;
+        glActiveTexture(GL_TEXTURE0 + TEXTURE_SLOT_SHADOWMAPS);
+        glBindTexture(GL_TEXTURE_2D_ARRAY, shadowMapsArray);
     }
 
-    float range = 15.0f;
-    float bias = 0.007f; // Can fix shadow acne
     bool cullFrontFaces = false; // Can fix peter panning
 
 protected:
 
-    const LightData* light = nullptr;
     int width = 2048;
     int height = 2048;
 
-    unsigned int depthMapFBO;
-    unsigned int depthMap;
+    unsigned int depthMapFBO[MAX_ACTIVE_LIGHTS];
+    unsigned int shadowMapsArray;
 };

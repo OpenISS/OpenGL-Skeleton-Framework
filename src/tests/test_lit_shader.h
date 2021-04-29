@@ -15,12 +15,16 @@ public:
 
     void Startup(World& world) override
     {
+        world.lights.push_back(&light);
+
         light.type = LightData::Type::Point;
         light.position = glm::vec3(0.0f, 8.0f, 0.0f);
         light.direction = glm::normalize(glm::vec3(0.0f, -1.0f, 0.0f));
         light.angle = 90.0f;
         light.linearAttenuation *= 0.25f;
         light.quadraticAttenuation *= 0.25f;
+        light.shadowsRange = 15.0f;
+        light.shadowsBias = 0.007f;
 
         unlitMaterial = Resources::unshadedWhiteMaterial;
 
@@ -30,15 +34,14 @@ public:
         crateTexture = Texture("assets/fragile.jpg");
         crateTexture.loadTexture();
         texturedMaterial.diffuseTexture = &crateTexture;
+
+        setEnabled(enabled);
     }
 
-    void Update(World& world, float elapsed) override
+    void setEnabled(bool enabled) override
     {
-        Module::Update(world, elapsed);
-
-        world.shadows->setLight(light);
-        world.shadows->range = 15.0f;
-        world.shadows->bias = 0.007f;
+        this->enabled = enabled;
+        light.enabled = enabled;
     }
 
     void Render(World& world, RenderPass pass) override
@@ -74,7 +77,6 @@ public:
         if (pass == RenderPass::Color)
         {
             Resources::litShader.activate();
-            Resources::litShader.setLight(light);
         }
         else if (pass == RenderPass::Shadow)
         {
@@ -90,8 +92,8 @@ public:
             {
                 Resources::litShader.setModelMatrix(transform);
                 Resources::litShader.setMaterial(material);
-                Resources::useTexture(material.diffuseTexture, 0);
-                Resources::useTexture(material.specularTexture, 1);
+                Resources::useTexture(material.diffuseTexture, TEXTURE_SLOT_DIFFUSE);
+                Resources::useTexture(material.specularTexture, TEXTURE_SLOT_SPECULAR);
             }
             else if (pass == RenderPass::Shadow)
             {

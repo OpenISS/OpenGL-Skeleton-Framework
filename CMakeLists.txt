@@ -49,11 +49,13 @@ endif()
 include(BuildGLEW)
 include(BuildGLFW)
 include(BuildGLM)
+include(BuildSTB)
+include(BuildOpenISS)
 
 set(EXEC SunRay)
 file(GLOB_RECURSE SRC src/*.cpp)
 add_executable(${EXEC} ${SRC})
-target_link_libraries(${EXEC} OpenGL::GL glew_s glfw glm)
+target_link_libraries(${EXEC} OpenGL::GL glew_s glfw glm openiss-static stb)
 list(APPEND BIN ${EXEC})
 
 add_custom_command(TARGET SunRay POST_BUILD

@@ -1,8 +1,6 @@
 #define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 #include "texture.h"
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "thirdparty/stb/stb_image.h"
 
 Texture::Texture(const std::string& path): Texture() {
     this->pathToFile = path;

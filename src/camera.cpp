@@ -24,7 +24,7 @@ glm::vec3 Camera::getUpAxis() const
 
 glm::mat4 Camera::projection() const
 {
-    return glm::perspective(fov, aspect, near, far);
+    return glm::perspective(glm::radians(fov), aspect, near, far);
 }
 
 glm::mat4 Camera::view() const
@@ -49,13 +49,14 @@ void Camera::translate(const glm::vec3& movement)
 void Camera::setDirection(const glm::vec3& direction)
 {
     if (direction == glm::vec3())
-        throw std::range_error("direction vector cannot be zeroed");
-    this->direction = glm::normalize(direction);
+        this->direction = direction;
+    else
+        this->direction = glm::normalize(direction);
 }
 
 void Camera::setDirection(const float yaw, const float pitch)
 {
-    // Not sure how to set dir using just angles...
+    rotate(yaw, pitch);
 }
 
 void Camera::rotate(const float yaw, const float pitch)

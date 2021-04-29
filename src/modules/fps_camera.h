@@ -85,22 +85,6 @@ public:
         world.camera = camera = new Camera(world.windowAspectRatio, position, direction, up);
     }
 
-    void Render(World& world, RenderPass pass) override
-    {
-        glm::mat4 view = camera->view();
-        glm::mat4 projection = camera->projection();
-
-        for (auto shader : Resources::getShaders())
-        {
-            if (shader->needsCamera)
-            {
-                shader->activate();
-                shader->setViewProjectionMatrix(view, projection);
-                shader->setViewPosition(camera->getPosition());
-            }
-        }
-    }
-
     void Update(World& world, float deltaSeconds) override
     {
         if (reset)
@@ -119,7 +103,8 @@ public:
             if (mouseInputMode == MouseInputMode::Zoom)
             {
                 float fov = camera->getFov();
-                camera->setFov(fov - pitch);
+                float newFov = glm::clamp(fov - pitch * 10.0f, 2.0f, 178.0f);
+                camera->setFov(newFov);
 
                 if (world.debug)
                     std::cout << "Update FOV: " << fov << " - " << pitch << std::endl;

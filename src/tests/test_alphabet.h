@@ -52,7 +52,7 @@ public:
         }
 
 
-        // Render the transformed unit cubes that compose the current character
+        // Render the transformed models that compose the current character
         for (auto transform : cubes)
         {
             glm::mat4 cubeMatrix = modelMatrix * transform;
@@ -74,9 +74,14 @@ public:
             bool isLetter = key >= 'A' && key <= 'Z';
             if (isDigit || isLetter) // Only process alphanumerical keypresses
             {
-                auto res = ResourcesAlphabet::getCubes(static_cast<char>(key));
-                if (res != nullptr) // Only proceed if this character has a defined model
-                    cubes = *res;
+                auto resCubes = ResourcesAlphabet::getCubes(static_cast<char>(key));
+                auto resSpheres = ResourcesAlphabet::getSpheres(static_cast<char>(key));
+                if (resCubes != nullptr && resSpheres != nullptr) // Only proceed if this character has a defined model
+                {
+                    // Merge cubes and spheres
+                    cubes = *resCubes;
+                    cubes.insert(cubes.end(), resSpheres->begin(), resSpheres->end());
+                }
             }
         }
     }

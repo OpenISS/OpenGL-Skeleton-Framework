@@ -57,9 +57,11 @@ public:
 
     void setTime(float time) const;
 
-    void setLight(const LightData& light) const;
+    void setLight(int index, const LightData& light) const;
 
     void setMaterial(const Material& material) const;
+
+    void setCustomMatrix(const char* name, const glm::mat4& value) const;
 
     void setCustomVector(const char* name, const glm::vec3& value) const;
 
@@ -68,6 +70,8 @@ public:
     void setCustomFloat(const char* name, float value) const;
 
     void setCustomInt(const char* name, int value) const;
+
+    std::string getIndexedName(int index, const char* base, const char* property = nullptr) const;
 
     bool needsCamera = true;
     bool needsLight = false;

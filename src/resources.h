@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "light_data.h"
 #include "mesh.h"
 #include "shader.h"
 #include "material.h"
@@ -17,7 +18,7 @@ public:
     /// Returns the list of all shaders used in the application, can be used to set uniforms globally for example
     static const std::vector<const Shader*>& getShaders();
 
-    static void useTexture(Texture* texture, int slot = 0);
+    static void useTexture(Texture* texture, int slot = TEXTURE_SLOT_DIFFUSE);
 
     /// Scales all meshes and layouts used in assignments
     static const float unitSize;
@@ -25,10 +26,18 @@ public:
     /// A simple unit cube (indexed mesh), size 1 in all dimensions (ex: -0.5 to 0.5 in x axis)
     static Mesh unitCube;
 
+    static Mesh inverseCube;
+
     /// A simple quad (not indexed mesh), size 1 in xy dimensions (ex: -0.5 to 0.5 in x axis)
     static Mesh quad;
 
+    static Mesh cylinder;
+
+    static Mesh cone;
+
     static Mesh halfCylinder;
+
+    static Mesh sphere;
 
     /// Simple unlit shader, supports vertex color and uniform tint color + model, view, projection matrices
     static Shader basicShader;

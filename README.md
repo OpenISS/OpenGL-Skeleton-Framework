@@ -1,13 +1,6 @@
-# New in Programming Assignment 2
-* ImGui UI library integration
-* A menu to turn modules on/off (press **M** to show/hide it)
-* `.obj` file loader
-* Procedurally generated half-cylinder mesh
-* Textures
-* Lighting
-* Materials
-* Color/depth render pass distinction
-* Shadows
+# New in Programming Assignment 3
+* OpenISS skeleton tracker integration
+* Multi-light shadows
 
 # Building & Running
 
@@ -26,8 +19,6 @@ cmake --build cmake-build --target install
 
 Additional Flags:
 * `-G`: Specifies output format, for example: `-G "CodeBlocks - Unix Makefiles"` to build a clion compatible project or `-G Xcode`
-  
-
 * `-DCMAKE_BUILD_TYPE`: to specify a build type, for example: `-DCMAKE_BUILD_TYPE=Debug` or `-DCMAKE_BUILD_TYPE=Release`
 
 ## Importing Project into an IDE
@@ -54,6 +45,9 @@ In VSCode with the `CMake` and `CMake Tools` extensions installed:
 1. Run `cmake -G Xcode -S . -B cmake-xcode` to generate an xcode project file
 2. Open `./cmake-xcode/SunRay.xcodeproj`
 3. Set target to `SunRay` and build
+
+# Controls (Programming Assignment 3)
+A user interface is provided.
 
 # Controls (new in Programming Assignment 2)
 * **X** to toggle textures
@@ -97,6 +91,7 @@ API docs also available.
 ## Modules
 * **Assignment1:** Implements programming assignment 1 specifications.
 * **Assignment2:** Implements programming assignment 2 specifications.
+* **Assignment3:** Implements programming assignment 3 specifications.
 * **FPSCamera:** FPS game camera movement and orientation.
 * **GroundGrid:** Constructs and renders the 128x128 grid.
 * **ImGuiIntegration:** Integrates the ImGui UI library.
@@ -106,6 +101,9 @@ API docs also available.
 * **SceneGraph:** This is our hiearchical modelling system.
 * **Shadows:** Implements the two-pass shadow algorithm.
 * **WorldOrientation:** Rotates the hierarchy's root node in response to input.
+
+## Adapters
+* **OISkeletonTrackerAdapter:** Drives a NodeSkeleton using an OpenISS skeleton tracker.
 
 ## Misc
 * **color.h:** Utility functions for dealing with colors.
@@ -129,8 +127,9 @@ API docs also available.
 * **TestImGuiIntegration:** Displays ImGui's demo window.
 * **TestLitShader:** A scene for testing Phong lighting.
 * **TestLoaderOBJ:** Loads and displays a Utah teapot.
+* **TestMultiLights:** A scene for testing multiple active lights at the same time.
 * **TestSceneGraph:** Displays a nested hierarchy which generates complex movement. Verifies the hierarchical modelling system.
-* **TestShadows:** A scene for testing the Shadows module.
+* **TestShapeMeshes:** Displays all procedurally generated meshes, textured.
 * **TestTexture:** Tests the Texture wrapper class, as well as tiling textures.
 * **TestUnitCube:** Displays a simple rotating unit cube. This is the "hello world" of this framework.
 * **TestVertexDrawing:** Displays a simple rotating quad. Verifies the `glDrawArrays` code path (as opposed to the indexed `glDrawElements` code path).
