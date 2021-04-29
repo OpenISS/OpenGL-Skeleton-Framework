@@ -14,7 +14,8 @@
 cd <project_root>
 cmake -S . -B cmake-build
 cmake --build cmake-build --target install
-./dist/SunRay
+cd dist
+./SunRay
 ```
 
 Additional Flags:
